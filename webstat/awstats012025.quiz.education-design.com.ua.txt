@@ -1,0 +1,356 @@
+AWSTATS DATA FILE 7.6 (build 20161204)
+# If you remove this file, all statistics for date 202501 will be lost/reset.
+# Last config file used to build this data file was /etc/awstats/awstats.quiz.education-design.com.ua.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2011                
+POS_TIME 2688                
+POS_VISITOR 6976                
+POS_DAY 8757                
+POS_DOMAIN 3387                
+POS_LOGIN 3617                
+POS_ROBOT 3772                
+POS_WORMS 4041                
+POS_EMAILSENDER 4172                
+POS_EMAILRECEIVER 4315                
+POS_SESSION 9326                
+POS_SIDER 9522                
+POS_FILETYPES 4450                
+POS_DOWNLOADS 4608                
+POS_OS 4656                
+POS_BROWSER 4806                
+POS_SCREENSIZE 5075                
+POS_UNKNOWNREFERER 5149                
+POS_UNKNOWNREFERERBROWSER 5463                
+POS_ORIGIN 5545                
+POS_SEREFERRALS 5681                
+POS_PAGEREFS 5825                
+POS_SEARCHWORDS 6001                
+POS_KEYWORDS 6153                
+POS_MISC 2351                
+POS_ERRORS 6212                
+POS_CLUSTER 3473                
+POS_SIDER_404 6323                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20250201001218 10 2171 4320472902414
+FirstTime 20250101200318
+LastTime 20250131220438
+LastUpdate 20250201052130 10 0 9 0 0
+TotalVisits 67                  
+TotalUnique 43                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 43                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+FlashSupport 0 0 0
+RealPlayerSupport 0 0 0
+AddToFavourites 0 49 0
+DirectorSupport 0 0 0
+JavaEnabled 0 0 0
+PDFSupport 0 0 0
+JavascriptDisabled 0 0 0
+QuickTimeSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+TotalMisc 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 12 13 210458 5 7 231858
+1 2 2 2730 0 2 229984
+2 0 0 0 0 0 0
+3 2 2 2730 0 1 114992
+4 0 0 0 0 0 0
+5 0 0 0 0 0 0
+6 1 1 1365 0 1 114992
+7 0 0 0 0 0 0
+8 3 3 4095 0 2 229984
+9 2 5 236887 0 1 114992
+10 17 26 733983 6 9 232258
+11 12 16 280880 4 7 350164
+12 9 14 405876 3 4 116051
+13 10 19 322345 4 5 116508
+14 17 21 511913 3 4 118879
+15 9 17 628898 0 4 345367
+16 11 22 1067857 1 6 460801
+17 18 22 451673 2 4 233350
+18 9 10 206034 5 6 125853
+19 8 13 400907 5 6 128617
+20 34 51 1603521 2 13 1265514
+21 15 16 214116 4 6 237780
+22 5 8 202741 1 5 230423
+23 11 21 912475 14 17 350510
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 1
+ip 207 302 8401484
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 4
+curl 8 24520 20250124213433 0
+TelegramBot 4 5460 20250120190306 0
+no_user_agent 2 6130 20250127112127 0
+netcraft 2 6130 20250106181145 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 5
+js 31 1765197 0 0
+html 157 204577 0 0
+php 50 541519 0 0
+png 10 1955610 0 0
+css 54 3934581 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 6
+macosx 63 47
+Unknown 17 17
+win10 115 83
+ios_iphone 85 45
+linuxandroid 21 14
+win8 1 1
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 11
+firefox23.0 1 1
+chrome108.0.5359.98 2 2
+chrome132.0.0.0 65 44
+chrome131.0.0.0 105 75
+chrome94.0.4606.81 1 1
+chrome131.0.6778.136 17 13
+safari18.0 1 1
+chrome100.0.4896.75 8 8
+iphone 4 1
+mozilla 17 17
+safari18.1.1 81 44
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 3
+Mozilla/5.0_(compatible;_CensysInspect/1.1;__https://about.censys.io/) 20250131010700
+Mozilla/5.0_(compatible;_InternetMeasurement/1.0;__https://internet-measurement.com/) 20250116221201
+Mozilla/5.0_(compatible) 20250125160105
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 66 66
+From1 0 0
+From2 0 0
+From3 1 1
+From4 140 235
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 1
+https://l.instagram.com 1 1
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 3
+404 20 7889
+201 8 2408
+302 17 6570
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 18
+/config/actuator/env 1 -
+/en/env 1 -
+/app/env 1 -
+/config/env 1 -
+/admin/env 1 -
+/education-design/actuator/env 1 -
+/en/actuator/env 1 -
+/www.quiz/env 1 -
+/actuator 1 -
+/admin/actuator/env 1 -
+/api/env 1 -
+/ads.txt 2 -
+/api/actuator/env 1 -
+/actuator/env 1 -
+/www.quiz/actuator/env 1 -
+/education-design/env 1 -
+/app/actuator/env 1 -
+/env 2 -
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 43
+185.209.56.240 38 56 1075077 20250131220438
+178.27.225.142 17 27 918858 20250125202243
+213.134.169.139 16 26 917510 20250121141727
+195.177.124.178 14 18 446695 20250119120608
+45.149.208.8 14 21 680869 20250120212354
+185.138.229.12 13 17 445330 20250120205618
+176.111.179.195 13 17 445330 20250112172600
+46.119.252.98 13 17 445330 20250109220202
+194.60.69.210 13 17 492162 20250129145243
+94.153.9.138 7 8 203679 20250130005338
+46.211.94.124 4 10 473589 20250129231146
+206.168.34.223 1 1 1365 20250131010700
+194.50.16.252 2 2 2730 20250127082254
+94.153.7.123 1 5 431277 20250130165200
+199.45.154.124 1 1 1365 20250120002743
+161.35.71.187 1 1 1365 20250125160105
+94.153.16.130 1 1 1234 20250129231617
+212.90.63.243 1 4 235539 20250128105229
+87.236.176.19 1 1 1365 20250115080532
+162.142.125.221 1 1 1365 20250127203827
+54.88.179.33 5 5 6825 20250118192040
+104.248.3.129 1 1 1365 20250111153649
+192.162.196.88 1 4 233867 20250118152303
+87.236.176.145 1 1 1365 20250116221201
+64.227.180.35 1 1 1365 20250119062714
+185.247.137.6 1 1 1365 20250115214032
+35.171.144.152 3 3 4095 20250118122326
+94.153.17.14 1 1 1336 20250129233843
+94.153.9.237 1 1 1031 20250129233219
+162.142.125.220 1 1 1365 20250116183418
+188.163.81.22 6 6 8057 20250130001710
+162.142.125.121 1 1 1365 20250120013125
+34.46.11.184 1 1 1365 20250126034911
+31.28.161.156 1 4 235539 20250115203301
+89.209.249.218 1 4 3037 20250110132344
+51.19.1.173 1 5 431277 20250109232436
+167.94.138.160 1 1 1365 20250120002227
+167.94.138.112 1 1 1365 20250101200318
+87.236.176.181 1 1 1365 20250116175538
+159.224.183.72 2 5 236641 20250128202945
+162.142.125.203 1 1 1365 20250120035127
+162.142.125.207 1 1 1365 20250121213207
+165.227.39.63 1 1 1365 20250105135546
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 23
+20250101 1 1 1365 1
+20250105 1 1 1365 1
+20250107 2 2 2730 2
+20250109 14 22 876607 2
+20250110 1 4 3037 1
+20250111 1 1 1365 1
+20250112 13 17 445330 1
+20250115 6 13 478210 6
+20250116 7 11 194533 5
+20250117 8 11 332287 3
+20250118 7 10 242057 3
+20250119 31 39 940987 5
+20250120 32 45 1288869 7
+20250121 2 2 2467 2
+20250122 8 9 224784 2
+20250123 14 23 621751 3
+20250125 10 14 441931 3
+20250126 1 1 1365 1
+20250127 3 3 4095 2
+20250128 4 11 629390 3
+20250129 26 39 1006617 7
+20250130 11 16 639005 3
+20250131 4 7 21337 3
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 6
+30mn-1h 6
+1h+ 6
+5mn-15mn 5
+15mn-30mn 4
+30s-2mn 1
+0s-30s 45
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 15
+/ 55 75075 45 37
+/answers.php 33 530513 2 9
+/module4.html 14 18704 4 3
+/contact.html 12 13224 2 2
+/thank.html 10 15420 2 10
+/module5.html 10 13770 2 2
+/login.php 9 8406 8 1
+/module2.html 8 9872 1 1
+/send_answers.html 8 7288 0 0
+/module7.html 8 8456 0 0
+/module3.html 8 8248 1 1
+/module1.html 8 11272 0 1
+/send_email.php 8 2600 0 0
+/module6.html 8 10568 0 0
+/module8.html 8 12680 0 0
+END_SIDER

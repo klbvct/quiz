@@ -1,0 +1,90 @@
+main {
+  padding: 2rem 0;
+}
+
+.blue {
+  color:blue;
+}
+
+.nav-link.active, .nav-module.active {
+  background-color: #2470dc;
+  color: white;
+  border-radius: 5px;
+}
+
+.instruction h1, h3 {
+  margin: 1rem 0;
+}
+
+.instruction ul {
+  list-style-type:  none;
+  margin: 2rem 0;
+}
+
+.instruction ul > li > p > b {
+  font-size: 20px;
+  color: blue;
+  margin-right: 1rem;
+}
+
+.modul {
+  margin: 1rem 0;
+}
+
+.question {
+  margin-bottom: 1rem;
+}
+
+.answer-item, .congratulation {
+  display: flex; /* Используем Flexbox для размещения в строку */
+  align-items: center; /* Вертикальное выравнивание по центру */
+  margin-bottom: 0.5rem; /* Отступ между элементами */
+}
+
+.answer-item select, .congratulation img {
+  margin-left: auto; /* Выталкивает селект к правому краю */
+  max-width: 100px; /* Минимальная ширина */
+}
+
+.thank h1, h3 {
+  text-align: center;
+}
+
+.thank-form, button#sendQiuz {
+  margin-top: 3rem;
+}
+
+.nav-module {
+  display: block;
+  padding: .5rem 1rem;
+  color: #0d6efd;
+  text-decoration: none;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
