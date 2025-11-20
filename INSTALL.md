@@ -1,19 +1,67 @@
 ## Инструкция по установке Laravel Backend
 
+### ⚠️ ВАЖНО: Установка PHP и MySQL
+
+Для работы Laravel нужны PHP и MySQL. Самый простой способ - установить XAMPP (включает оба).
+
+### Шаг 1: Установка XAMPP
+
+1. **Скачайте XAMPP** (включает PHP 8.2 + MySQL + Apache):
+   - Перейдите на: https://www.apachefriends.org/download.html
+   - Скачайте версию для Windows (XAMPP 8.2 или новее)
+   - Размер ~150 МБ
+
+2. **Установите XAMPP:**
+   - Запустите скачанный файл `xampp-windows-x64-installer.exe`
+   - Выберите компоненты: Apache, MySQL, PHP, phpMyAdmin
+   - Установите в: `C:\xampp` (по умолчанию)
+   - Нажмите "Next" до завершения установки
+
+3. **Добавьте PHP в PATH:**
+   ```powershell
+   # Откройте PowerShell от имени Администратора и выполните:
+   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\xampp\php", "Machine")
+   ```
+   
+   Или вручную:
+   - Нажмите Win + R → введите `sysdm.cpl` → Enter
+   - Вкладка "Дополнительно" → "Переменные среды"
+   - В "Системные переменные" найдите `Path` → "Изменить"
+   - Добавьте новую строку: `C:\xampp\php`
+   - Нажмите OK везде
+   - **ВАЖНО:** Перезапустите PowerShell!
+
+4. **Проверьте установку:**
+   ```powershell
+   php --version
+   # Должно показать: PHP 8.2.x
+   ```
+
+### Шаг 2: Установка Composer
+
+1. **Скачайте Composer:**
+   - Перейдите на: https://getcomposer.org/Composer-Setup.exe
+   - Запустите установщик
+
+2. **Установите Composer:**
+   - Установщик автоматически найдет PHP (если добавили в PATH)
+   - Нажимайте "Next" до завершения
+   - **ВАЖНО:** Перезапустите PowerShell после установки!
+
+3. **Проверьте установку:**
+   ```powershell
+   composer --version
+   # Должно показать: Composer version 2.x
+   ```
+
 ### Требования
 
-Перед началом убедитесь, что у вас установлено:
+После установки XAMPP и Composer у вас будет:
 
-1. **PHP 8.1 или выше**
-   - Скачать: https://windows.php.net/download/
-   - Или установить через XAMPP/WAMP
-
-2. **Composer**
-   - Скачать: https://getcomposer.org/download/
-
-3. **MySQL или MariaDB**
-   - Через XAMPP: https://www.apachefriends.org/
-   - Или установить отдельно: https://dev.mysql.com/downloads/installer/
+1. ✅ **PHP 8.2+** (через XAMPP)
+2. ✅ **Composer** (менеджер пакетов PHP)
+3. ✅ **MySQL** (через XAMPP)
+4. ✅ **Apache** (веб-сервер, опционально)
 
 ### Шаги установки
 

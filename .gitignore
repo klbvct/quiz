@@ -1,0 +1,72 @@
+# Laravel Backend
+/backend/vendor/
+/backend/node_modules/
+/backend/.env
+/backend/.env.backup
+/backend/.phpunit.result.cache
+/backend/Homestead.json
+/backend/Homestead.yaml
+/backend/auth.json
+/backend/npm-debug.log
+/backend/yarn-error.log
+/backend/.idea
+/backend/.vscode
+/backend/.fleet
+/backend/.phpstorm.meta.php
+/backend/_ide_helper.php
+/backend/_ide_helper_models.php
+/backend/.phpunit.cache
+
+# Laravel Storage & Cache
+/backend/storage/*.key
+/backend/storage/framework/cache/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/views/*
+/backend/storage/logs/*
+/backend/bootstrap/cache/*
+!/backend/storage/app/.gitignore
+!/backend/storage/framework/.gitignore
+!/backend/storage/logs/.gitignore
+
+# Composer files
+/backend/composer.lock
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE Files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Database files
+*.sqlite
+*.sqlite-journal
+
+# Build files
+/backend/public/hot
+/backend/public/storage
+/backend/public/build
+
+# XAMPP installer (if downloaded)
+xampp-installer.exe
+php.zip
+Composer-Setup.exe
