@@ -181,11 +181,14 @@ if (document.getElementById('registerForm')) {
             });
             
             if (response.success) {
-                showMessage('registerMessage', 'Регистрация успешна! Перенаправление на страницу входа...', 'success');
+                // Автоматически входим после регистрации
+                setAuthToken(response.token);
+                setCurrentUser(response.user);
+                showMessage('registerMessage', 'Регистрация успешна! Вход в систему...', 'success');
                 
                 setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
+                    window.location.href = 'home.html';
+                }, 1500);
             }
         } catch (error) {
             showMessage('registerMessage', error.message || 'Ошибка регистрации', 'error');
