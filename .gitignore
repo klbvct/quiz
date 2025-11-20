@@ -70,3 +70,10 @@ Thumbs.db
 xampp-installer.exe
 php.zip
 Composer-Setup.exe
+
+# Old static HTML files (replaced by Blade templates)
+/index.html
+/register.html
+/home.html
+/auth.js
+/styles.css
