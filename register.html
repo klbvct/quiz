@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Quiz Education</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <div class="form-header">
+                <h1>Регистрация</h1>
+                <p>Создайте новую учетную запись</p>
+            </div>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="registerName">Имя</label>
+                    <input type="text" id="registerName" name="name" placeholder="Ваше имя" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" name="email" placeholder="example@mail.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerPassword">Пароль</label>
+                    <input type="password" id="registerPassword" name="password" placeholder="••••••••" required minlength="6">
+                    <small class="form-hint">Минимум 6 символов</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Подтвердите пароль</label>
+                    <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="acceptTerms" required>
+                        <span>Я согласен с <a href="#">условиями использования</a></span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                
+                <div class="form-footer">
+                    <p>Уже есть учетная запись? <a href="index.html">Войти</a></p>
+                </div>
+            </form>
+            
+            <div id="registerMessage" class="message"></div>
+        </div>
+    </div>
+    
+    <script src="auth.js"></script>
+</body>
+</html>
