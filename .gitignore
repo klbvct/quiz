@@ -17,19 +17,28 @@
 /backend/_ide_helper_models.php
 /backend/.phpunit.cache
 
-# Laravel Storage & Cache
+# Laravel Storage & Cache (важно сохранить структуру папок!)
 /backend/storage/*.key
-/backend/storage/framework/cache/*
+/backend/storage/framework/cache/data/*
+!/backend/storage/framework/cache/data/.gitignore
 /backend/storage/framework/sessions/*
 /backend/storage/framework/views/*
 /backend/storage/logs/*
-/backend/bootstrap/cache/*
-!/backend/storage/app/.gitignore
-!/backend/storage/framework/.gitignore
 !/backend/storage/logs/.gitignore
+/backend/bootstrap/cache/*
+!/backend/bootstrap/cache/.gitignore
 
-# Composer files
-/backend/composer.lock
+# Сохраняем структуру папок storage
+!/backend/storage/app/.gitignore
+!/backend/storage/app/public/.gitignore
+!/backend/storage/framework/.gitignore
+!/backend/storage/framework/cache/.gitignore
+!/backend/storage/framework/sessions/.gitignore
+!/backend/storage/framework/testing/.gitignore
+!/backend/storage/framework/views/.gitignore
+
+# НЕ игнорируем composer.lock - он нужен для точной установки зависимостей
+# /backend/composer.lock
 
 # OS Files
 .DS_Store

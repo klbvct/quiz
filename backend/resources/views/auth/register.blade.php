@@ -3,6 +3,9 @@
 @section('title', 'Регистрация - Quiz Education')
 
 @section('content')
+<script>
+    document.body.classList.add('auth-page');
+</script>
 <div class="container">
     <div class="form-wrapper">
         <div class="form-header">
@@ -10,26 +13,36 @@
             <p>Создайте новую учетную запись</p>
         </div>
         
-        <form id="registerForm" class="auth-form">
+        <form method="POST" action="{{ route('register') }}" class="auth-form">
+            @csrf
             <div class="form-group">
                 <label for="registerName">Имя</label>
-                <input type="text" id="registerName" name="name" placeholder="Ваше имя" required>
+                <input type="text" id="registerName" name="name" value="{{ old('name') }}" placeholder="Ваше имя" required>
+                @error('name')
+                    <small class="error-message">{{ $message }}</small>
+                @enderror
             </div>
             
             <div class="form-group">
                 <label for="registerEmail">Email</label>
-                <input type="email" id="registerEmail" name="email" placeholder="example@mail.com" required>
+                <input type="email" id="registerEmail" name="email" value="{{ old('email') }}" placeholder="example@mail.com" required>
+                @error('email')
+                    <small class="error-message">{{ $message }}</small>
+                @enderror
             </div>
             
             <div class="form-group">
                 <label for="registerPassword">Пароль</label>
-                <input type="password" id="registerPassword" name="password" placeholder="••••••••" required minlength="6">
-                <small class="form-hint">Минимум 6 символов</small>
+                <input type="password" id="registerPassword" name="password" placeholder="••••••••" required minlength="8">
+                <small class="form-hint">Минимум 8 символов</small>
+                @error('password')
+                    <small class="error-message">{{ $message }}</small>
+                @enderror
             </div>
             
             <div class="form-group">
                 <label for="registerConfirmPassword">Подтвердите пароль</label>
-                <input type="password" id="registerConfirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                <input type="password" id="registerConfirmPassword" name="password_confirmation" placeholder="••••••••" required>
             </div>
             
             <div class="form-options">
@@ -42,7 +55,7 @@
             <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
             
             <div class="form-footer">
-                <p>Уже есть учетная запись? <a href="{{ url('/') }}">Войти</a></p>
+                <p>Уже есть учетная запись? <a href="{{ route('login.form') }}">Войти</a></p>
             </div>
         </form>
         
@@ -51,51 +64,4 @@
 </div>
 @endsection
 
-@push('scripts')
-<script>
-    // Проверка авторизации - если уже авторизован, перенаправляем на главную
-    if (localStorage.getItem('token')) {
-        window.location.href = '/home';
-    }
 
-    // Обработка формы регистрации
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const messageDiv = document.getElementById('registerMessage');
-        const name = document.getElementById('registerName').value;
-        const email = document.getElementById('registerEmail').value;
-        const password = document.getElementById('registerPassword').value;
-        const confirmPassword = document.getElementById('registerConfirmPassword').value;
-        
-        // Проверка совпадения паролей
-        if (password !== confirmPassword) {
-            messageDiv.textContent = 'Пароли не совпадают';
-            messageDiv.className = 'message error';
-            return;
-        }
-        
-        try {
-            const data = await apiRequest('/api/register', {
-                method: 'POST',
-                body: JSON.stringify({ name, email, password })
-            });
-            
-            // Автоматический вход после регистрации
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            
-            messageDiv.textContent = 'Регистрация успешна! Перенаправление...';
-            messageDiv.className = 'message success';
-            
-            // Перенаправление на главную страницу
-            setTimeout(() => {
-                window.location.href = '/home';
-            }, 1000);
-        } catch (error) {
-            messageDiv.textContent = error.message || 'Ошибка регистрации';
-            messageDiv.className = 'message error';
-        }
-    });
-</script>
-@endpush
