@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дизайн Образования - Профориентационное тестирование</title>
-    <style>
+@extends('layouts.app')
+
+@section('title', 'Дизайн Образования - Профориентационное тестирование')
+
+@section('styles')
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -20,18 +19,19 @@
         .header {
             background: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px 40px;
+            padding: 20px 60px;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         .logo {
@@ -131,6 +131,9 @@
             text-align: center;
             margin-bottom: 20px;
             color: #667eea;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .section-subtitle {
@@ -138,6 +141,9 @@
             font-size: 18px;
             color: #6b7280;
             margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .features {
@@ -249,18 +255,23 @@
                 font-size: 16px;
             }
         }
+
+        body.landing-page {
+            background: white;
+        }
     </style>
-</head>
-<body>
+@endsection
+
+@section('content')
     <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
                 <svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="25" cy="25" r="25" fill="url(#gradient)"/>
+                    <circle cx="25" cy="25" r="25" fill="url(#gradient-landing)"/>
                     <text x="25" y="32" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">Q</text>
                     <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="gradient-landing" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
                             <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
                         </linearGradient>
@@ -338,5 +349,8 @@
         <p>&copy; 2025 Дизайн Образования. Все права защищены.</p>
         <p><a href="https://education-design.com.ua" target="_blank">education-design.com.ua</a></p>
     </footer>
-</body>
-</html>
+
+    <script>
+        document.body.classList.add('landing-page');
+    </script>
+@endsection

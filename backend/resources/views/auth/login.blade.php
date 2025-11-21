@@ -36,7 +36,7 @@
                     <input type="checkbox" id="rememberMe" name="remember">
                     <span>Запомнить меня</span>
                 </label>
-                <a href="#" class="forgot-password">Забыли пароль?</a>
+                <a href="{{ route('password.request') }}" class="forgot-password">Забыли пароль?</a>
             </div>
             
             <button type="submit" class="btn btn-primary">Войти</button>

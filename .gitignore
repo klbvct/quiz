@@ -28,6 +28,13 @@
 /backend/bootstrap/cache/*
 !/backend/bootstrap/cache/.gitignore
 
+# Laravel Config Cache
+/backend/.phpunit.cache
+/backend/config/*.cache
+/backend/routes/*.cache
+/backend/storage/framework/cache/*.php
+/backend/storage/debugbar/
+
 # Сохраняем структуру папок storage
 !/backend/storage/app/.gitignore
 !/backend/storage/app/public/.gitignore
@@ -86,3 +93,11 @@ Composer-Setup.exe
 /home.html
 /auth.js
 /styles.css
+
+# Environment-specific files
+.env.local
+.env.*.local
+
+# npm/yarn (если будете использовать frontend сборку)
+package-lock.json
+yarn.lock
