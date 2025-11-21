@@ -2,6 +2,10 @@
 
 @section('title', 'Регистрация - Quiz Education')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endsection
+
 @section('content')
 <script>
     document.body.classList.add('auth-page');

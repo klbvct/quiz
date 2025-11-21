@@ -2,6 +2,10 @@
 
 @section('title', 'Главная - Quiz Education')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+@endsection
+
 @section('content')
 <div class="home-wrapper">
     <div class="header">
@@ -36,21 +40,23 @@
         @endif
         
         <div class="dashboard">
-            <div class="card">
-                <h3>📝 Мои квизы</h3>
-                <p>Создавайте и управляйте своими квизами</p>
-                <p style="margin-top: 15px;"><strong>0</strong> квизов создано</p>
-            </div>
-            <div class="card">
-                <h3>📊 Статистика</h3>
-                <p>Отслеживайте свои результаты и прогресс</p>
-                <p style="margin-top: 15px;"><strong>0</strong> квизов пройдено</p>
-            </div>
-            <div class="card">
-                <h3>👤 Профиль</h3>
-                <p>Управляйте своей учетной записью</p>
-                <p style="margin-top: 15px; font-size: 13px; color: #9ca3af;">{{ Auth::user()->email }}</p>
-            </div>
+            @if(Auth::user()->has_access)
+                <div class="card">
+                    <h3>📝 Профориентационное тестирование</h3>
+                    <p>Узнайте свои профессиональные склонности и получите рекомендации по выбору карьеры</p>
+                    <p style="margin-top: 20px;">
+                        <a href="#" class="btn-start">Начать тестирование</a>
+                    </p>
+                </div>
+            @else
+                <div class="card" style="border-left: 4px solid #ef4444;">
+                    <h3>� Доступ ограничен</h3>
+                    <p>Для прохождения профориентационного тестирования необходимо оплатить доступ</p>
+                    <p style="margin-top: 20px;">
+                        <a href="{{ url('/') }}" class="btn-start">Перейти к оплате</a>
+                    </p>
+                </div>
+            @endif
         </div>
     </div>
 </div>

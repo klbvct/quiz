@@ -33,4 +33,8 @@ Route::get('/home', function () {
     return view('home');
 })->middleware('auth')->name('home');
 
+// Маршруты для платежей
+Route::post('/payment/create', [\App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
+Route::post('/payment/callback', [\App\Http\Controllers\PaymentController::class, 'callback'])->name('payment.callback');
+
 require __DIR__.'/auth.php';

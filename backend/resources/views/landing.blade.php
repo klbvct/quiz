@@ -3,263 +3,7 @@
 @section('title', 'Дизайн Образования - Профориентационное тестирование')
 
 @section('styles')
-<style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #1f2937;
-            line-height: 1.6;
-        }
-
-        .header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px 60px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo svg {
-            width: 50px;
-            height: 50px;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .header-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 12px 28px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 100px 40px;
-            text-align: center;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .section {
-            padding: 80px 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 36px;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #667eea;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 18px;
-            color: #6b7280;
-            margin-bottom: 60px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: #667eea;
-        }
-
-        .feature-card p {
-            color: #6b7280;
-            font-size: 16px;
-        }
-
-        .about-section {
-            background: #f9fafb;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 80px 40px;
-        }
-
-        .cta-section h2 {
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-
-        .cta-section p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
-
-        footer {
-            background: #1f2937;
-            color: white;
-            text-align: center;
-            padding: 30px 40px;
-        }
-
-        footer a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 15px 20px;
-            }
-
-            .logo-text {
-                display: none;
-            }
-
-            .hero {
-                padding: 60px 20px;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .section {
-                padding: 40px 20px;
-            }
-
-            .section-title {
-                font-size: 28px;
-            }
-
-            .cta-section h2 {
-                font-size: 28px;
-            }
-
-            .cta-section p {
-                font-size: 16px;
-            }
-        }
-
-        body.landing-page {
-            background: white;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
 @endsection
 
 @section('content')
@@ -292,11 +36,35 @@
             <h1>Найдите свой путь в мире профессий</h1>
             <p>Профориентационное тестирование для определения ваших способностей, интересов и подходящей карьеры</p>
             <div class="hero-buttons">
-                <a href="{{ route('register.form') }}" class="btn btn-primary" style="background: white; color: #667eea;">Начать тестирование</a>
+                <button id="startTestBtn" class="btn btn-primary" style="background: white; color: #667eea;">Начать тестирование</button>
                 <a href="#about" class="btn btn-outline" style="border-color: white; color: white;">Узнать больше</a>
             </div>
         </div>
     </section>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Профориентационное тестирование</h2>
+            <p class="modal-description">После оплаты на указанный адрес электронной почты будет отправлен доступ к тестированию</p>
+            
+            <form id="paymentForm" class="payment-form">
+                @csrf
+                <div class="form-group">
+                    <label for="paymentEmail">Email</label>
+                    <input type="email" id="paymentEmail" name="email" placeholder="example@mail.com" required>
+                </div>
+                
+                <div class="price-block">
+                    <span class="price-label">Стоимость:</span>
+                    <span class="price-amount">999 грн</span>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-pay">Оплатить</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Features Section -->
     <section class="section">
@@ -341,7 +109,7 @@
     <section class="cta-section">
         <h2>Готовы узнать свое призвание?</h2>
         <p>Пройдите тестирование прямо сейчас и получите персональные рекомендации</p>
-        <a href="{{ route('register.form') }}" class="btn btn-primary" style="background: white; color: #667eea;">Начать бесплатно</a>
+        <button id="startTestBtn2" class="btn btn-primary" style="background: white; color: #667eea;">Начать тестирование</button>
     </section>
 
     <!-- Footer -->
@@ -352,5 +120,69 @@
 
     <script>
         document.body.classList.add('landing-page');
+
+        // Модальное окно
+        const modal = document.getElementById('paymentModal');
+        const startBtn1 = document.getElementById('startTestBtn');
+        const startBtn2 = document.getElementById('startTestBtn2');
+        const closeBtn = document.querySelector('.close');
+
+        function openModal() {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        startBtn1.addEventListener('click', openModal);
+        startBtn2.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Обработка формы оплаты
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('paymentEmail').value;
+            
+            try {
+                // Отправляем данные на сервер
+                const response = await fetch('/payment/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ошибка создания платежа');
+                }
+
+                const data = await response.json();
+                
+                // Создаем форму для отправки на LiqPay
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = data.action_url;
+                form.innerHTML = `
+                    <input type="hidden" name="data" value="${data.data}">
+                    <input type="hidden" name="signature" value="${data.signature}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            } catch (error) {
+                alert('Произошла ошибка. Попробуйте еще раз.');
+                console.error(error);
+            }
+        });
     </script>
 @endsection
