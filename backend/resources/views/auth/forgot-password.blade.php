@@ -7,9 +7,6 @@
 @endsection
 
 @section('content')
-<script>
-    document.body.classList.add('auth-page');
-</script>
 <div class="container">
     <div class="form-wrapper">
         <div class="form-header">
@@ -42,3 +39,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/auth.js') }}"></script>
+@endpush

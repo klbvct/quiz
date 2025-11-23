@@ -398,11 +398,10 @@
 <body>
     @yield('content')
     
-    <script>
-        // Настройка CSRF токена для всех запросов
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    </script>
+    <!-- Общий JS файл -->
+    <script src="{{ asset('js/app.js') }}"></script>
     
+    <!-- Специфичные JS файлы для каждой страницы -->
     @stack('scripts')
 </body>
 </html>

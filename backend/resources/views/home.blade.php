@@ -60,8 +60,8 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.body.classList.add('home-page');
-</script>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/home.js') }}"></script>
+@endpush

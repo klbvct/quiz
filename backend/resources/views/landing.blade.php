@@ -117,72 +117,8 @@
         <p>&copy; 2025 Дизайн Образования. Все права защищены.</p>
         <p><a href="https://education-design.com.ua" target="_blank">education-design.com.ua</a></p>
     </footer>
-
-    <script>
-        document.body.classList.add('landing-page');
-
-        // Модальное окно
-        const modal = document.getElementById('paymentModal');
-        const startBtn1 = document.getElementById('startTestBtn');
-        const startBtn2 = document.getElementById('startTestBtn2');
-        const closeBtn = document.querySelector('.close');
-
-        function openModal() {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        startBtn1.addEventListener('click', openModal);
-        startBtn2.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Обработка формы оплаты
-        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('paymentEmail').value;
-            
-            try {
-                // Отправляем данные на сервер
-                const response = await fetch('/payment/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({ email })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Ошибка создания платежа');
-                }
-
-                const data = await response.json();
-                
-                // Создаем форму для отправки на LiqPay
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = data.action_url;
-                form.innerHTML = `
-                    <input type="hidden" name="data" value="${data.data}">
-                    <input type="hidden" name="signature" value="${data.signature}">
-                `;
-                document.body.appendChild(form);
-                form.submit();
-            } catch (error) {
-                alert('Произошла ошибка. Попробуйте еще раз.');
-                console.error(error);
-            }
-        });
-    </script>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/landing.js') }}"></script>
+@endpush
