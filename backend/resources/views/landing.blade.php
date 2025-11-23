@@ -58,7 +58,7 @@
                 
                 <div class="price-block">
                     <span class="price-label">Стоимость:</span>
-                    <span class="price-amount">999 грн</span>
+                    <span class="price-amount">1 грн</span>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-pay">Оплатить</button>

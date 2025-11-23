@@ -22,7 +22,7 @@ class PaymentController extends Controller
         ]);
 
         $email = $request->email;
-        $amount = 999;
+        $amount = 1; // Тестовая стоимость (было 999)
 
         // Создаем запись о платеже
         $payment = Payment::create([
