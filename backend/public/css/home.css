@@ -107,13 +107,10 @@ body.home-page {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     border: 1px solid #e5e7eb;
-    transition: all 0.3s ease;
+    max-width: 380px;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
-}
+
 
 .card h3 {
     color: #667eea;
@@ -136,13 +133,9 @@ body.home-page {
     border-radius: 8px;
     font-weight: 600;
     font-size: 14px;
-    transition: all 0.3s ease;
 }
 
-.btn-start:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
+
 
 @media (max-width: 768px) {
     .header {

@@ -3,7 +3,7 @@
 @section('title', 'Главная - Quiz Education')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}?v=2025112301">
 @endsection
 
 @section('content')
