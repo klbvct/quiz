@@ -12,14 +12,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-// Находим последний pending платеж
-$payment = Payment::where('status', 'pending')
-    ->where('email', 'kalabukhov87@gmail.com')
-    ->orderBy('created_at', 'desc')
-    ->first();
+// Получаем ID платежа из параметра командной строки
+$paymentId = $argv[1] ?? null;
+
+if (!$paymentId) {
+    echo "Использование: php simulate-payment.php <payment_id>\n";
+    echo "Доступные платежи со статусом pending:\n\n";
+    
+    $pendingPayments = Payment::where('status', 'pending')->get();
+    foreach ($pendingPayments as $p) {
+        echo "ID: {$p->id} | Email: {$p->email} | Сумма: {$p->amount} UAH | Создан: {$p->created_at}\n";
+    }
+    exit;
+}
+
+// Находим платеж по ID
+$payment = Payment::find($paymentId);
 
 if (!$payment) {
-    echo "Платеж не найден!\n";
+    echo "Платеж с ID $paymentId не найден!\n";
+    exit;
+}
+
+if ($payment->status !== 'pending') {
+    echo "Платеж #$paymentId уже имеет статус: {$payment->status}\n";
     exit;
 }
 

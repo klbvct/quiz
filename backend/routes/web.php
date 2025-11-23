@@ -33,6 +33,11 @@ Route::get('/home', function () {
     return view('home');
 })->middleware('auth')->name('home');
 
+// Страница оплаты для зарегистрированных пользователей
+Route::get('/payment', function () {
+    return view('payment');
+})->middleware('auth')->name('payment.page');
+
 // Маршруты для платежей
 Route::post('/payment/create', [\App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
 Route::post('/payment/callback', [\App\Http\Controllers\PaymentController::class, 'callback'])->name('payment.callback');

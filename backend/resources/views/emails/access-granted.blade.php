@@ -35,11 +35,12 @@
         .button {
             display: inline-block;
             padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #667eea;
+            color: #ffffff !important;
             text-decoration: none;
             border-radius: 8px;
             margin-top: 20px;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -49,7 +50,6 @@
             <h1>Добро пожаловать!</h1>
         </div>
         <div class="content">
-            <p>Здравствуйте!</p>
             
             <p>Спасибо за оплату профориентационного тестирования. Для вас создан аккаунт на платформе "Дизайн Образования".</p>
             

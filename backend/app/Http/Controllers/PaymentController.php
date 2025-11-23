@@ -35,6 +35,9 @@ class PaymentController extends Controller
         $public_key = env('LIQPAY_PUBLIC_KEY');
         $private_key = env('LIQPAY_PRIVATE_KEY');
 
+        // Определяем URL возврата в зависимости от авторизации
+        $result_url = auth()->check() ? route('home') : route('payment.success');
+
         // Формируем данные для LiqPay
         $data = [
             'version' => 3,
@@ -44,7 +47,7 @@ class PaymentController extends Controller
             'currency' => 'UAH',
             'description' => 'Профориентационное тестирование',
             'order_id' => $payment->id,
-            'result_url' => route('payment.success'),
+            'result_url' => $result_url,
             'server_url' => route('payment.callback'),
         ];
 
