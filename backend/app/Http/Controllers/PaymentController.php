@@ -44,7 +44,7 @@ class PaymentController extends Controller
             'currency' => 'UAH',
             'description' => 'Профориентационное тестирование',
             'order_id' => $payment->id,
-            'result_url' => url('/'),
+            'result_url' => route('payment.success'),
             'server_url' => route('payment.callback'),
         ];
 

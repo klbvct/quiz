@@ -36,5 +36,8 @@ Route::get('/home', function () {
 // Маршруты для платежей
 Route::post('/payment/create', [\App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
 Route::post('/payment/callback', [\App\Http\Controllers\PaymentController::class, 'callback'])->name('payment.callback');
+Route::get('/payment/success', function () {
+    return view('payment-success');
+})->name('payment.success');
 
 require __DIR__.'/auth.php';
