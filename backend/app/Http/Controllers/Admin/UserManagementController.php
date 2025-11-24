@@ -45,6 +45,41 @@ class UserManagementController extends Controller
     }
 
     /**
+     * Показать форму создания пользователя
+     */
+    public function create()
+    {
+        return view('admin.users.create');
+    }
+
+    /**
+     * Создать нового пользователя
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users'],
+            'birthdate' => ['nullable', 'date', 'before:today'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'has_access' => ['boolean'],
+            'is_admin' => ['boolean'],
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'birthdate' => $validated['birthdate'] ?? null,
+            'password' => Hash::make($validated['password']),
+            'has_access' => $request->has('has_access'),
+            'is_admin' => $request->has('is_admin'),
+        ]);
+
+        return redirect()->route('admin.users.edit', $user->id)
+            ->with('success', 'Пользователь успешно создан');
+    }
+
+    /**
      * Показать форму редактирования пользователя
      */
     public function edit($id)

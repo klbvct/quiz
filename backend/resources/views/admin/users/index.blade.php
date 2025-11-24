@@ -4,7 +4,10 @@
 
 @section('content')
 <div class="page-header">
-    <h1>Управление пользователями</h1>
+    <div class="header-with-actions">
+        <h1>Управление пользователями</h1>
+        <a href="{{ route('admin.users.create') }}" class="btn btn-primary">+ Создать пользователя</a>
+    </div>
 </div>
 
 <!-- Фильтры и поиск -->
