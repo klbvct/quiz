@@ -58,4 +58,22 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password');
 });
 
+// Маршруты админ-панели
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // Управление пользователями
+    Route::get('/users', [\App\Http\Controllers\Admin\UserManagementController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}/edit', [\App\Http\Controllers\Admin\UserManagementController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [\App\Http\Controllers\Admin\UserManagementController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserManagementController::class, 'destroy'])->name('users.destroy');
+    Route::post('/users/{id}/toggle-access', [\App\Http\Controllers\Admin\UserManagementController::class, 'toggleAccess'])->name('users.toggle-access');
+    
+    // Управление платежами
+    Route::get('/payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/payments/statistics', [\App\Http\Controllers\Admin\PaymentController::class, 'statistics'])->name('payments.statistics');
+    Route::get('/payments/{id}', [\App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('payments.show');
+    Route::post('/payments/{id}/update-status', [\App\Http\Controllers\Admin\PaymentController::class, 'updateStatus'])->name('payments.update-status');
+});
+
 require __DIR__.'/auth.php';

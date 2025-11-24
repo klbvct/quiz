@@ -22,6 +22,7 @@ class User extends Authenticatable
         'password',
         'has_access',
         'birthdate',
+        'is_admin',
     ];
 
     /**
@@ -45,5 +46,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Связь с сессиями квиза
+     */
+    public function quizSessions()
+    {
+        return $this->hasMany(QuizSession::class);
     }
 }

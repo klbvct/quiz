@@ -24,6 +24,9 @@
         </div>
         <div class="user-info">
             <span>{{ Auth::user()->name }}</span>
+            @if(Auth::user()->is_admin)
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-admin">Админ-панель</a>
+            @endif
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
                 <button type="submit" class="btn btn-secondary">Выйти</button>

@@ -10,6 +10,7 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'email',
         'amount',
         'status',
@@ -21,4 +22,12 @@ class Payment extends Model
         'payment_data' => 'array',
         'amount' => 'decimal:2'
     ];
+
+    /**
+     * Связь с пользователем
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
