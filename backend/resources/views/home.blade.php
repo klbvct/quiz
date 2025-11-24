@@ -59,6 +59,8 @@
                         <a href="{{ route('quiz.start') }}" class="btn-start">
                             @if($inProgressSession)
                                 Продолжить тестирование
+                            @elseif($completedSession)
+                                Пройти тест заново
                             @else
                                 Начать тестирование
                             @endif
@@ -66,15 +68,23 @@
                     </p>
                 </div>
                 
-                @if($completedSession)
-                <div class="card">
+                <div class="card {{ !$completedSession ? 'card-disabled' : '' }}">
                     <h3>📊 Результаты тестирования</h3>
-                    <p>Посмотрите результаты вашего последнего завершенного тестирования</p>
+                    <p>
+                        @if($completedSession)
+                            Посмотрите результаты вашего последнего завершенного тестирования
+                        @else
+                            Результаты будут доступны после завершения тестирования
+                        @endif
+                    </p>
                     <p style="margin-top: 20px;">
-                        <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Посмотреть результаты</a>
+                        @if($completedSession)
+                            <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Посмотреть результаты</a>
+                        @else
+                            <span class="btn-start btn-disabled" style="background: #9ca3af; cursor: not-allowed;">Недоступно</span>
+                        @endif
                     </p>
                 </div>
-                @endif
                 
                 <div class="card">
                     <h3>👤 Профиль</h3>

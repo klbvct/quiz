@@ -18,14 +18,14 @@ class QuizController extends Controller
     {
         $user = Auth::user();
         
-        // Проверяем, есть ли незавершенная сессия
-        $session = QuizSession::where('user_id', $user->id)
+        // Проверяем текущее состояние сессий
+        $inProgressSession = QuizSession::where('user_id', $user->id)
             ->where('status', 'in_progress')
             ->first();
         
-        if (!$session) {
-            // Создаем новую сессию
-            $session = QuizSession::create([
+        if (!$inProgressSession) {
+            // Создаем новую сессию (если пользователь начинает впервые или повторно)
+            $inProgressSession = QuizSession::create([
                 'user_id' => $user->id,
                 'current_module' => 1,
                 'current_question' => 0,
@@ -33,7 +33,7 @@ class QuizController extends Controller
             ]);
         }
         
-        return redirect()->route('quiz.module', ['module' => $session->current_module]);
+        return redirect()->route('quiz.module', ['module' => $inProgressSession->current_module]);
     }
     
     /**
