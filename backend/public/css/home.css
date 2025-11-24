@@ -96,9 +96,10 @@ body.home-page {
 
 .dashboard {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 25px;
     margin-top: 30px;
+    max-width: 1200px;
 }
 
 .card {
@@ -107,10 +108,7 @@ body.home-page {
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     border: 1px solid #e5e7eb;
-    max-width: 380px;
 }
-
-
 
 .card h3 {
     color: #667eea;
@@ -133,9 +131,13 @@ body.home-page {
     border-radius: 8px;
     font-weight: 600;
     font-size: 14px;
+    transition: all 0.3s ease;
 }
 
-
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
 
 @media (max-width: 768px) {
     .header {
@@ -164,7 +166,6 @@ body.home-page {
     }
 
     .dashboard {
-        grid-template-columns: 1fr;
         gap: 15px;
     }
 }

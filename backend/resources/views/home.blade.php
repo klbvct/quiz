@@ -41,11 +41,46 @@
         
         <div class="dashboard">
             @if(Auth::user()->has_access)
+                @php
+                    $completedSession = \App\Models\QuizSession::where('user_id', Auth::id())
+                        ->where('status', 'completed')
+                        ->latest()
+                        ->first();
+                    
+                    $inProgressSession = \App\Models\QuizSession::where('user_id', Auth::id())
+                        ->where('status', 'in_progress')
+                        ->first();
+                @endphp
+                
                 <div class="card">
                     <h3>📝 Профориентационное тестирование</h3>
                     <p>Узнайте свои профессиональные склонности и получите рекомендации по выбору карьеры</p>
                     <p style="margin-top: 20px;">
-                        <a href="#" class="btn-start">Начать тестирование</a>
+                        <a href="{{ route('quiz.start') }}" class="btn-start">
+                            @if($inProgressSession)
+                                Продолжить тестирование
+                            @else
+                                Начать тестирование
+                            @endif
+                        </a>
+                    </p>
+                </div>
+                
+                @if($completedSession)
+                <div class="card">
+                    <h3>📊 Результаты тестирования</h3>
+                    <p>Посмотрите результаты вашего последнего завершенного тестирования</p>
+                    <p style="margin-top: 20px;">
+                        <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Посмотреть результаты</a>
+                    </p>
+                </div>
+                @endif
+                
+                <div class="card">
+                    <h3>👤 Профиль</h3>
+                    <p>Измените свои личные данные, email или пароль</p>
+                    <p style="margin-top: 20px;">
+                        <a href="{{ route('profile.edit') }}" class="btn-start" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">Редактировать профиль</a>
                     </p>
                 </div>
             @else
