@@ -6,11 +6,141 @@
 <div class="page-header">
     <div class="header-with-back">
         <a href="{{ route('admin.users.index') }}" class="btn-back">← Назад до списку</a>
-        <h1>Редагування користувача</h1>
+        <h1>Користувач {{ $user->name }}</h1>
     </div>
 </div>
 
 <div class="edit-grid">
+    <!-- Інформація про користувача -->
+    <div class="info-section">
+        <div class="section-card">
+            <h2>Інформація</h2>
+            
+            <div class="info-item">
+                <div class="info-label">ID користувача</div>
+                <div class="info-value">{{ $user->id }}</div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Дата реєстрації</div>
+                <div class="info-value">{{ $user->created_at->format('d.m.Y H:i') }}</div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Останнє оновлення</div>
+                <div class="info-value">{{ $user->updated_at->format('d.m.Y H:i') }}</div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>Платежі</h2>
+            
+            @php
+                $payments = \App\Models\Payment::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+            @endphp
+            
+            @if($payments->count() > 0)
+                <div class="payments-list">
+                    @foreach($payments as $payment)
+                        <div class="payment-item">
+                            <div class="payment-status">
+                                @if($payment->status === 'completed')
+                                    <span class="badge badge-success">Завершено</span>
+                                @elseif($payment->status === 'pending')
+                                    <span class="badge badge-warning">В очікуванні</span>
+                                @else
+                                    <span class="badge badge-error">Відхилено</span>
+                                @endif
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-date">{{ $payment->created_at->format('d.m.Y H:i') }}</div>
+                            </div>
+
+                        </div>
+                    @endforeach
+                </div>
+                
+                <div class="payment-total">
+                    <strong>Всього платежів:</strong> {{ $payments->count() }}<br>
+                    <strong>Успішних:</strong> {{ $payments->where('status', 'completed')->count() }}<br>
+                    <strong>Сума:</strong> {{ number_format($payments->where('status', 'completed')->sum('amount'), 0, ',', ' ') }} ₴
+                </div>
+            @else
+                <p class="text-muted">Немає платежів</p>
+            @endif
+        </div>
+
+        <div class="section-card">
+            <h2>Статистика тестування</h2>
+            
+            @php
+                $hasCompletedSession = $user->quizSessions->whereNotNull('completed_at')->count() > 0;
+            @endphp
+            
+            @if($user->quizSessions->count() > 0)
+                @php
+                    $completedSession = $user->quizSessions->whereNotNull('completed_at')->first();
+                @endphp
+
+                @if($completedSession)
+                    <a href="{{ route('admin.users.quiz-results', $user->id) }}" class="btn btn-primary">
+                        📊 Переглянути результати тестування
+                    </a>
+                    <div class="divider"></div>
+                @endif
+
+                <div class="stats-list">
+                    <div class="stat-item">
+                        <div class="stat-label">Всього сесій</div>
+                        <div class="stat-value">{{ $user->quizSessions->count() }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Завершено</div>
+                        <div class="stat-value">{{ $user->quizSessions->whereNotNull('completed_at')->count() }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">В процесі</div>
+                        <div class="stat-value">{{ $user->quizSessions->whereNull('completed_at')->count() }}</div>
+                    </div>
+                </div>
+
+                @if($hasCompletedSession && !$user->can_retake)
+                    <div class="divider"></div>
+                    <div class="retake-section">
+                        <p class="text-muted">Користувач завершив тестування. Ви можете дозволити повторне проходження тесту.</p>
+                        <form method="POST" action="{{ route('admin.users.enable-retake', $user->id) }}" style="margin-top: 15px;">
+                            @csrf
+                            <button type="submit" class="btn btn-warning" onclick="return confirm('Дозволити користувачу {{ $user->name }} пройти тест повторно? Поточний активний тест буде скинуто.')">
+                                🔄 Дозволити повторне проходження
+                            </button>
+                        </form>
+                    </div>
+                @endif
+
+                <div class="divider"></div>
+
+                <h3>Історія сесій</h3>
+                <div class="sessions-list">
+                    @foreach($user->quizSessions->take(5) as $session)
+                        <div class="session-item">
+                            <div class="session-date">{{ $session->created_at->format('d.m.Y H:i') }}</div>
+                            <div class="session-status">
+                                @if($session->completed_at)
+                                    <span class="badge badge-success">Завершено</span>
+                                    <small>{{ $session->completed_at->format('d.m.Y H:i') }}</small>
+                                @else
+                                    <span class="badge badge-warning">Модуль {{ $session->current_module }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="text-muted">Користувач ще не проходив тестування</p>
+            @endif
+        </div>
+    </div>
+
     <!-- Форма редагування -->
     <div class="edit-section">
         <div class="section-card">
@@ -114,136 +244,6 @@
                     <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Скасувати</a>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- Інформація про користувача -->
-    <div class="info-section">
-        <div class="section-card">
-            <h2>Інформація</h2>
-            
-            <div class="info-item">
-                <div class="info-label">ID користувача</div>
-                <div class="info-value">{{ $user->id }}</div>
-            </div>
-
-            <div class="info-item">
-                <div class="info-label">Дата реєстрації</div>
-                <div class="info-value">{{ $user->created_at->format('d.m.Y H:i') }}</div>
-            </div>
-
-            <div class="info-item">
-                <div class="info-label">Останнє оновлення</div>
-                <div class="info-value">{{ $user->updated_at->format('d.m.Y H:i') }}</div>
-            </div>
-        </div>
-
-        <div class="section-card">
-            <h2>Платежі</h2>
-            
-            @php
-                $payments = \App\Models\Payment::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
-            @endphp
-            
-            @if($payments->count() > 0)
-                <div class="payments-list">
-                    @foreach($payments as $payment)
-                        <div class="payment-item">
-                            <div class="payment-status">
-                                @if($payment->status === 'completed')
-                                    <span class="badge badge-success">Завершено</span>
-                                @elseif($payment->status === 'pending')
-                                    <span class="badge badge-warning">В очікуванні</span>
-                                @else
-                                    <span class="badge badge-error">Відхилено</span>
-                                @endif
-                            </div>
-                            <div class="payment-info">
-                                <div class="payment-date">{{ $payment->created_at->format('d.m.Y H:i') }}</div>
-                            </div>
-
-                        </div>
-                    @endforeach
-                </div>
-                
-                <div class="payment-total">
-                    <strong>Всього платежів:</strong> {{ $payments->count() }}<br>
-                    <strong>Успішних:</strong> {{ $payments->where('status', 'completed')->count() }}<br>
-                    <strong>Сума:</strong> {{ number_format($payments->where('status', 'completed')->sum('amount'), 0, ',', ' ') }} ₴
-                </div>
-            @else
-                <p class="text-muted">Немає платежів</p>
-            @endif
-        </div>
-
-        <div class="section-card">
-            <h2>Статистика тестування</h2>
-            
-            @php
-                $hasCompletedSession = $user->quizSessions->whereNotNull('completed_at')->count() > 0;
-            @endphp
-            
-            @if($hasCompletedSession && !$user->can_retake)
-                <div class="retake-section">
-                    <p class="text-muted">Користувач завершив тестування. Ви можете дозволити повторне проходження тесту.</p>
-                    <form method="POST" action="{{ route('admin.users.enable-retake', $user->id) }}" style="margin-top: 15px;">
-                        @csrf
-                        <button type="submit" class="btn btn-warning" onclick="return confirm('Дозволити користувачу {{ $user->name }} пройти тест повторно? Поточний активний тест буде скинуто.')">
-                            🔄 Дозволити повторне проходження
-                        </button>
-                    </form>
-                </div>
-                <div class="divider"></div>
-            @endif
-            
-            @if($user->quizSessions->count() > 0)
-                <div class="stats-list">
-                    <div class="stat-item">
-                        <div class="stat-label">Всього сесій</div>
-                        <div class="stat-value">{{ $user->quizSessions->count() }}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">Завершено</div>
-                        <div class="stat-value">{{ $user->quizSessions->whereNotNull('completed_at')->count() }}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">В процесі</div>
-                        <div class="stat-value">{{ $user->quizSessions->whereNull('completed_at')->count() }}</div>
-                    </div>
-                </div>
-
-                @php
-                    $completedSession = $user->quizSessions->whereNotNull('completed_at')->first();
-                @endphp
-
-                @if($completedSession)
-                    <div class="divider"></div>
-                    <a href="{{ route('admin.users.quiz-results', $user->id) }}" class="btn btn-primary" style="width: 100%;">
-                        📊 Переглянути результати тестування
-                    </a>
-                @endif
-
-                <div class="divider"></div>
-
-                <h3>Історія сесій</h3>
-                <div class="sessions-list">
-                    @foreach($user->quizSessions->take(5) as $session)
-                        <div class="session-item">
-                            <div class="session-date">{{ $session->created_at->format('d.m.Y H:i') }}</div>
-                            <div class="session-status">
-                                @if($session->completed_at)
-                                    <span class="badge badge-success">Завершено</span>
-                                    <small>{{ $session->completed_at->format('d.m.Y H:i') }}</small>
-                                @else
-                                    <span class="badge badge-warning">Модуль {{ $session->current_module }}</span>
-                                @endif
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <p class="text-muted">Користувач ще не проходив тестування</p>
-            @endif
         </div>
 
         @if($user->id !== auth()->id())
