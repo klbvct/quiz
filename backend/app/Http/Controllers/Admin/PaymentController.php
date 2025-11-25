@@ -105,11 +105,16 @@ class PaymentController extends Controller
     /**
      * Статистика платежей
      */
-    public function statistics()
+    public function statistics(Request $request)
     {
-        // Платежи по дням за последние 30 дней
+        // Получение дат из запроса или установка значений по умолчанию
+        $dateFrom = $request->input('date_from', now()->subDays(30)->format('Y-m-d'));
+        $dateTo = $request->input('date_to', now()->format('Y-m-d'));
+
+        // Платежи по дням за выбранный период
         $dailyRevenue = Payment::where('status', 'completed')
-            ->where('created_at', '>=', now()->subDays(30))
+            ->whereDate('created_at', '>=', $dateFrom)
+            ->whereDate('created_at', '<=', $dateTo)
             ->select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as count'),

@@ -62,6 +62,7 @@
                     <label>
                         <input type="checkbox" 
                                name="has_access" 
+                               value="1"
                                {{ old('has_access', $user->has_access) ? 'checked' : '' }}>
                         <span>Доступ к тестированию</span>
                     </label>
@@ -71,11 +72,13 @@
                     <label>
                         <input type="checkbox" 
                                name="is_admin" 
+                               value="1"
                                {{ old('is_admin', $user->is_admin) ? 'checked' : '' }}
                                {{ $user->id === auth()->id() ? 'disabled' : '' }}>
                         <span>Права администратора</span>
                     </label>
                     @if($user->id === auth()->id())
+                        <input type="hidden" name="is_admin" value="{{ $user->is_admin ? '1' : '0' }}">
                         <small class="form-hint">Вы не можете изменить свои права администратора</small>
                     @endif
                 </div>
@@ -133,6 +136,44 @@
                 <div class="info-label">Последнее обновление</div>
                 <div class="info-value">{{ $user->updated_at->format('d.m.Y H:i') }}</div>
             </div>
+        </div>
+
+        <div class="section-card">
+            <h2>Платежи</h2>
+            
+            @php
+                $payments = \App\Models\Payment::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+            @endphp
+            
+            @if($payments->count() > 0)
+                <div class="payments-list">
+                    @foreach($payments as $payment)
+                        <div class="payment-item">
+                            <div class="payment-status">
+                                @if($payment->status === 'completed')
+                                    <span class="badge badge-success">Завершено</span>
+                                @elseif($payment->status === 'pending')
+                                    <span class="badge badge-warning">В ожидании</span>
+                                @else
+                                    <span class="badge badge-error">Отклонено</span>
+                                @endif
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-date">{{ $payment->created_at->format('d.m.Y H:i') }}</div>
+                            </div>
+
+                        </div>
+                    @endforeach
+                </div>
+                
+                <div class="payment-total">
+                    <strong>Всего платежей:</strong> {{ $payments->count() }}<br>
+                    <strong>Успешных:</strong> {{ $payments->where('status', 'completed')->count() }}<br>
+                    <strong>Сумма:</strong> {{ number_format($payments->where('status', 'completed')->sum('amount'), 0, ',', ' ') }} ₴
+                </div>
+            @else
+                <p class="text-muted">Нет платежей</p>
+            @endif
         </div>
 
         <div class="section-card">

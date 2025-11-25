@@ -71,8 +71,8 @@ class UserManagementController extends Controller
             'email' => $validated['email'],
             'birthdate' => $validated['birthdate'] ?? null,
             'password' => Hash::make($validated['password']),
-            'has_access' => $request->has('has_access'),
-            'is_admin' => $request->has('is_admin'),
+            'has_access' => $request->boolean('has_access'),
+            'is_admin' => $request->boolean('is_admin'),
         ]);
 
         return redirect()->route('admin.users.edit', $user->id)
@@ -110,8 +110,8 @@ class UserManagementController extends Controller
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->birthdate = $validated['birthdate'] ?? null;
-        $user->has_access = $request->has('has_access');
-        $user->is_admin = $request->has('is_admin');
+        $user->has_access = $request->boolean('has_access');
+        $user->is_admin = $request->boolean('is_admin');
 
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
