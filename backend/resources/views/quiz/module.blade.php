@@ -27,6 +27,7 @@
             <div class="progress-fill" style="width: {{ ($module / 8) * 100 }}%"></div>
         </div>
         <div class="module-indicator">Модуль {{ $module }} з 8</div>
+        <a href="{{ route('home') }}" class="btn-exit">Зберегти і вийти</a>
     </div>
 
     <div class="quiz-content">

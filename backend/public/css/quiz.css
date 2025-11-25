@@ -49,6 +49,24 @@ body.quiz-page {
     white-space: nowrap;
 }
 
+.btn-exit {
+    padding: 10px 20px;
+    background: #ef4444;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-exit:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
 .quiz-content {
     max-width: 900px;
     margin: 0 auto;

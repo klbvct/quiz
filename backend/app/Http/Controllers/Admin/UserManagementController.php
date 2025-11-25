@@ -175,4 +175,196 @@ class UserManagementController extends Controller
         return redirect()->route('admin.users.edit', $id)
             ->with('success', 'Повторное прохождение теста разрешено. Пользователь может начать тест заново.');
     }
+
+    public function quizResults($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Получаем завершенную сессию
+        $completedSession = QuizSession::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->latest()
+            ->first();
+        
+        if (!$completedSession) {
+            return redirect()->route('admin.users.edit', $id)
+                ->with('error', 'Користувач ще не завершив тестування');
+        }
+        
+        // Получаем результаты
+        $quizResult = \App\Models\QuizResult::where('session_id', $completedSession->id)->first();
+        
+        // Получаем все ответы пользователя
+        $answers = \App\Models\QuizAnswer::where('session_id', $completedSession->id)
+            ->orderBy('module_number')
+            ->orderBy('question_number')
+            ->get()
+            ->groupBy('module_number');
+        
+        // Загружаем данные модулей (вопросы и варианты ответов)
+        $modulesData = [];
+        foreach ($answers->keys() as $moduleNumber) {
+            $modulesData[$moduleNumber] = $this->loadModuleData($moduleNumber);
+        }
+        
+        return view('admin.users.quiz-results', compact('user', 'completedSession', 'quizResult', 'answers', 'modulesData'));
+    }
+    
+    /**
+     * Загрузить данные модуля из JSON
+     */
+    private function loadModuleData($module)
+    {
+        $path = storage_path("app/quiz/module{$module}.json");
+        
+        if (!file_exists($path)) {
+            return null;
+        }
+        
+        $json = file_get_contents($path);
+        return json_decode($json, true);
+    }
+    
+    /**
+     * Экспорт результатов тестирования в CSV
+     */
+    public function exportQuizResults($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Получаем завершенную сессию
+        $completedSession = QuizSession::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->latest()
+            ->first();
+        
+        if (!$completedSession) {
+            return redirect()->route('admin.users.edit', $id)
+                ->with('error', 'Користувач ще не завершив тестування');
+        }
+        
+        // Получаем все ответы пользователя
+        $answers = \App\Models\QuizAnswer::where('session_id', $completedSession->id)
+            ->orderBy('module_number')
+            ->orderBy('question_number')
+            ->get();
+        
+        // Загружаем данные модулей
+        $modulesData = [];
+        foreach ($answers->groupBy('module_number')->keys() as $moduleNumber) {
+            $modulesData[$moduleNumber] = $this->loadModuleData($moduleNumber);
+        }
+        
+        // Создаем CSV
+        $filename = 'quiz_results_' . $user->id . '_' . date('Y-m-d_H-i-s') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+        
+        $callback = function() use ($user, $completedSession, $answers, $modulesData) {
+            $file = fopen('php://output', 'w');
+            
+            // BOM для корректного отображения кириллицы в Excel
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Заголовок файла
+            fputcsv($file, ['Користувач', $user->name]);
+            fputcsv($file, ['Email', $user->email]);
+            fputcsv($file, ['Дата завершення', $completedSession->completed_at->format('d.m.Y H:i')]);
+            fputcsv($file, []);
+            
+            // Заголовки таблицы
+            fputcsv($file, ['Модуль', '№ Питання', 'Текст питання', 'Відповідь']);
+            
+            // Данные по каждому ответу
+            foreach ($answers as $answer) {
+                $moduleNumber = $answer->module_number;
+                $moduleData = $modulesData[$moduleNumber] ?? null;
+                $questionText = '';
+                $answerText = '';
+                
+                // Получаем текст вопроса
+                if ($moduleData) {
+                    if (isset($moduleData['values'])) {
+                        // Модули 4, 6
+                        foreach ($moduleData['values'] as $value) {
+                            if ($value['number'] == $answer->question_number) {
+                                $questionText = $value['text'];
+                                break;
+                            }
+                        }
+                    } elseif (isset($moduleData['questions'])) {
+                        foreach ($moduleData['questions'] as $q) {
+                            if ($q['number'] == $answer->question_number) {
+                                if (isset($q['text'])) {
+                                    $questionText = $q['text'];
+                                    
+                                    // Для модулей с выбором добавляем выбранный вариант
+                                    if (isset($q['a']) && isset($q['b'])) {
+                                        $userChoice = strtolower(trim($answer->answer));
+                                        if ($userChoice === 'a' && isset($q['a'])) {
+                                            $questionText .= "\n" . $q['a'];
+                                        } elseif ($userChoice === 'b' && isset($q['b'])) {
+                                            $questionText .= "\n" . $q['b'];
+                                        } elseif ($userChoice === 'c' && isset($q['c'])) {
+                                            $questionText .= "\n" . $q['c'];
+                                        }
+                                    }
+                                    
+                                    // Для модуля 8 с опциями
+                                    if (isset($q['options'])) {
+                                        $answerValue = json_decode($answer->answer, true);
+                                        if (is_array($answerValue)) {
+                                            $parts = [];
+                                            foreach ($answerValue as $k => $v) {
+                                                $optionText = $q['options'][(int)$k] ?? "Опція $k";
+                                                $parts[] = $optionText . ': ' . $v;
+                                            }
+                                            $answerText = implode('; ', $parts);
+                                        }
+                                    }
+                                } elseif (isset($q['a']) && isset($q['b'])) {
+                                    $userChoice = strtolower(trim($answer->answer));
+                                    if ($userChoice === 'a') {
+                                        $questionText = $q['a'];
+                                    } elseif ($userChoice === 'b') {
+                                        $questionText = $q['b'];
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Если answerText еще не заполнен (не модуль 8)
+                if (empty($answerText)) {
+                    $answerValue = $answer->answer;
+                    $decoded = json_decode($answerValue, true);
+                    if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                        $parts = [];
+                        foreach ($decoded as $k => $v) {
+                            $parts[] = $k . ': ' . (is_array($v) ? json_encode($v) : $v);
+                        }
+                        $answerText = implode('; ', $parts);
+                    } else {
+                        $answerText = $answerValue;
+                    }
+                }
+                
+                fputcsv($file, [
+                    'Модуль ' . $moduleNumber,
+                    $answer->question_number,
+                    $questionText,
+                    $answerText
+                ]);
+            }
+            
+            fclose($file);
+        };
+        
+        return response()->stream($callback, 200, $headers);
+    }
 }

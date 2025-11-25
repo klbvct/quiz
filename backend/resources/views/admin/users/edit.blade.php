@@ -212,6 +212,17 @@
                     </div>
                 </div>
 
+                @php
+                    $completedSession = $user->quizSessions->whereNotNull('completed_at')->first();
+                @endphp
+
+                @if($completedSession)
+                    <div class="divider"></div>
+                    <a href="{{ route('admin.users.quiz-results', $user->id) }}" class="btn btn-primary" style="width: 100%;">
+                        📊 Переглянути результати тестування
+                    </a>
+                @endif
+
                 <div class="divider"></div>
 
                 <h3>Історія сесій</h3>

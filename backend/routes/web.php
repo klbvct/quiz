@@ -78,6 +78,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserManagementController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{id}/toggle-access', [\App\Http\Controllers\Admin\UserManagementController::class, 'toggleAccess'])->name('users.toggle-access');
     Route::post('/users/{id}/enable-retake', [\App\Http\Controllers\Admin\UserManagementController::class, 'enableRetake'])->name('users.enable-retake');
+    Route::get('/users/{id}/quiz-results', [\App\Http\Controllers\Admin\UserManagementController::class, 'quizResults'])->name('users.quiz-results');
+    Route::get('/users/{id}/quiz-results/export', [\App\Http\Controllers\Admin\UserManagementController::class, 'exportQuizResults'])->name('users.quiz-results.export');
     
     // Управление платежами
     Route::get('/payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
