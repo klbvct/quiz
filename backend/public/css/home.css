@@ -154,6 +154,11 @@ body.home-page {
     background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
 }
 
+.card-active {
+    border-left: 4px solid #667eea;
+    background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+}
+
 .badge-completed {
     display: inline-block;
     background: #10b981;

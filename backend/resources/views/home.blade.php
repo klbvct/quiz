@@ -55,7 +55,7 @@
                         ->first();
                 @endphp
                 
-                <div class="card {{ $completedSession && !Auth::user()->can_retake ? 'card-completed' : '' }}">
+                <div class="card {{ $completedSession && !Auth::user()->can_retake ? 'card-completed' : 'card-active' }}">
                     <h3>
                         📝 Тестування
                         @if($completedSession && !Auth::user()->can_retake)
