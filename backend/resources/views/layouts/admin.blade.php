@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Админ-панель') - Тестирование</title>
+    <title>@yield('title', 'Адмін-панель') - Тестування</title>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 <body>
     <div class="admin-container">
-        <!-- Боковое меню -->
+        <!-- Бокове меню -->
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <h2>Админ-панель</h2>
+                <h2>Адмін-панель</h2>
             </div>
             <nav class="sidebar-nav">
                 <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <span class="icon">📊</span>
-                    <span>Главная</span>
+                    <span>Головна</span>
                 </a>
                 <a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     <span class="icon">👥</span>
-                    <span>Пользователи</span>
+                    <span>Користувачі</span>
                 </a>
                 <a href="{{ route('admin.payments.index') }}" class="nav-item {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
                     <span class="icon">💳</span>
-                    <span>Платежи</span>
+                    <span>Платежі</span>
                 </a>
                 <a href="{{ route('home', ['force' => 1]) }}" class="nav-item">
                     <span class="icon">🏠</span>
-                    <span>Мой кабинет</span>
+                    <span>Мій кабінет</span>
                 </a>
             </nav>
             <div class="sidebar-footer">
@@ -40,7 +40,7 @@
             </div>
         </aside>
 
-        <!-- Основной контент -->
+        <!-- Основний контент -->
         <main class="admin-main">
             <div class="admin-content">
                 @if(session('success'))
@@ -61,7 +61,7 @@
     </div>
 
     <script>
-        // Автоматическое скрытие уведомлений
+        // Автоматичне приховування сповіщень
         document.addEventListener('DOMContentLoaded', function() {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {

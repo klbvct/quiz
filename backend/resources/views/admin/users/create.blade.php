@@ -1,26 +1,26 @@
 @extends('layouts.admin')
 
-@section('title', 'Создание пользователя')
+@section('title', 'Створення користувача')
 
 @section('content')
 <div class="page-header">
     <div class="header-with-back">
-        <a href="{{ route('admin.users.index') }}" class="btn-back">← Назад к списку</a>
-        <h1>Создание пользователя</h1>
+        <a href="{{ route('admin.users.index') }}" class="btn-back">← Назад до списку</a>
+        <h1>Створення користувача</h1>
     </div>
 </div>
 
 <div class="edit-grid">
-    <!-- Форма создания -->
+    <!-- Форма створення -->
     <div class="edit-section">
         <div class="section-card">
-            <h2>Данные пользователя</h2>
+            <h2>Дані користувача</h2>
             
             <form method="POST" action="{{ route('admin.users.store') }}">
                 @csrf
 
                 <div class="form-group">
-                    <label for="name">Имя <span class="required">*</span></label>
+                    <label for="name">Ім'я <span class="required">*</span></label>
                     <input type="text" 
                            id="name" 
                            name="name" 
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="birthdate">Дата рождения</label>
+                    <label for="birthdate">Дата народження</label>
                     <input type="date" 
                            id="birthdate" 
                            name="birthdate" 
@@ -70,14 +70,14 @@
                            class="form-control @error('password') is-invalid @enderror"
                            required
                            minlength="8">
-                    <small class="form-hint">Минимум 8 символов</small>
+                    <small class="form-hint">Мінімум 8 символів</small>
                     @error('password')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="password_confirmation">Подтверждение пароля <span class="required">*</span></label>
+                    <label for="password_confirmation">Підтвердження пароля <span class="required">*</span></label>
                     <input type="password" 
                            id="password_confirmation" 
                            name="password_confirmation" 
@@ -88,14 +88,14 @@
 
                 <div class="divider"></div>
 
-                <h3>Права и доступ</h3>
+                <h3>Права та доступ</h3>
 
                 <div class="form-group checkbox-group">
                     <label>
                         <input type="checkbox" 
                                name="has_access" 
                                {{ old('has_access') ? 'checked' : '' }}>
-                        <span>Доступ к тестированию</span>
+                        <span>Доступ до тестування</span>
                     </label>
                 </div>
 
@@ -104,42 +104,42 @@
                         <input type="checkbox" 
                                name="is_admin" 
                                {{ old('is_admin') ? 'checked' : '' }}>
-                        <span>Права администратора</span>
+                        <span>Права адміністратора</span>
                     </label>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Создать пользователя</button>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Отмена</a>
+                    <button type="submit" class="btn btn-primary">Створити користувача</button>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Скасувати</a>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Информация -->
+    <!-- Інформація -->
     <div class="info-section">
         <div class="section-card">
-            <h3>ℹ️ Информация</h3>
+            <h3>ℹ️ Інформація</h3>
             <ul class="info-list">
-                <li>После создания пользователь сможет войти в систему используя указанный email и пароль</li>
-                <li>Если установлен флаг "Доступ к тестированию", пользователь сразу сможет проходить тесты</li>
-                <li>Права администратора дают доступ к этой панели управления</li>
-                <li>Email должен быть уникальным в системе</li>
+                <li>Після створення користувач зможе увійти в систему використовуючи вказаний email та пароль</li>
+                <li>Якщо встановлено прапорець "Доступ до тестування", користувач одразу зможе проходити тести</li>
+                <li>Права адміністратора дають доступ до цієї панелі керування</li>
+                <li>Email повинен бути унікальним в системі</li>
             </ul>
         </div>
 
         <div class="section-card">
-            <h3>📋 Обязательные поля</h3>
+            <h3>📋 Обов'язкові поля</h3>
             <ul class="info-list">
-                <li><strong>Имя</strong> - отображаемое имя пользователя</li>
-                <li><strong>Email</strong> - используется для входа</li>
-                <li><strong>Пароль</strong> - минимум 8 символов</li>
+                <li><strong>Ім'я</strong> - відображуване ім'я користувача</li>
+                <li><strong>Email</strong> - використовується для входу</li>
+                <li><strong>Пароль</strong> - мінімум 8 символів</li>
             </ul>
         </div>
 
         <div class="section-card">
-            <h3>🔐 Безопасность</h3>
-            <p>Пароль будет автоматически зашифрован перед сохранением в базу данных. Восстановить исходный пароль будет невозможно.</p>
+            <h3>🔐 Безпека</h3>
+            <p>Пароль буде автоматично зашифровано перед збереженням у базу даних. Відновити початковий пароль буде неможливо.</p>
         </div>
     </div>
 </div>

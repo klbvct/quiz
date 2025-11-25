@@ -8,13 +8,13 @@
     <p class="subtitle">Загальна статистика та активність</p>
 </div>
 
-<!-- Карточки статистики -->
+<!-- Картки статистики -->
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-icon">👥</div>
         <div class="stat-content">
             <div class="stat-value">{{ $stats['total_users'] }}</div>
-            <div class="stat-label">Всего пользователей</div>
+            <div class="stat-label">Всього користувачів</div>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
         <div class="stat-icon">✅</div>
         <div class="stat-content">
             <div class="stat-value">{{ $stats['users_with_access'] }}</div>
-            <div class="stat-label">С доступом</div>
+            <div class="stat-label">З доступом</div>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
         <div class="stat-icon">📝</div>
         <div class="stat-content">
             <div class="stat-value">{{ $stats['completed_tests'] }}</div>
-            <div class="stat-label">Пройдено тестов</div>
+            <div class="stat-label">Пройдено тестів</div>
         </div>
     </div>
 
@@ -38,7 +38,7 @@
         <div class="stat-icon">⏳</div>
         <div class="stat-content">
             <div class="stat-value">{{ $stats['in_progress_tests'] }}</div>
-            <div class="stat-label">В процессе</div>
+            <div class="stat-label">В процесі</div>
         </div>
     </div>
 
@@ -46,12 +46,12 @@
         <div class="stat-icon">💰</div>
         <div class="stat-content">
             <div class="stat-value">{{ number_format($stats['total_revenue'], 0, ',', ' ') }} ₴</div>
-            <div class="stat-label">Общая выручка</div>
+            <div class="stat-label">Загальна виручка</div>
         </div>
     </div>
 </div>
 
-<!-- Два столбца: последние пользователи и завершенные тесты -->
+<!-- Дві колонки: останні користувачі та завершені тести -->
 <div class="dashboard-grid">
     <!-- Останні користувачі -->
     <div class="dashboard-section">

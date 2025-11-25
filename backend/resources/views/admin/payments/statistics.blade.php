@@ -1,20 +1,20 @@
 @extends('layouts.admin')
 
-@section('title', 'Статистика платежей')
+@section('title', 'Статистика платежів')
 
 @section('content')
 <div class="page-header">
     <div class="header-with-back">
-        <a href="{{ route('admin.payments.index') }}" class="btn-back">← Назад к платежам</a>
-        <h1>Статистика платежей</h1>
+        <a href="{{ route('admin.payments.index') }}" class="btn-back">← Назад до платежів</a>
+        <h1>Статистика платежів</h1>
     </div>
 </div>
 
-<!-- Фильтр по периоду -->
+<!-- Фільтр за періодом -->
 <div class="filters-section">
     <form method="GET" action="{{ route('admin.payments.statistics') }}" class="filters-form">
         <div class="filter-group">
-            <label for="date_from">Период с:</label>
+            <label for="date_from">Період з:</label>
             <input type="date" 
                    name="date_from" 
                    id="date_from"
@@ -31,33 +31,33 @@
                    class="filter-select">
         </div>
 
-        <button type="submit" class="btn btn-primary">Применить</button>
+        <button type="submit" class="btn btn-primary">Застосувати</button>
         
         <div class="quick-filters">
             <a href="{{ route('admin.payments.statistics', ['date_from' => now()->subDays(7)->format('Y-m-d'), 'date_to' => now()->format('Y-m-d')]) }}" 
-               class="btn btn-secondary btn-sm">7 дней</a>
+               class="btn btn-secondary btn-sm">7 днів</a>
             <a href="{{ route('admin.payments.statistics', ['date_from' => now()->subDays(30)->format('Y-m-d'), 'date_to' => now()->format('Y-m-d')]) }}" 
-               class="btn btn-secondary btn-sm">30 дней</a>
+               class="btn btn-secondary btn-sm">30 днів</a>
             <a href="{{ route('admin.payments.statistics', ['date_from' => now()->subDays(90)->format('Y-m-d'), 'date_to' => now()->format('Y-m-d')]) }}" 
-               class="btn btn-secondary btn-sm">3 месяца</a>
+               class="btn btn-secondary btn-sm">3 місяці</a>
             <a href="{{ route('admin.payments.statistics', ['date_from' => now()->subYear()->format('Y-m-d'), 'date_to' => now()->format('Y-m-d')]) }}" 
-               class="btn btn-secondary btn-sm">Год</a>
+               class="btn btn-secondary btn-sm">Рік</a>
         </div>
     </form>
 </div>
 
-<!-- Графики и статистика -->
+<!-- Графіки та статистика -->
 <div class="statistics-grid">
-    <!-- График по выбранному периоду -->
+    <!-- Графік за обраний період -->
     <div class="section-card full-width">
-        <h2>Платежи за выбранный период</h2>
+        <h2>Платежі за обраний період</h2>
         <p class="text-muted">
-            С {{ request('date_from', now()->subDays(30)->format('Y-m-d')) }} 
+            З {{ request('date_from', now()->subDays(30)->format('Y-m-d')) }} 
             по {{ request('date_to', now()->format('Y-m-d')) }}
         </p>
         
         @if($dailyRevenue->count() > 0)
-            <!-- График-диаграмма -->
+            <!-- Графік-діаграма -->
             <div class="bar-chart">
                 @php
                     $maxAmount = $dailyRevenue->max('total');
@@ -85,8 +85,8 @@
                     <thead>
                         <tr>
                             <th>Дата</th>
-                            <th>Количество</th>
-                            <th>Сумма</th>
+                            <th>Кількість</th>
+                            <th>Сума</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,7 +100,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td><strong>Итого:</strong></td>
+                            <td><strong>Всього:</strong></td>
                             <td><strong>{{ $dailyRevenue->sum('count') }}</strong></td>
                             <td><strong>{{ number_format($dailyRevenue->sum('total'), 0, ',', ' ') }} ₴</strong></td>
                         </tr>
@@ -108,22 +108,22 @@
                 </table>
             </div>
         @else
-            <p class="text-muted">Нет данных за последние 30 дней</p>
+            <p class="text-muted">Немає даних за останні 30 днів</p>
         @endif
     </div>
 
-    <!-- График по месяцам -->
+    <!-- Графік за місяцями -->
     <div class="section-card full-width">
-        <h2>Платежи по месяцам (последний год)</h2>
+        <h2>Платежі за місяцями (останній рік)</h2>
         
         @if($monthlyRevenue->count() > 0)
             <div class="chart-container">
                 <table class="stats-table">
                     <thead>
                         <tr>
-                            <th>Месяц</th>
-                            <th>Количество</th>
-                            <th>Сумма</th>
+                            <th>Місяць</th>
+                            <th>Кількість</th>
+                            <th>Сума</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,7 +137,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td><strong>Итого:</strong></td>
+                            <td><strong>Всього:</strong></td>
                             <td><strong>{{ $monthlyRevenue->sum('count') }}</strong></td>
                             <td><strong>{{ number_format($monthlyRevenue->sum('total'), 0, ',', ' ') }} ₴</strong></td>
                         </tr>
@@ -145,13 +145,13 @@
                 </table>
             </div>
         @else
-            <p class="text-muted">Нет данных за последний год</p>
+            <p class="text-muted">Немає даних за останній рік</p>
         @endif
     </div>
 
-    <!-- Топ пользователей -->
+    <!-- Топ користувачів -->
     <div class="section-card full-width">
-        <h2>Топ-10 пользователей по платежам</h2>
+        <h2>Топ-10 користувачів за платежами</h2>
         
         @if($topUsers->count() > 0)
             <div class="chart-container">
@@ -159,10 +159,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Пользователь</th>
+                            <th>Користувач</th>
                             <th>Email</th>
-                            <th>Количество платежей</th>
-                            <th>Общая сумма</th>
+                            <th>Кількість платежів</th>
+                            <th>Загальна сума</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -182,7 +182,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3"><strong>Итого:</strong></td>
+                            <td colspan="3"><strong>Всього:</strong></td>
                             <td><strong>{{ $topUsers->sum('payments_count') }}</strong></td>
                             <td><strong>{{ number_format($topUsers->sum('total_spent'), 0, ',', ' ') }} ₴</strong></td>
                         </tr>
@@ -190,7 +190,7 @@
                 </table>
             </div>
         @else
-            <p class="text-muted">Нет данных о пользователях</p>
+            <p class="text-muted">Немає даних про користувачів</p>
         @endif
     </div>
 </div>

@@ -1,29 +1,29 @@
 @extends('layouts.admin')
 
-@section('title', 'Детали платежа #' . $payment->id)
+@section('title', 'Деталі платежу #' . $payment->id)
 
 @section('content')
 <div class="page-header">
     <div class="header-with-back">
-        <a href="{{ route('admin.payments.index') }}" class="btn-back">← Назад к списку</a>
-        <h1>Детали платежа #{{ $payment->id }}</h1>
+        <a href="{{ route('admin.payments.index') }}" class="btn-back">← Назад до списку</a>
+        <h1>Деталі платежу #{{ $payment->id }}</h1>
     </div>
 </div>
 
 <div class="payment-detail-grid">
-    <!-- Основная информация -->
+    <!-- Основна інформація -->
     <div class="detail-section">
         <div class="section-card">
-            <h2>Информация о платеже</h2>
+            <h2>Інформація про платіж</h2>
             
             <div class="info-grid">
                 <div class="info-item">
-                    <div class="info-label">ID платежа</div>
+                    <div class="info-label">ID платежу</div>
                     <div class="info-value">{{ $payment->id }}</div>
                 </div>
 
                 <div class="info-item">
-                    <div class="info-label">Сумма</div>
+                    <div class="info-label">Сума</div>
                     <div class="info-value"><strong class="amount">{{ number_format($payment->amount, 0, ',', ' ') }} ₴</strong></div>
                 </div>
 
@@ -33,28 +33,28 @@
                         @if($payment->status === 'completed')
                             <span class="badge badge-success">Завершено</span>
                         @elseif($payment->status === 'pending')
-                            <span class="badge badge-warning">В ожидании</span>
+                            <span class="badge badge-warning">В очікуванні</span>
                         @else
-                            <span class="badge badge-error">Отклонено</span>
+                            <span class="badge badge-error">Відхилено</span>
                         @endif
                     </div>
                 </div>
 
                 <div class="info-item">
-                    <div class="info-label">Платежный провайдер</div>
+                    <div class="info-label">Платіжний провайдер</div>
                     <div class="info-value">{{ $payment->payment_provider ?? 'LiqPay' }}</div>
                 </div>
 
                 @if($payment->transaction_id)
                     <div class="info-item">
-                        <div class="info-label">ID транзакции</div>
+                        <div class="info-label">ID транзакції</div>
                         <div class="info-value"><code>{{ $payment->transaction_id }}</code></div>
                     </div>
                 @endif
 
                 @if($payment->payment_data)
                     <div class="info-item full-width">
-                        <div class="info-label">Дополнительные данные</div>
+                        <div class="info-label">Додаткові дані</div>
                         <div class="info-value">
                             <pre class="json-data">{{ json_encode(json_decode($payment->payment_data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                         </div>
@@ -62,21 +62,21 @@
                 @endif
 
                 <div class="info-item">
-                    <div class="info-label">Дата создания</div>
+                    <div class="info-label">Дата створення</div>
                     <div class="info-value">{{ $payment->created_at->format('d.m.Y H:i:s') }}</div>
                 </div>
 
                 <div class="info-item">
-                    <div class="info-label">Последнее обновление</div>
+                    <div class="info-label">Останнє оновлення</div>
                     <div class="info-value">{{ $payment->updated_at->format('d.m.Y H:i:s') }}</div>
                 </div>
             </div>
         </div>
 
-        <!-- Изменение статуса -->
+        <!-- Зміна статусу -->
         <div class="section-card">
-            <h2>Изменить статус платежа</h2>
-            <p class="text-muted">Изменение статуса на "Завершено" автоматически предоставит пользователю доступ к тестированию.</p>
+            <h2>Змінити статус платежу</h2>
+            <p class="text-muted">Зміна статусу на "Завершено" автоматично надасть користувачу доступ до тестування.</p>
             
             <form method="POST" action="{{ route('admin.payments.update-status', $payment->id) }}">
                 @csrf
@@ -84,26 +84,26 @@
                 <div class="form-group">
                     <label for="status">Статус</label>
                     <select name="status" id="status" class="form-control" required>
-                        <option value="pending" {{ $payment->status === 'pending' ? 'selected' : '' }}>В ожидании</option>
+                        <option value="pending" {{ $payment->status === 'pending' ? 'selected' : '' }}>В очікуванні</option>
                         <option value="completed" {{ $payment->status === 'completed' ? 'selected' : '' }}>Завершено</option>
-                        <option value="failed" {{ $payment->status === 'failed' ? 'selected' : '' }}>Отклонено</option>
+                        <option value="failed" {{ $payment->status === 'failed' ? 'selected' : '' }}>Відхилено</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="note">Примечание (необязательно)</label>
-                    <textarea name="note" id="note" class="form-control" rows="3" placeholder="Причина изменения статуса..."></textarea>
+                    <label for="note">Примітка (необов'язково)</label>
+                    <textarea name="note" id="note" class="form-control" rows="3" placeholder="Причина зміни статусу..."></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Обновить статус</button>
+                <button type="submit" class="btn btn-primary">Оновити статус</button>
             </form>
         </div>
     </div>
 
-    <!-- Информация о пользователе -->
+    <!-- Інформація про користувача -->
     <div class="sidebar-section">
         <div class="section-card">
-            <h2>Пользователь</h2>
+            <h2>Користувач</h2>
             
             <div class="user-card">
                 <div class="user-avatar">
@@ -117,32 +117,32 @@
 
             <div class="user-stats">
                 <div class="stat-item">
-                    <div class="stat-label">ID пользователя</div>
+                    <div class="stat-label">ID користувача</div>
                     <div class="stat-value">{{ $payment->user->id }}</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-label">Доступ к тестированию</div>
+                    <div class="stat-label">Доступ до тестування</div>
                     <div class="stat-value">
                         @if($payment->user->has_access)
-                            <span class="badge badge-success">Есть</span>
+                            <span class="badge badge-success">Є</span>
                         @else
-                            <span class="badge badge-warning">Нет</span>
+                            <span class="badge badge-warning">Немає</span>
                         @endif
                     </div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-label">Дата регистрации</div>
+                    <div class="stat-label">Дата реєстрації</div>
                     <div class="stat-value">{{ $payment->user->created_at->format('d.m.Y') }}</div>
                 </div>
             </div>
 
             <a href="{{ route('admin.users.edit', $payment->user->id) }}" class="btn btn-secondary btn-block">
-                Перейти к профилю
+                Перейти до профілю
             </a>
         </div>
 
         <div class="section-card">
-            <h3>Другие платежи пользователя</h3>
+            <h3>Інші платежі користувача</h3>
             @php
                 $userPayments = \App\Models\Payment::where('user_id', $payment->user_id)
                     ->where('id', '!=', $payment->id)
@@ -166,7 +166,7 @@
                     @endforeach
                 </div>
             @else
-                <p class="text-muted">Других платежей нет</p>
+                <p class="text-muted">Інших платежів немає</p>
             @endif
         </div>
     </div>

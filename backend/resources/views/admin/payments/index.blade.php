@@ -69,23 +69,23 @@
     </div>
 </div>
 
-<!-- Фильтры -->
+<!-- Фільтри -->
 <div class="filters-section">
     <form method="GET" action="{{ route('admin.payments.index') }}" class="filters-form">
         <div class="filter-group">
             <input type="text" 
                    name="search" 
-                   placeholder="Поиск по пользователю" 
+                   placeholder="Пошук за користувачем" 
                    value="{{ request('search') }}"
                    class="search-input">
         </div>
 
         <div class="filter-group">
             <select name="status_filter" class="filter-select">
-                <option value="">Все статусы</option>
-                <option value="pending" {{ request('status_filter') === 'pending' ? 'selected' : '' }}>В ожидании</option>
+                <option value="">Всі статуси</option>
+                <option value="pending" {{ request('status_filter') === 'pending' ? 'selected' : '' }}>В очікуванні</option>
                 <option value="completed" {{ request('status_filter') === 'completed' ? 'selected' : '' }}>Завершено</option>
-                <option value="failed" {{ request('status_filter') === 'failed' ? 'selected' : '' }}>Отклонено</option>
+                <option value="failed" {{ request('status_filter') === 'failed' ? 'selected' : '' }}>Відхилено</option>
             </select>
         </div>
 
@@ -94,7 +94,7 @@
                    name="date_from" 
                    value="{{ request('date_from') }}"
                    class="filter-select"
-                   placeholder="Дата от">
+                   placeholder="Дата від">
         </div>
 
         <div class="filter-group">
@@ -105,26 +105,26 @@
                    placeholder="Дата до">
         </div>
 
-        <button type="submit" class="btn btn-primary">Применить</button>
+        <button type="submit" class="btn btn-primary">Застосувати</button>
         @if(request()->hasAny(['search', 'status_filter', 'date_from', 'date_to']))
-            <a href="{{ route('admin.payments.index') }}" class="btn btn-secondary">Сбросить</a>
+            <a href="{{ route('admin.payments.index') }}" class="btn btn-secondary">Скинути</a>
         @endif
     </form>
 </div>
 
-<!-- Таблица платежей -->
+<!-- Таблиця платежів -->
 <div class="table-container">
     <table class="data-table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Пользователь</th>
+                <th>Користувач</th>
                 <th>Email</th>
-                <th>Сумма</th>
+                <th>Сума</th>
                 <th>Статус</th>
                 <th>Провайдер</th>
-                <th>Дата создания</th>
-                <th>Действия</th>
+                <th>Дата створення</th>
+                <th>Дії</th>
             </tr>
         </thead>
         <tbody>
@@ -146,29 +146,29 @@
                         @if($payment->status === 'completed')
                             <span class="badge badge-success">Завершено</span>
                         @elseif($payment->status === 'pending')
-                            <span class="badge badge-warning">В ожидании</span>
+                            <span class="badge badge-warning">В очікуванні</span>
                         @else
-                            <span class="badge badge-error">Отклонено</span>
+                            <span class="badge badge-error">Відхилено</span>
                         @endif
                     </td>
                     <td>{{ $payment->payment_provider ?? 'LiqPay' }}</td>
                     <td>{{ $payment->created_at->format('d.m.Y H:i') }}</td>
                     <td>
-                        <a href="{{ route('admin.payments.show', $payment->id) }}" class="btn-action btn-view" title="Подробнее">
+                        <a href="{{ route('admin.payments.show', $payment->id) }}" class="btn-action btn-view" title="Детальніше">
                             👁️
                         </a>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8" class="text-center">Платежи не найдены</td>
+                    <td colspan="8" class="text-center">Платежів не знайдено</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 </div>
 
-<!-- Пагинация -->
+<!-- Пагінація -->
 @if($payments->hasPages())
     <div class="pagination-container">
         {{ $payments->links('pagination::bootstrap-4') }}
