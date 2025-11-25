@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Панель управления')
+@section('title', 'Панель керування')
 
 @section('content')
 <div class="dashboard-header">
-    <h1>Панель управления</h1>
-    <p class="subtitle">Общая статистика и активность</p>
+    <h1>Панель керування</h1>
+    <p class="subtitle">Загальна статистика та активність</p>
 </div>
 
 <!-- Карточки статистики -->
@@ -53,20 +53,20 @@
 
 <!-- Два столбца: последние пользователи и завершенные тесты -->
 <div class="dashboard-grid">
-    <!-- Последние пользователи -->
+    <!-- Останні користувачі -->
     <div class="dashboard-section">
         <div class="section-header">
-            <h2>Последние регистрации</h2>
-            <a href="{{ route('admin.users.index') }}" class="btn-link">Все пользователи →</a>
+            <h2>Останні реєстрації</h2>
+            <a href="{{ route('admin.users.index') }}" class="btn-link">Всі користувачі →</a>
         </div>
         <div class="table-container">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Имя</th>
+                        <th>Ім'я</th>
                         <th>Email</th>
                         <th>Доступ</th>
-                        <th>Дата регистрации</th>
+                        <th>Дата реєстрації</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,16 +80,16 @@
                             <td>{{ $user->email }}</td>
                             <td>
                                 @if($user->has_access)
-                                    <span class="badge badge-success">Есть</span>
+                                    <span class="badge badge-success">Є</span>
                                 @else
-                                    <span class="badge badge-warning">Нет</span>
+                                    <span class="badge badge-warning">Немає</span>
                                 @endif
                             </td>
                             <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center">Нет пользователей</td>
+                            <td colspan="4" class="text-center">Немає користувачів</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -100,15 +100,15 @@
     <!-- Последние завершенные тесты -->
     <div class="dashboard-section">
         <div class="section-header">
-            <h2>Последние завершенные тесты</h2>
+            <h2>Останні завершені тести</h2>
         </div>
         <div class="table-container">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Пользователь</th>
+                        <th>Користувач</th>
                         <th>Email</th>
-                        <th>Дата завершения</th>
+                        <th>Дата завершення</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -124,7 +124,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center">Нет завершенных тестов</td>
+                            <td colspan="3" class="text-center">Немає завершених тестів</td>
                         </tr>
                     @endforelse
                 </tbody>

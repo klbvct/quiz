@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Главная - Quiz Education')
+@section('title', 'Головна - Quiz Education')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v=2025112301">
@@ -25,11 +25,11 @@
         <div class="user-info">
             <span>{{ Auth::user()->name }}</span>
             @if(Auth::user()->is_admin)
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-admin">Админ-панель</a>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-admin">Адмін-панель</a>
             @endif
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
-                <button type="submit" class="btn btn-secondary">Выйти</button>
+                <button type="submit" class="btn btn-secondary">Вийти</button>
             </form>
         </div>
     </div>
@@ -57,23 +57,23 @@
                 
                 <div class="card {{ $completedSession && !Auth::user()->can_retake ? 'card-completed' : '' }}">
                     <h3>
-                        📝 Тестирование
+                        📝 Тестування
                         @if($completedSession && !Auth::user()->can_retake)
                             <span class="badge-completed">✓</span>
                         @endif
                     </h3>
-                    <p>Узнайте свои профессиональные склонности и получите рекомендации по выбору карьеры</p>
+                    <p>Дізнайтеся про свої професійні схильності та отримайте рекомендації щодо вибору кар'єри</p>
                     @if($completedSession && !Auth::user()->can_retake)
                         <p class="completion-info">
-                            <small>Тест пройден: {{ $completedSession->completed_at->format('d.m.Y в H:i') }}</small>
+                            <small>Тест пройдено: {{ $completedSession->completed_at->format('d.m.Y о H:i') }}</small>
                         </p>
                     @else
                         <p style="margin-top: 20px;">
                             <a href="{{ route('quiz.start') }}" class="btn-start">
                                 @if($inProgressSession)
-                                    Продолжить тестирование
+                                    Продовжити тестування
                                 @else
-                                    Начать тестирование
+                                    Почати тестування
                                 @endif
                             </a>
                         </p>
@@ -81,17 +81,17 @@
                 </div>
                 
                 <div class="card {{ (!$completedSession || Auth::user()->can_retake) ? 'card-disabled' : '' }}">
-                    <h3>📊 Результаты тестирования</h3>
+                    <h3>📊 Результати тестування</h3>
                     <p>
                         @if($completedSession && !Auth::user()->can_retake)
-                            Посмотрите результаты вашего последнего завершенного тестирования
+                            Переглянь результати вашого останнього завершеного тестування
                         @else
-                            Результаты будут доступны после завершения тестирования
+                            Результати будуть доступні після завершення тестування
                         @endif
                     </p>
                     <p style="margin-top: 20px;">
                         @if($completedSession && !Auth::user()->can_retake)
-                            <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Посмотреть результаты</a>
+                            <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Переглянути результати</a>
                         @else
                             <span class="btn-start btn-disabled" style="background: #9ca3af; cursor: not-allowed;">Недоступно</span>
                         @endif
@@ -99,34 +99,34 @@
                 </div>
                 
                 <div class="card">
-                    <h3>👤 Профиль</h3>
-                    <p>Измените свои личные данные, email или пароль</p>
+                    <h3>👤 Профіль</h3>
+                    <p>Змініть свої особисті дані, email або пароль</p>
                     <p style="margin-top: 20px;">
-                        <a href="{{ route('profile.edit') }}" class="btn-start" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">Редактировать профиль</a>
+                        <a href="{{ route('profile.edit') }}" class="btn-start" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">Редагувати профіль</a>
                     </p>
                 </div>
             @else
                 <div class="card" style="border-left: 4px solid #ef4444;">
-                    <h3>🔒 Доступ ограничен</h3>
-                    <p>Для прохождения профориентационного тестирования необходимо оплатить доступ</p>
+                    <h3>🔒 Доступ обмежено</h3>
+                    <p>Для проходження профорієнтаційного тестування необхідно оплатити доступ</p>
                     <p style="margin-top: 20px;">
-                        <a href="{{ route('payment.page') }}" class="btn-start">Перейти к оплате</a>
+                        <a href="{{ route('payment.page') }}" class="btn-start">Перейти до оплати</a>
                     </p>
                 </div>
                 
                 <div class="card card-disabled">
-                    <h3>📊 Результаты тестирования</h3>
-                    <p>Результаты будут доступны после завершения тестирования</p>
+                    <h3>📊 Результати тестування</h3>
+                    <p>Результати будуть доступні після завершення тестування</p>
                     <p style="margin-top: 20px;">
                         <span class="btn-start btn-disabled" style="background: #9ca3af; cursor: not-allowed;">Недоступно</span>
                     </p>
                 </div>
                 
                 <div class="card">
-                    <h3>👤 Профиль</h3>
-                    <p>Измените свои личные данные, email или пароль</p>
+                    <h3>👤 Профіль</h3>
+                    <p>Змініть свої особисті дані, email або пароль</p>
                     <p style="margin-top: 20px;">
-                        <a href="{{ route('profile.edit') }}" class="btn-start" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">Редактировать профиль</a>
+                        <a href="{{ route('profile.edit') }}" class="btn-start" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">Редагувати профіль</a>
                     </p>
                 </div>
             @endif
