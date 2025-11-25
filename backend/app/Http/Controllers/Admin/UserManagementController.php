@@ -155,4 +155,24 @@ class UserManagementController extends Controller
         return redirect()->route('admin.users.index')
             ->with('success', 'Пользователь успешно удален');
     }
+
+    /**
+     * Разрешить повторное прохождение теста
+     */
+    public function enableRetake($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Удаляем только активную сессию в процессе, завершенные оставляем
+        QuizSession::where('user_id', $user->id)
+            ->where('status', 'in_progress')
+            ->delete();
+        
+        // Включаем флаг повторного прохождения
+        $user->can_retake = true;
+        $user->save();
+
+        return redirect()->route('admin.users.edit', $id)
+            ->with('success', 'Повторное прохождение теста разрешено. Пользователь может начать тест заново.');
+    }
 }

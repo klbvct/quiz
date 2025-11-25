@@ -23,6 +23,7 @@ class User extends Authenticatable
         'has_access',
         'birthdate',
         'is_admin',
+        'can_retake',
     ];
 
     /**

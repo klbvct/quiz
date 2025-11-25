@@ -179,6 +179,23 @@
         <div class="section-card">
             <h2>Статистика тестирования</h2>
             
+            @php
+                $hasCompletedSession = $user->quizSessions->whereNotNull('completed_at')->count() > 0;
+            @endphp
+            
+            @if($hasCompletedSession && !$user->can_retake)
+                <div class="retake-section">
+                    <p class="text-muted">Пользователь завершил тестирование. Вы можете разрешить повторное прохождение теста.</p>
+                    <form method="POST" action="{{ route('admin.users.enable-retake', $user->id) }}" style="margin-top: 15px;">
+                        @csrf
+                        <button type="submit" class="btn btn-warning" onclick="return confirm('Разрешить пользователю {{ $user->name }} пройти тест повторно? Текущий активный тест будет сброшен.')">
+                            🔄 Разрешить повторное прохождение
+                        </button>
+                    </form>
+                </div>
+                <div class="divider"></div>
+            @endif
+            
             @if($user->quizSessions->count() > 0)
                 <div class="stats-list">
                     <div class="stat-item">

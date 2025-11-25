@@ -56,6 +56,12 @@ class QuizController extends Controller
                 'current_question' => 0,
                 'status' => 'in_progress'
             ]);
+            
+            // Сбрасываем флаг повторного прохождения при начале нового теста
+            if ($user->can_retake) {
+                $user->can_retake = false;
+                $user->save();
+            }
         }
         
         // Проверяем, что пользователь не пытается перейти вперед
@@ -117,6 +123,12 @@ class QuizController extends Controller
                 'status' => 'completed',
                 'completed_at' => now()
             ]);
+            
+            // Сбрасываем флаг повторного прохождения при завершении теста
+            if ($user->can_retake) {
+                $user->can_retake = false;
+                $user->save();
+            }
             
             // Подсчитываем результаты
             $this->calculateResults($session);

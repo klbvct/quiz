@@ -27,9 +27,9 @@
                     <span class="icon">💳</span>
                     <span>Платежи</span>
                 </a>
-                <a href="{{ route('home') }}" class="nav-item">
+                <a href="{{ route('home', ['force' => 1]) }}" class="nav-item">
                     <span class="icon">🏠</span>
-                    <span>Выйти из админки</span>
+                    <span>Мой кабинет</span>
                 </a>
             </nav>
             <div class="sidebar-footer">

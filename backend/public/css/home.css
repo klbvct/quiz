@@ -149,6 +149,34 @@ body.home-page {
     color: #9ca3af;
 }
 
+.card-completed {
+    border-left: 4px solid #10b981;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.badge-completed {
+    display: inline-block;
+    background: #10b981;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.completion-info {
+    color: #059669;
+    font-size: 13px;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.completion-info small {
+    color: #059669;
+}
+
 .btn-start {
     display: inline-block;
     padding: 12px 24px;

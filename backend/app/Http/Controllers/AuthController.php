@@ -32,6 +32,11 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        // Редирект админов в админ-панель (на случай если админ регистрируется)
+        if ($user->is_admin) {
+            return redirect()->route('admin.dashboard')->with('success', 'Регистрация успешна!');
+        }
+
         return redirect()->route('home')->with('success', 'Регистрация успешна!');
     }
 
@@ -51,6 +56,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+            
+            // Редирект админов в админ-панель
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.dashboard')->with('success', 'Добро пожаловать!');
+            }
+            
             return redirect()->intended('/home')->with('success', 'Добро пожаловать!');
         }
 

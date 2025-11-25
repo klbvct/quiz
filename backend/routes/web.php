@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 // Главная страница - лендинг
 Route::get('/', function () {
     if (Auth::check()) {
+        if (Auth::user()->is_admin) {
+            return redirect()->route('admin.dashboard');
+        }
         return redirect('/home');
     }
     return view('landing');
@@ -30,6 +33,10 @@ Route::get('/login', function () {
 
 // Защищенная домашняя страница
 Route::get('/home', function () {
+    // Если админ явно хочет попасть в обычный кабинет (параметр force=1), пускаем
+    if (Auth::user()->is_admin && !request()->has('force')) {
+        return redirect()->route('admin.dashboard');
+    }
     return view('home');
 })->middleware('auth')->name('home');
 
@@ -70,6 +77,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/users/{id}', [\App\Http\Controllers\Admin\UserManagementController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserManagementController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{id}/toggle-access', [\App\Http\Controllers\Admin\UserManagementController::class, 'toggleAccess'])->name('users.toggle-access');
+    Route::post('/users/{id}/enable-retake', [\App\Http\Controllers\Admin\UserManagementController::class, 'enableRetake'])->name('users.enable-retake');
     
     // Управление платежами
     Route::get('/payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
