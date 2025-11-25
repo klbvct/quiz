@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+// Смена языка
+Route::get('/locale/{locale}', [\App\Http\Controllers\LocaleController::class, 'setLocale'])->name('locale.set');
+
 // Главная страница - лендинг
 Route::get('/', function () {
     if (Auth::check()) {

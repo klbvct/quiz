@@ -21,11 +21,16 @@
                         </linearGradient>
                     </defs>
                 </svg>
-                <span class="logo-text">Дизайн Образования</span>
+                <span class="logo-text">Quiz Education</span>
             </div>
             <div class="header-buttons">
-                <a href="{{ route('login.form') }}" class="btn btn-outline">Увійти</a>
-                <a href="{{ route('register.form') }}" class="btn btn-primary">Реєстрація</a>
+                <!-- Language Switcher -->
+                <div class="language-switcher">
+                    <a href="{{ route('locale.set', 'uk') }}" class="lang-btn {{ app()->getLocale() == 'uk' ? 'active' : '' }}">🇺🇦</a>
+                    <a href="{{ route('locale.set', 'en') }}" class="lang-btn {{ app()->getLocale() == 'en' ? 'active' : '' }}">🇬🇧</a>
+                </div>
+                <a href="{{ route('login.form') }}" class="btn btn-outline">{{ app()->getLocale() == 'uk' ? 'Увійти' : 'Login' }}</a>
+                <a href="{{ route('register.form') }}" class="btn btn-primary">{{ app()->getLocale() == 'uk' ? 'Реєстрація' : 'Register' }}</a>
             </div>
         </div>
     </header>
@@ -33,11 +38,11 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Знайдіть свій шлях у світі професій</h1>
-            <p>Профорієнтаційне тестування для визначення ваших здібностей, інтересів і підходящої кар'єри</p>
+            <h1>{{ __('landing.hero_title') }}</h1>
+            <p>{{ __('landing.hero_subtitle') }}</p>
             <div class="hero-buttons">
-                <button id="startTestBtn" class="btn btn-primary" style="background: white; color: #667eea;">Почати тестування</button>
-                <a href="#about" class="btn btn-outline" style="border-color: white; color: white;">Дізнатися більше</a>
+                <button id="startTestBtn" class="btn btn-primary" style="background: white; color: #667eea;">{{ __('landing.hero_cta') }}</button>
+                <a href="#about" class="btn btn-outline" style="border-color: white; color: white;">{{ app()->getLocale() == 'uk' ? 'Дізнатися більше' : 'Learn More' }}</a>
             </div>
         </div>
     </section>
@@ -68,53 +73,51 @@
 
     <!-- Features Section -->
     <section class="section">
-        <h2 class="section-title">Чому обирають нас?</h2>
-        <p class="section-subtitle">Сучасні методики профорієнтації для успішного майбутнього</p>
+        <h2 class="section-title">{{ __('landing.features_title') }}</h2>
+        <p class="section-subtitle">{{ app()->getLocale() == 'uk' ? 'Сучасні методики профорієнтації для успішного майбутнього' : 'Modern career guidance techniques for a successful future' }}</p>
         <div class="features">
             <div class="feature-card">
                 <div class="feature-icon">🎯</div>
-                <h3>Точна діагностика</h3>
-                <p>Науково обгрунтовані методики для визначення ваших схильностей і талантів</p>
+                <h3>{{ __('landing.feature1_title') }}</h3>
+                <p>{{ __('landing.feature1_desc') }}</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <h3>Детальна аналітика</h3>
-                <p>Отримайте детальний звіт про свої здібності та рекомендації щодо вибору професії</p>
+                <h3>{{ __('landing.feature2_title') }}</h3>
+                <p>{{ __('landing.feature2_desc') }}</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">💼</div>
-                <h3>Кар'єрні рекомендації</h3>
-                <p>Персональні поради щодо побудови кар'єри на основі ваших результатів</p>
+                <h3>{{ __('landing.feature3_title') }}</h3>
+                <p>{{ __('landing.feature3_desc') }}</p>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
     <section class="section about-section" id="about">
-        <h2 class="section-title">Про платформу</h2>
-        <p class="section-subtitle">Дизайн Освіти - ваш надійний помічник у виборі професії</h2>
+        <h2 class="section-title">{{ __('landing.footer_about') }}</h2>
+        <p class="section-subtitle">{{ __('landing.footer_about_text') }}</p>
         <div style="max-width: 800px; margin: 0 auto; text-align: center;">
             <p style="font-size: 18px; color: #6b7280; margin-bottom: 20px;">
-                Ми допомагаємо студентам, абітурієнтам і людям, які планують зміну кар'єри, 
-                знайти своє істинне покликання через комплексне профорієнтаційне тестування.
+                {{ app()->getLocale() == 'uk' ? 'Ми допомагаємо студентам, абітурієнтам і людям, які планують зміну кар\'єри, знайти своє істинне покликання через комплексне профорієнтаційне тестування.' : 'We help students, applicants, and those planning a career change find their true calling through comprehensive career guidance testing.' }}
             </p>
             <p style="font-size: 18px; color: #6b7280;">
-                Наша платформа використовує перевірені психологічні методики і сучасні 
-                технології для максимально точного визначення ваших професійних схильностей.
+                {{ app()->getLocale() == 'uk' ? 'Наша платформа використовує перевірені психологічні методики і сучасні технології для максимально точного визначення ваших професійних схильностей.' : 'Our platform uses proven psychological techniques and modern technologies for the most accurate determination of your professional inclinations.' }}
             </p>
         </div>
     </section>
 
     <!-- CTA Section -->
     <section class="cta-section">
-        <h2>Готові дізнатися своє покликання?</h2>
-        <p>Пройдіть тестування прямо зараз і отримайте персональні рекомендації</p>
-        <button id="startTestBtn2" class="btn btn-primary" style="background: white; color: #667eea;">Почати тестування</button>
+        <h2>{{ app()->getLocale() == 'uk' ? 'Готові дізнатися своє покликання?' : 'Ready to discover your calling?' }}</h2>
+        <p>{{ app()->getLocale() == 'uk' ? 'Пройдіть тестування прямо зараз і отримайте персональні рекомендації' : 'Take the test now and get personalized recommendations' }}</p>
+        <button id="startTestBtn2" class="btn btn-primary" style="background: white; color: #667eea;">{{ __('landing.hero_cta') }}</button>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Дизайн Освіти. Всі права захищені.</p>
+        <p>&copy; 2025 Quiz Education. {{ __('landing.footer_rights') }}</p>
         <p><a href="https://education-design.com.ua" target="_blank">education-design.com.ua</a></p>
     </footer>
 @endsection

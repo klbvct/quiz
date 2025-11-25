@@ -47,7 +47,35 @@ body {
 
 .header-buttons {
     display: flex;
+    align-items: center;
     gap: 15px;
+}
+
+/* Language Switcher */
+.language-switcher {
+    display: flex;
+    gap: 8px;
+    margin-right: 10px;
+}
+
+.lang-btn {
+    font-size: 24px;
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    opacity: 0.6;
+}
+
+.lang-btn:hover {
+    opacity: 0.8;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.lang-btn.active {
+    opacity: 1;
+    background: rgba(102, 126, 234, 0.15);
+}
 }
 
 .btn {
