@@ -14,7 +14,7 @@ class LocaleController extends Controller
     public function setLocale(Request $request, $locale)
     {
         // Проверяем, что язык поддерживается
-        if (!in_array($locale, ['uk', 'en'])) {
+        if (!in_array($locale, ['uk', 'ru'])) {
             abort(400);
         }
         

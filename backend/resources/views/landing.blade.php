@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Дизайн Освіти - Профорієнтаційне тестування')
+@section('title', app()->getLocale() == 'uk' ? 'Дизайн Освіти - Профорієнтаційне тестування' : 'Дизайн Образования - Профориентационное тестирование')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
@@ -21,16 +21,16 @@
                         </linearGradient>
                     </defs>
                 </svg>
-                <span class="logo-text">Quiz Education</span>
+                <span class="logo-text">{{ app()->getLocale() == 'uk' ? 'Дизайн Освіти' : 'Дизайн Образования' }}</span>
             </div>
             <div class="header-buttons">
                 <!-- Language Switcher -->
                 <div class="language-switcher">
                     <a href="{{ route('locale.set', 'uk') }}" class="lang-btn {{ app()->getLocale() == 'uk' ? 'active' : '' }}">🇺🇦</a>
-                    <a href="{{ route('locale.set', 'en') }}" class="lang-btn {{ app()->getLocale() == 'en' ? 'active' : '' }}">🇬🇧</a>
+                    <a href="{{ route('locale.set', 'ru') }}" class="lang-btn {{ app()->getLocale() == 'ru' ? 'active' : '' }}">🇷🇺</a>
                 </div>
-                <a href="{{ route('login.form') }}" class="btn btn-outline">{{ app()->getLocale() == 'uk' ? 'Увійти' : 'Login' }}</a>
-                <a href="{{ route('register.form') }}" class="btn btn-primary">{{ app()->getLocale() == 'uk' ? 'Реєстрація' : 'Register' }}</a>
+                <a href="{{ route('login.form') }}" class="btn btn-outline">{{ app()->getLocale() == 'uk' ? 'Увійти' : 'Войти' }}</a>
+                <a href="{{ route('register.form') }}" class="btn btn-primary">{{ app()->getLocale() == 'uk' ? 'Реєстрація' : 'Регистрация' }}</a>
             </div>
         </div>
     </header>
@@ -42,7 +42,7 @@
             <p>{{ __('landing.hero_subtitle') }}</p>
             <div class="hero-buttons">
                 <button id="startTestBtn" class="btn btn-primary" style="background: white; color: #667eea;">{{ __('landing.hero_cta') }}</button>
-                <a href="#about" class="btn btn-outline" style="border-color: white; color: white;">{{ app()->getLocale() == 'uk' ? 'Дізнатися більше' : 'Learn More' }}</a>
+                <a href="#about" class="btn btn-outline" style="border-color: white; color: white;">{{ app()->getLocale() == 'uk' ? 'Дізнатися більше' : 'Узнать больше' }}</a>
             </div>
         </div>
     </section>
@@ -51,8 +51,8 @@
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Профорієнтаційне тестування</h2>
-            <p class="modal-description">Після оплати на вказану адресу електронної пошти буде надіслано доступ до тестування</p>
+            <h2>{{ app()->getLocale() == 'uk' ? 'Профорієнтаційне тестування' : 'Профориентационное тестирование' }}</h2>
+            <p class="modal-description">{{ app()->getLocale() == 'uk' ? 'Після оплати на вказану адресу електронної пошти буде надіслано доступ до тестування' : 'После оплаты на указанный адрес электронной почты будет отправлен доступ к тестированию' }}</p>
             
             <form id="paymentForm" class="payment-form">
                 @csrf
@@ -62,11 +62,11 @@
                 </div>
                 
                 <div class="price-block">
-                    <span class="price-label">Вартість:</span>
-                    <span class="price-amount">1 грн</span>
+                    <span class="price-label">{{ app()->getLocale() == 'uk' ? 'Вартість:' : 'Стоимость:' }}</span>
+                    <span class="price-amount">{{ app()->getLocale() == 'uk' ? '1 грн' : '1 грн' }}</span>
                 </div>
                 
-                <button type="submit" class="btn btn-primary btn-pay">Оплатити</button>
+                <button type="submit" class="btn btn-primary btn-pay">{{ app()->getLocale() == 'uk' ? 'Оплатити' : 'Оплатить' }}</button>
             </form>
         </div>
     </div>
@@ -74,7 +74,7 @@
     <!-- Features Section -->
     <section class="section">
         <h2 class="section-title">{{ __('landing.features_title') }}</h2>
-        <p class="section-subtitle">{{ app()->getLocale() == 'uk' ? 'Сучасні методики профорієнтації для успішного майбутнього' : 'Modern career guidance techniques for a successful future' }}</p>
+        <p class="section-subtitle">{{ app()->getLocale() == 'uk' ? 'Сучасні методики профорієнтації для успішного майбутнього' : 'Современные методики профориентации для успешного будущего' }}</p>
         <div class="features">
             <div class="feature-card">
                 <div class="feature-icon">🎯</div>
@@ -100,24 +100,24 @@
         <p class="section-subtitle">{{ __('landing.footer_about_text') }}</p>
         <div style="max-width: 800px; margin: 0 auto; text-align: center;">
             <p style="font-size: 18px; color: #6b7280; margin-bottom: 20px;">
-                {{ app()->getLocale() == 'uk' ? 'Ми допомагаємо студентам, абітурієнтам і людям, які планують зміну кар\'єри, знайти своє істинне покликання через комплексне профорієнтаційне тестування.' : 'We help students, applicants, and those planning a career change find their true calling through comprehensive career guidance testing.' }}
+                {{ app()->getLocale() == 'uk' ? 'Ми допомагаємо студентам, абітурієнтам і людям, які планують зміну кар\'єри, знайти своє істинне покликання через комплексне профорієнтаційне тестування.' : 'Мы помогаем студентам, абитуриентам и людям, планирующим смену карьеры, найти свое истинное призвание через комплексное профориентационное тестирование.' }}
             </p>
             <p style="font-size: 18px; color: #6b7280;">
-                {{ app()->getLocale() == 'uk' ? 'Наша платформа використовує перевірені психологічні методики і сучасні технології для максимально точного визначення ваших професійних схильностей.' : 'Our platform uses proven psychological techniques and modern technologies for the most accurate determination of your professional inclinations.' }}
+                {{ app()->getLocale() == 'uk' ? 'Наша платформа використовує перевірені психологічні методики і сучасні технології для максимально точного визначення ваших професійних схильностей.' : 'Наша платформа использует проверенные психологические методики и современные технологии для максимально точного определения ваших профессиональных склонностей.' }}
             </p>
         </div>
     </section>
 
     <!-- CTA Section -->
     <section class="cta-section">
-        <h2>{{ app()->getLocale() == 'uk' ? 'Готові дізнатися своє покликання?' : 'Ready to discover your calling?' }}</h2>
-        <p>{{ app()->getLocale() == 'uk' ? 'Пройдіть тестування прямо зараз і отримайте персональні рекомендації' : 'Take the test now and get personalized recommendations' }}</p>
+        <h2>{{ app()->getLocale() == 'uk' ? 'Готові дізнатися своє покликання?' : 'Готовы узнать свое призвание?' }}</h2>
+        <p>{{ app()->getLocale() == 'uk' ? 'Пройдіть тестування прямо зараз і отримайте персональні рекомендації' : 'Пройдите тестирование прямо сейчас и получите персональные рекомендации' }}</p>
         <button id="startTestBtn2" class="btn btn-primary" style="background: white; color: #667eea;">{{ __('landing.hero_cta') }}</button>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Quiz Education. {{ __('landing.footer_rights') }}</p>
+        <p>&copy; 2025 {{ app()->getLocale() == 'uk' ? 'Дизайн Освіти' : 'Дизайн Образования' }}. {{ __('landing.footer_rights') }}</p>
         <p><a href="https://education-design.com.ua" target="_blank">education-design.com.ua</a></p>
     </footer>
 @endsection
