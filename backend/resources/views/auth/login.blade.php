@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Вход - Quiz Education')
+@section('title', 'Вхід - Quiz Education')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
@@ -10,8 +10,8 @@
 <div class="container">
     <div class="form-wrapper">
         <div class="form-header">
-            <h1>Вход</h1>
-            <p>Войдите в свою учетную запись</p>
+            <h1>Вхід</h1>
+            <p>Увійдіть у свій обліковий запис</p>
         </div>
         
         <form method="POST" action="{{ route('login') }}" class="auth-form">
@@ -47,15 +47,15 @@
             <div class="form-options">
                 <label class="checkbox-label">
                     <input type="checkbox" id="rememberMe" name="remember">
-                    <span>Запомнить меня</span>
+                    <span>Запам'ятати мене</span>
                 </label>
-                <a href="{{ route('password.request') }}" class="forgot-password">Забыли пароль?</a>
+                <a href="{{ route('password.request') }}" class="forgot-password">Забули пароль?</a>
             </div>
             
-            <button type="submit" class="btn btn-primary">Войти</button>
+            <button type="submit" class="btn btn-primary">Увійти</button>
             
             <div class="form-footer">
-                <p>Нет учетной записи? <a href="{{ url('/register') }}">Зарегистрироваться</a></p>
+                <p>Немає облікового запису? <a href="{{ url('/register') }}">Зареєструватися</a></p>
             </div>
         </form>
     </div>

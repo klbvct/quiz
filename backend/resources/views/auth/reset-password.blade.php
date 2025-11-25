@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Сброс пароля - Quiz Education')
+@section('title', 'Скидання пароля - Quiz Education')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
@@ -10,8 +10,8 @@
 <div class="container">
     <div class="form-wrapper">
         <div class="form-header">
-            <h1>Сброс пароля</h1>
-            <p>Введите новый пароль для вашей учетной записи</p>
+            <h1>Скидання пароля</h1>
+            <p>Введіть новий пароль для вашого облікового запису</p>
         </div>
         
         <form method="POST" action="{{ route('password.update') }}" class="auth-form">
@@ -27,7 +27,7 @@
             </div>
             
             <div class="form-group">
-                <label for="password">Новый пароль</label>
+                <label for="password">Новий пароль</label>
                 <div class="password-input-wrapper">
                     <input type="password" id="password" name="password" placeholder="••••••••" required minlength="8">
                     <button type="button" class="toggle-password" data-target="password">
@@ -41,14 +41,14 @@
                         </svg>
                     </button>
                 </div>
-                <small class="form-hint">Минимум 8 символов</small>
+                <small class="form-hint">Мінімум 8 символів</small>
                 @error('password')
                     <small class="error-message">{{ $message }}</small>
                 @enderror
             </div>
             
             <div class="form-group">
-                <label for="password_confirmation">Подтвердите пароль</label>
+                <label for="password_confirmation">Підтвердіть пароль</label>
                 <div class="password-input-wrapper">
                     <input type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required>
                     <button type="button" class="toggle-password" data-target="password_confirmation">
@@ -64,7 +64,7 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-primary">Сбросить пароль</button>
+            <button type="submit" class="btn btn-primary">Скинути пароль</button>
         </form>
     </div>
 </div>

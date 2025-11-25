@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Восстановление пароля - Quiz Education')
+@section('title', 'Відновлення пароля - Quiz Education')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
@@ -10,8 +10,8 @@
 <div class="container">
     <div class="form-wrapper">
         <div class="form-header">
-            <h1>Восстановление пароля</h1>
-            <p>Введите ваш email для получения ссылки восстановления</p>
+            <h1>Відновлення пароля</h1>
+            <p>Введіть ваш email для отримання посилання відновлення</p>
         </div>
         
         @if (session('status'))
@@ -30,10 +30,10 @@
                 @enderror
             </div>
             
-            <button type="submit" class="btn btn-primary">Отправить ссылку</button>
+            <button type="submit" class="btn btn-primary">Надіслати посилання</button>
             
             <div class="form-footer">
-                <p>Вспомнили пароль? <a href="{{ route('login.form') }}">Войти</a></p>
+                <p>Згадали пароль? <a href="{{ route('login.form') }}">Увійти</a></p>
             </div>
         </form>
     </div>

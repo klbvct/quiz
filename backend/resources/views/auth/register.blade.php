@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Регистрация - Quiz Education')
+@section('title', 'Реєстрація - Quiz Education')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
@@ -10,15 +10,15 @@
 <div class="container">
     <div class="form-wrapper">
         <div class="form-header">
-            <h1>Регистрация</h1>
-            <p>Создайте новую учетную запись</p>
+            <h1>Реєстрація</h1>
+            <p>Створіть новий обліковий запис</p>
         </div>
         
         <form method="POST" action="{{ route('register') }}" class="auth-form">
             @csrf
             <div class="form-group">
-                <label for="registerName">Имя</label>
-                <input type="text" id="registerName" name="name" value="{{ old('name') }}" placeholder="Ваше имя" required>
+                <label for="registerName">Ім'я</label>
+                <input type="text" id="registerName" name="name" value="{{ old('name') }}" placeholder="Ваше ім'я" required>
                 @error('name')
                     <small class="error-message">{{ $message }}</small>
                 @enderror
@@ -47,14 +47,14 @@
                         </svg>
                     </button>
                 </div>
-                <small class="form-hint">Минимум 8 символов</small>
+                <small class="form-hint">Мінімум 8 символів</small>
                 @error('password')
                     <small class="error-message">{{ $message }}</small>
                 @enderror
             </div>
             
             <div class="form-group">
-                <label for="registerConfirmPassword">Подтвердите пароль</label>
+                <label for="registerConfirmPassword">Підтвердіть пароль</label>
                 <div class="password-input-wrapper">
                     <input type="password" id="registerConfirmPassword" name="password_confirmation" placeholder="••••••••" required>
                     <button type="button" class="toggle-password" data-target="registerConfirmPassword">
@@ -73,14 +73,14 @@
             <div class="form-options">
                 <label class="checkbox-label">
                     <input type="checkbox" id="acceptTerms" required>
-                    <span>Я согласен с <a href="#">условиями использования</a></span>
+                    <span>Я погоджуюся з <a href="#">умовами використання</a></span>
                 </label>
             </div>
             
-            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            <button type="submit" class="btn btn-primary">Зареєструватися</button>
             
             <div class="form-footer">
-                <p>Уже есть учетная запись? <a href="{{ route('login.form') }}">Войти</a></p>
+                <p>Вже є обліковий запис? <a href="{{ route('login.form') }}">Увійти</a></p>
             </div>
         </form>
         
