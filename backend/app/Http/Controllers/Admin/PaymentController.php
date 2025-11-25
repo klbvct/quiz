@@ -43,13 +43,31 @@ class PaymentController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        // Статистика
+        // Статистика с учетом фильтров
+        $statsQuery = Payment::query();
+        
+        // Применяем те же фильтры к статистике
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $statsQuery->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->has('date_from') && $request->date_from) {
+            $statsQuery->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to) {
+            $statsQuery->whereDate('created_at', '<=', $request->date_to);
+        }
+
         $stats = [
-            'total_payments' => Payment::count(),
-            'completed_payments' => Payment::where('status', 'completed')->count(),
-            'pending_payments' => Payment::where('status', 'pending')->count(),
-            'failed_payments' => Payment::where('status', 'failed')->count(),
-            'total_revenue' => Payment::where('status', 'completed')->sum('amount'),
+            'total_payments' => (clone $statsQuery)->count(),
+            'completed_payments' => (clone $statsQuery)->where('status', 'completed')->count(),
+            'pending_payments' => (clone $statsQuery)->where('status', 'pending')->count(),
+            'failed_payments' => (clone $statsQuery)->where('status', 'failed')->count(),
+            'total_revenue' => (clone $statsQuery)->where('status', 'completed')->sum('amount'),
             'revenue_today' => Payment::where('status', 'completed')
                 ->whereDate('created_at', today())
                 ->sum('amount'),
