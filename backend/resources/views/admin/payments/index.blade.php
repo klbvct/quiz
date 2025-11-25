@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Управление платежами')
+@section('title', 'Керування платежами')
 
 @section('content')
 <div class="page-header">
     <div class="header-with-actions">
-        <h1>Управление платежами</h1>
+        <h1>Керування платежами</h1>
         <a href="{{ route('admin.payments.statistics') }}" class="btn btn-secondary">📊 Статистика</a>
     </div>
 </div>
@@ -16,7 +16,7 @@
         <div class="stat-icon">💳</div>
         <div class="stat-content">
             <div class="stat-value">{{ $stats['total_payments'] }}</div>
-            <div class="stat-label">Всего платежей</div>
+            <div class="stat-label">Всього платежів</div>
         </div>
     </div>
 
@@ -32,7 +32,7 @@
         <div class="stat-icon">⏳</div>
         <div class="stat-content">
             <div class="stat-value">{{ $stats['pending_payments'] }}</div>
-            <div class="stat-label">В ожидании</div>
+            <div class="stat-label">В очікуванні</div>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
         <div class="stat-icon">❌</div>
         <div class="stat-content">
             <div class="stat-value">{{ $stats['failed_payments'] }}</div>
-            <div class="stat-label">Отклонено</div>
+            <div class="stat-label">Відхилено</div>
         </div>
     </div>
 
@@ -48,7 +48,7 @@
         <div class="stat-icon">💰</div>
         <div class="stat-content">
             <div class="stat-value">{{ number_format($stats['total_revenue'], 0, ',', ' ') }} ₴</div>
-            <div class="stat-label">Общая выручка</div>
+            <div class="stat-label">Загальна виручка</div>
         </div>
     </div>
 
@@ -56,7 +56,7 @@
         <div class="stat-icon">📅</div>
         <div class="stat-content">
             <div class="stat-value">{{ number_format($stats['revenue_today'], 0, ',', ' ') }} ₴</div>
-            <div class="stat-label">Сегодня</div>
+            <div class="stat-label">Сьогодні</div>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
         <div class="stat-icon">📆</div>
         <div class="stat-content">
             <div class="stat-value">{{ number_format($stats['revenue_month'], 0, ',', ' ') }} ₴</div>
-            <div class="stat-label">За месяц</div>
+            <div class="stat-label">За місяць</div>
         </div>
     </div>
 </div>

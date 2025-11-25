@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Оплата доступу - Quiz Education')
+@section('title', 'Оплата доступу до тестування')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/payment.css') }}">

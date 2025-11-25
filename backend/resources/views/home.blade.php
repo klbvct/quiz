@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Головна - Quiz Education')
+@section('title', 'Кабінет')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v=2025112301">
@@ -20,7 +20,7 @@
                     </linearGradient>
                 </defs>
             </svg>
-            <span class="logo-text">Дизайн Образования</span>
+            <span class="logo-text">Дизайн Освіти</span>
         </div>
         <div class="user-info">
             <span>{{ Auth::user()->name }}</span>
