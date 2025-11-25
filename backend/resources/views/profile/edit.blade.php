@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Редактирование профиля - Quiz Education')
+@section('title', 'Редагування профілю - Quiz Education')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v=2025112401">
@@ -123,14 +123,14 @@
             <span>{{ Auth::user()->name }}</span>
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
-                <button type="submit" class="btn btn-secondary">Выйти</button>
+                <button type="submit" class="btn btn-secondary">Вийти</button>
             </form>
         </div>
     </div>
     
     <div class="profile-content">
         <div style="text-align: center; margin-bottom: 20px;">
-            <a href="{{ route('home') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">← Вернуться в кабинет</a>
+            <a href="{{ route('home') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">← Повернутися до кабінету</a>
         </div>
         
         @if(session('success'))
@@ -140,8 +140,8 @@
         @endif
         
         <div class="profile-card">
-            <h2>Редактирование профиля</h2>
-            <p>Обновите свои личные данные</p>
+            <h2>Редагування профілю</h2>
+            <p>Оновіть свої особисті дані</p>
 
             <!-- Форма редактирования профиля -->
             <form method="POST" action="{{ route('profile.update') }}">
@@ -149,7 +149,7 @@
                 @method('PUT')
                 
                 <div class="form-group">
-                    <label for="name">Имя и фамилия</label>
+                    <label for="name">Ім'я та прізвище</label>
                     <input id="name" type="text" name="name" value="{{ old('name', $user->name) }}" required autofocus>
                     @error('name')
                         <span class="error">{{ $message }}</span>
@@ -165,25 +165,25 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="birthdate">Дата рождения</label>
+                    <label for="birthdate">Дата народження</label>
                     <input id="birthdate" type="date" name="birthdate" value="{{ old('birthdate', $user->birthdate) }}">
                     @error('birthdate')
                         <span class="error">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                <button type="submit" class="btn btn-primary">Зберегти зміни</button>
             </form>
 
             <!-- Форма смены пароля -->
-            <h3>Изменить пароль</h3>
+            <h3>Змінити пароль</h3>
 
             <form method="POST" action="{{ route('profile.password') }}">
                 @csrf
                 @method('PUT')
                 
                 <div class="form-group">
-                    <label for="current_password">Текущий пароль</label>
+                    <label for="current_password">Поточний пароль</label>
                     <input id="current_password" type="password" name="current_password" required>
                     @error('current_password')
                         <span class="error">{{ $message }}</span>
@@ -191,7 +191,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Новый пароль</label>
+                    <label for="password">Новий пароль</label>
                     <input id="password" type="password" name="password" required>
                     @error('password')
                         <span class="error">{{ $message }}</span>
@@ -199,11 +199,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password_confirmation">Подтвердите новый пароль</label>
+                    <label for="password_confirmation">Підтвердіть новий пароль</label>
                     <input id="password_confirmation" type="password" name="password_confirmation" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Изменить пароль</button>
+                <button type="submit" class="btn btn-primary">Змінити пароль</button>
             </form>
         </div>
     </div>
