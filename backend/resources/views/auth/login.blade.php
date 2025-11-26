@@ -8,6 +8,9 @@
 
 @section('content')
 <div class="container">
+    <div class="back-to-site-wrapper">
+        <a href="{{ url('/') }}" class="back-to-site">← Повернутися на сайт</a>
+    </div>
     <div class="form-wrapper">
         <div class="form-header">
             <h1>Вхід</h1>
