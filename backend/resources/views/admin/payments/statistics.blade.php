@@ -57,27 +57,55 @@
         </p>
         
         @if($dailyRevenue->count() > 0)
-            <!-- Графік-діаграма -->
-            <div class="bar-chart">
-                @php
-                    $maxAmount = $dailyRevenue->max('total');
-                @endphp
+            <!-- Лінійний графік -->
+            <div class="line-chart-wrapper">
+                <svg class="line-chart" viewBox="0 0 1000 300" preserveAspectRatio="none">
+                    @php
+                        $maxCount = $dailyRevenue->max('count') ?: 1;
+                        $count = $dailyRevenue->count();
+                        $points = [];
+                        foreach($dailyRevenue as $index => $day) {
+                            $x = ($index / max($count - 1, 1)) * 1000;
+                            $y = 300 - (($day->count / $maxCount) * 280);
+                            $points[] = "$x,$y";
+                        }
+                        $pathData = 'M ' . implode(' L ', $points);
+                    @endphp
+                    
+                    <!-- Область під лінією -->
+                    <defs>
+                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:#667eea;stop-opacity:0.05" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <path d="{{ $pathData }} L 1000,300 L 0,300 Z" fill="url(#lineGradient)" />
+                    <path d="{{ $pathData }}" stroke="#667eea" stroke-width="3" fill="none" />
+                    
+                    <!-- Точки на графіку -->
+                    @foreach($dailyRevenue as $index => $day)
+                        @php
+                            $x = ($index / max($count - 1, 1)) * 1000;
+                            $y = 300 - (($day->count / $maxCount) * 280);
+                        @endphp
+                        <circle cx="{{ $x }}" cy="{{ $y }}" r="5" fill="#667eea" class="chart-point">
+                            <title>{{ \Carbon\Carbon::parse($day->date)->format('d.m.Y') }}: {{ $day->count }} платежів ({{ number_format($day->total, 0, ',', ' ') }} ₴)</title>
+                        </circle>
+                    @endforeach
+                </svg>
                 
-                @foreach($dailyRevenue as $day)
-                    <div class="bar-item">
-                        <div class="bar-container">
-                            <div class="bar-fill" 
-                                 style="height: {{ $maxAmount > 0 ? ($day->total / $maxAmount * 100) : 0 }}%"
-                                 title="{{ number_format($day->total, 0, ',', ' ') }} ₴">
-                                <span class="bar-value">{{ number_format($day->total, 0, ',', ' ') }}</span>
+                <!-- Мітки дат під графіком -->
+                <div class="chart-labels">
+                    @foreach($dailyRevenue as $index => $day)
+                        @if($index % max(floor($count / 10), 1) == 0 || $index == $count - 1)
+                            <div class="chart-label" style="left: {{ ($index / max($count - 1, 1)) * 100 }}%">
+                                <div class="label-date">{{ \Carbon\Carbon::parse($day->date)->format('d.m') }}</div>
+                                <div class="label-count">{{ $day->count }}</div>
                             </div>
-                        </div>
-                        <div class="bar-label">
-                            <div class="bar-date">{{ \Carbon\Carbon::parse($day->date)->format('d.m') }}</div>
-                            <div class="bar-count">{{ $day->count }} шт</div>
-                        </div>
-                    </div>
-                @endforeach
+                        @endif
+                    @endforeach
+                </div>
             </div>
 
             <div class="chart-container">
@@ -167,17 +195,19 @@
                     </thead>
                     <tbody>
                         @foreach($topUsers as $index => $payment)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>
-                                    <a href="{{ route('admin.users.edit', $payment->user_id) }}" class="user-link">
-                                        {{ $payment->user->name }}
-                                    </a>
-                                </td>
-                                <td>{{ $payment->user->email }}</td>
-                                <td>{{ $payment->payments_count }}</td>
-                                <td><strong>{{ number_format($payment->total_spent, 0, ',', ' ') }} ₴</strong></td>
-                            </tr>
+                            @if($payment->user)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.users.edit', $payment->user_id) }}" class="user-link">
+                                            {{ $payment->user->name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $payment->user->email }}</td>
+                                    <td>{{ $payment->payments_count }}</td>
+                                    <td><strong>{{ number_format($payment->total_spent, 0, ',', ' ') }} ₴</strong></td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                     <tfoot>
@@ -293,80 +323,56 @@
     margin-top: 5px;
 }
 
-.bar-chart {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    padding: 40px 20px 20px;
-    background: linear-gradient(to top, #f9fafb 0%, white 100%);
+.line-chart-wrapper {
+    padding: 30px 20px 60px;
+    background: linear-gradient(to bottom, #f9fafb 0%, white 100%);
     border-radius: 8px;
     margin: 20px 0;
-    overflow-x: auto;
-    min-height: 300px;
-}
-
-.bar-item {
-    flex: 1;
-    min-width: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.bar-container {
-    width: 100%;
-    height: 250px;
-    display: flex;
-    align-items: flex-end;
     position: relative;
 }
 
-.bar-fill {
+.line-chart {
     width: 100%;
-    background: linear-gradient(to top, #3b82f6, #60a5fa);
-    border-radius: 6px 6px 0 0;
-    transition: all 0.3s ease;
-    position: relative;
-    min-height: 5px;
+    height: 300px;
+    display: block;
+}
+
+.chart-point {
     cursor: pointer;
+    transition: r 0.2s ease;
+}
+
+.chart-point:hover {
+    r: 8;
+    fill: #764ba2;
+}
+
+.chart-labels {
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 8px;
+    position: relative;
+    height: 40px;
+    margin-top: 15px;
 }
 
-.bar-fill:hover {
-    background: linear-gradient(to top, #2563eb, #3b82f6);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-}
-
-.bar-value {
-    font-size: 11px;
-    font-weight: 600;
-    color: white;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
-}
-
-.bar-label {
+.chart-label {
+    position: absolute;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
 }
 
-.bar-date {
+.label-date {
     font-size: 12px;
     font-weight: 600;
     color: #374151;
 }
 
-.bar-count {
+.label-count {
     font-size: 11px;
-    color: #6b7280;
+    color: #667eea;
+    font-weight: 600;
 }
 </style>
 @endsection
