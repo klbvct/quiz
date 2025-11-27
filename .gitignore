@@ -99,5 +99,12 @@ Composer-Setup.exe
 .env.*.local
 
 # npm/yarn (если будете использовать frontend сборку)
-package-lock.json
+# Игнорируем только конкретные lock-файлы в корне или в папке backend,
+# но не все JSON-файлы в проекте (например, тестовые модули в storage).
+/package-lock.json
+/backend/package-lock.json
 yarn.lock
+
+# Явно не игнорировать JSON-файлы опросников в storage, чтобы
+# они попали в репозиторий и работали на другой машине.
+!/backend/storage/app/quiz/*.json
