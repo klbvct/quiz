@@ -62,6 +62,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/quiz/module/{module}', [\App\Http\Controllers\QuizController::class, 'saveAnswers'])->name('quiz.save');
     Route::get('/quiz/results', [\App\Http\Controllers\QuizController::class, 'results'])->name('quiz.results');
     
+    // Маршруты для отчётов
+    Route::get('/quiz/report/{sessionId}', [\App\Http\Controllers\QuizController::class, 'viewReport'])->name('quiz.report.view');
+    Route::get('/quiz/report/{sessionId}/download', [\App\Http\Controllers\QuizController::class, 'generateReport'])->name('quiz.report.download');
+    
     // Маршруты для профиля
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');

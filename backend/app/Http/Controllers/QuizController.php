@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\QuizSession;
 use App\Models\QuizAnswer;
 use App\Models\QuizResult;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class QuizController extends Controller
 {
@@ -188,25 +189,58 @@ class QuizController extends Controller
      */
     private function calculateResults($session)
     {
-        // Получаем все ответы
+        // Загружаем интерпретатор
+        $interpretationPath = storage_path('app/ai_templates/interpretation.json');
+        if (!file_exists($interpretationPath)) {
+            \Log::error('interpretation.json not found');
+            return null;
+        }
+        
+        $interpretation = json_decode(file_get_contents($interpretationPath), true);
         $answers = QuizAnswer::where('session_id', $session->id)->get();
         
-        // Подсчитываем баллы по каждому модулю
+        // Группируем ответы по модулям
+        $answersByModule = $answers->groupBy('module_number');
         $moduleScores = [];
         
-        // Модуль 1 - ДДО (Диференційно-діагностичний опитувальник)
-        // Типы: Природа, Техніка, Людина, Знакова система, Художній образ
-        $module1Scores = $this->calculateModule1($answers->where('module_number', 1));
-        $moduleScores['module1'] = $module1Scores;
-        
-        // Модуль 2 - Карта интересов
-        $module2Scores = $this->calculateModule2($answers->where('module_number', 2));
-        $moduleScores['module2'] = $module2Scores;
-        
-        // Другие модули...
+        // Подсчёт для каждого модуля
+        for ($module = 1; $module <= 8; $module++) {
+            $moduleAnswers = $answersByModule->get($module, collect());
+            
+            if ($moduleAnswers->isEmpty()) {
+                continue;
+            }
+            
+            switch ($module) {
+                case 1:
+                    $moduleScores['module1'] = $this->calculateModule1($moduleAnswers, $interpretation);
+                    break;
+                case 2:
+                    $moduleScores['module2'] = $this->calculateModule2($moduleAnswers, $interpretation);
+                    break;
+                case 3:
+                    $moduleScores['module3'] = $this->calculateModule3($moduleAnswers, $interpretation);
+                    break;
+                case 4:
+                    $moduleScores['module4'] = $this->calculateModule4($moduleAnswers, $interpretation);
+                    break;
+                case 5:
+                    $moduleScores['module5'] = $this->calculateModule5($moduleAnswers, $interpretation);
+                    break;
+                case 6:
+                    $moduleScores['module6'] = $this->calculateModule6($moduleAnswers, $interpretation);
+                    break;
+                case 7:
+                    $moduleScores['module7'] = $this->calculateModule7($moduleAnswers, $interpretation);
+                    break;
+                case 8:
+                    $moduleScores['module8'] = $this->calculateModule8($moduleAnswers, $interpretation);
+                    break;
+            }
+        }
         
         // Формируем рекомендации
-        $recommendations = $this->generateRecommendations($moduleScores);
+        $recommendations = $this->generateRecommendations($moduleScores, $interpretation);
         
         // Сохраняем результаты
         $result = QuizResult::updateOrCreate(
@@ -215,7 +249,7 @@ class QuizController extends Controller
                 'user_id' => $session->user_id,
                 'module_scores' => $moduleScores,
                 'recommendations' => $recommendations,
-                'summary' => $this->generateSummary($moduleScores)
+                'summary' => $this->generateSummary($moduleScores, $interpretation)
             ]
         );
         
@@ -223,81 +257,270 @@ class QuizController extends Controller
     }
     
     /**
-     * Подсчет результатов модуля 1 (ДДО)
+     * Модуль 1: ДДО (Климов)
      */
-    private function calculateModule1($answers)
+    private function calculateModule1($answers, $interpretation)
     {
-        // Ключи для подсчета баллов ДДО
-        // a - вопросы: 1,3,6,10,11,13,16,20 = Природа
-        // b - вопросы: 1,4,7,9,11,14,17,19,20 = Техніка
-        // a - вопросы: 2,6,8,12,13,14,16,18 = Людина
-        // b - вопросы: 2,5,9,10,12,15,19 = Знакова система
-        // a - вопросы: 3,5,7,8,15,17,18 = Художній образ
-        
+        $keys = $interpretation['modules']['module1']['scoring_keys'];
         $scores = [
-            'nature' => 0,      // Природа
-            'technic' => 0,     // Техніка
-            'human' => 0,       // Людина
-            'sign' => 0,        // Знакова система
-            'art' => 0          // Художній образ
+            'nature' => 0,
+            'technic' => 0,
+            'human' => 0,
+            'sign' => 0,
+            'art' => 0
         ];
-        
-        $natureA = [1, 3, 6, 10, 11, 13, 16, 20];
-        $technicB = [1, 4, 7, 9, 11, 14, 17, 19, 20];
-        $humanA = [2, 6, 8, 12, 13, 14, 16, 18];
-        $signB = [2, 5, 9, 10, 12, 15, 19];
-        $artA = [3, 5, 7, 8, 15, 17, 18];
-        
+
         foreach ($answers as $answer) {
-            $q = $answer->question_number;
-            $a = $answer->answer;
+            $q = (string)$answer->question_number;
+            $a = $answer->answer; // 'a' или 'b'
             
-            if ($a == 'a' && in_array($q, $natureA)) $scores['nature']++;
-            if ($a == 'b' && in_array($q, $technicB)) $scores['technic']++;
-            if ($a == 'a' && in_array($q, $humanA)) $scores['human']++;
-            if ($a == 'b' && in_array($q, $signB)) $scores['sign']++;
-            if ($a == 'a' && in_array($q, $artA)) $scores['art']++;
+            if (isset($keys[$q][$a])) {
+                $scale = $keys[$q][$a];
+                $scores[$scale]++;
+            }
         }
-        
+
         return $scores;
     }
     
     /**
-     * Подсчет результатов модуля 2 (Карта интересов)
+     * Модуль 2: Карта интересов
      */
-    private function calculateModule2($answers)
+    private function calculateModule2($answers, $interpretation)
     {
-        // Карта интересов - подсчет баллов по направлениям
+        $keys = $interpretation['modules']['module2']['scoring_keys'];
+        $scaleValues = $interpretation['modules']['module2']['scale_values'];
+        
         $scores = [];
         
-        foreach ($answers as $answer) {
-            $value = $this->scaleToNumber($answer->answer);
-            $scores[$answer->question_number] = $value;
+        // Инициализация всех сфер нулями
+        foreach ($keys as $sphere => $questions) {
+            $scores[$sphere] = 0;
         }
-        
+
+        foreach ($answers as $answer) {
+            $q = $answer->question_number;
+            $value = $scaleValues[$answer->answer] ?? 0;
+            
+            // Ищем, к какой сфере относится вопрос
+            foreach ($keys as $sphere => $questions) {
+                if (in_array($q, $questions)) {
+                    $scores[$sphere] += $value;
+                    break;
+                }
+            }
+        }
+
         return $scores;
     }
     
     /**
-     * Преобразование шкалы в числа
+     * Модуль 3: Опросник Холланда
      */
-    private function scaleToNumber($scale)
+    private function calculateModule3($answers, $interpretation)
     {
-        $map = [
-            '--' => -2,
-            '-' => -1,
-            '0' => 0,
-            '+' => 1,
-            '++' => 2
+        $keys = $interpretation['modules']['module3']['scoring_keys'];
+        $scores = [
+            'realistic' => 0,
+            'intellectual' => 0,
+            'social' => 0,
+            'conventional' => 0,
+            'enterprising' => 0,
+            'artistic' => 0
         ];
-        
-        return $map[$scale] ?? 0;
+
+        foreach ($answers as $answer) {
+            $q = $answer->question_number;
+            $a = $answer->answer; // 'a' или 'b'
+            $key = $q . $a; // например "1a", "2b"
+            
+            foreach ($keys as $type => $typeKeys) {
+                if (in_array($key, $typeKeys)) {
+                    $scores[$type]++;
+                    break;
+                }
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 4: Якоря карьеры (Шейн)
+     */
+    private function calculateModule4($answers, $interpretation)
+    {
+        $keys = $interpretation['modules']['module4']['scoring_keys'];
+        $scores = [
+            'professional_competence' => 0,
+            'management' => 0,
+            'autonomy' => 0,
+            'stability_place' => 0,
+            'stability_residence' => 0,
+            'service' => 0,
+            'challenge' => 0,
+            'entrepreneurship' => 0
+        ];
+
+        // Создаём массив ответов по номерам вопросов
+        $answersByQuestion = [];
+        foreach ($answers as $answer) {
+            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
+        }
+
+        // Суммируем баллы по каждому якорю
+        foreach ($keys as $anchor => $questions) {
+            foreach ($questions as $q) {
+                if (isset($answersByQuestion[$q])) {
+                    $scores[$anchor] += $answersByQuestion[$q];
+                }
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 5: Мотивы выбора профессии
+     */
+    private function calculateModule5($answers, $interpretation)
+    {
+        $keys = $interpretation['modules']['module5']['scoring_keys'];
+        $scores = [
+            'internal_individual' => 0,
+            'internal_social' => 0,
+            'external_positive' => 0,
+            'external_negative' => 0
+        ];
+
+        // Создаём массив ответов по номерам вопросов
+        $answersByQuestion = [];
+        foreach ($answers as $answer) {
+            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
+        }
+
+        // Подсчитываем баллы по каждому мотиву
+        foreach ($keys as $motive => $questions) {
+            foreach ($questions as $q) {
+                if (isset($answersByQuestion[$q])) {
+                    $scores[$motive] += $answersByQuestion[$q];
+                }
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 6: Ориентационная анкета (Басс)
+     */
+    private function calculateModule6($answers, $interpretation)
+    {
+        $keys = $interpretation['modules']['module6']['scoring_keys'];
+        $scores = [
+            'self' => 0,
+            'interaction' => 0,
+            'task' => 0
+        ];
+
+        // Создаём массив ответов по номерам вопросов
+        $answersByQuestion = [];
+        foreach ($answers as $answer) {
+            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
+        }
+
+        // Подсчитываем баллы по каждой направленности
+        foreach ($keys as $direction => $directionKeys) {
+            // Прямые вопросы
+            foreach ($directionKeys['direct'] as $q) {
+                if (isset($answersByQuestion[$q])) {
+                    $scores[$direction] += $answersByQuestion[$q];
+                }
+            }
+            // Обратные вопросы (вычитаем из 6)
+            foreach ($directionKeys['reverse'] as $q) {
+                if (isset($answersByQuestion[$q])) {
+                    $scores[$direction] += (6 - $answersByQuestion[$q]);
+                }
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 7: Эмоциональная направленность
+     */
+    private function calculateModule7($answers, $interpretation)
+    {
+        $keys = $interpretation['modules']['module7']['scoring_keys'];
+        $scores = [
+            'altruistic' => 0,
+            'communicative' => 0,
+            'gloric' => 0,
+            'praxic' => 0,
+            'pugnistic' => 0,
+            'romantic' => 0,
+            'gnostic' => 0,
+            'aesthetic' => 0,
+            'hedonistic' => 0,
+            'acquisitive' => 0
+        ];
+
+        // Создаём массив ответов по номерам вопросов
+        $answersByQuestion = [];
+        foreach ($answers as $answer) {
+            $q = $answer->question_number;
+            // Модуль 7 использует 'a'/'b' вместо yes/no
+            $answersByQuestion[$q] = ($answer->answer === 'a' || $answer->answer === 'yes' || $answer->answer === '1') ? 1 : 0;
+        }
+
+        // Подсчитываем баллы по каждому типу эмоций
+        foreach ($keys as $emotionType => $questions) {
+            foreach ($questions as $q) {
+                if (isset($answersByQuestion[$q])) {
+                    $scores[$emotionType] += $answersByQuestion[$q];
+                }
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 8: Темперамент (ранжирование 4 вариантов в каждом вопросе)
+     */
+    private function calculateModule8($answers, $interpretation)
+    {
+        $scores = [
+            'choleric' => 0,
+            'sanguine' => 0,
+            'phlegmatic' => 0,
+            'melancholic' => 0
+        ];
+
+        // Модуль 8 использует ранжирование: [4,3,2,1] где 4=наиболее подходит, 1=наименее
+        // Порядок типов в каждом вопросе: холерик, сангвиник, флегматик, меланхолик
+        $types = ['choleric', 'sanguine', 'phlegmatic', 'melancholic'];
+
+        foreach ($answers as $answer) {
+            $ranking = json_decode($answer->answer, true);
+            
+            if (is_array($ranking) && count($ranking) === 4) {
+                foreach ($ranking as $index => $rank) {
+                    $type = $types[$index];
+                    $scores[$type] += (int)$rank;
+                }
+            }
+        }
+
+        return $scores;
     }
     
     /**
      * Генерация рекомендаций
      */
-    private function generateRecommendations($moduleScores)
+    private function generateRecommendations($moduleScores, $interpretation)
     {
         $recommendations = [];
         
@@ -306,7 +529,7 @@ class QuizController extends Controller
             $ddo = $moduleScores['module1'];
             arsort($ddo);
             
-            $topTypes = array_slice(array_keys($ddo), 0, 2);
+            $topTypes = array_slice(array_keys($ddo), 0, 2, true);
             
             $typeNames = [
                 'nature' => 'Людина-Природа',
@@ -316,9 +539,26 @@ class QuizController extends Controller
                 'art' => 'Людина-Художній образ'
             ];
             
-            $recommendations['professional_types'] = array_map(function($type) use ($typeNames) {
-                return $typeNames[$type];
-            }, $topTypes);
+            $recommendations['professional_types'] = [];
+            foreach ($topTypes as $type) {
+                $scale = $interpretation['modules']['module1']['scales'][$type];
+                $score = $ddo[$type];
+                
+                // Находим подходящую интерпретацию
+                foreach ($scale['interpretation'] as $level => $data) {
+                    if ($score >= $data['range'][0] && $score <= $data['range'][1]) {
+                        if (!empty($data['professions'])) {
+                            $recommendations['professional_types'][] = [
+                                'type' => $typeNames[$type],
+                                'score' => $score,
+                                'description' => $data['text'],
+                                'professions' => $data['professions']
+                            ];
+                        }
+                        break;
+                    }
+                }
+            }
         }
         
         return $recommendations;
@@ -327,7 +567,7 @@ class QuizController extends Controller
     /**
      * Генерация краткого описания результатов
      */
-    private function generateSummary($moduleScores)
+    private function generateSummary($moduleScores, $interpretation)
     {
         $summary = "Ваш профіль професійних схильностей визначено на основі комплексної діагностики. ";
         
@@ -335,18 +575,96 @@ class QuizController extends Controller
             $ddo = $moduleScores['module1'];
             arsort($ddo);
             $topType = array_key_first($ddo);
+            $score = $ddo[$topType];
             
-            $descriptions = [
-                'nature' => 'Ви маєте схильність до роботи з природою, рослинами та тваринами.',
-                'technic' => 'Вам підходить робота з технікою, механізмами та технологіями.',
-                'human' => 'Ви орієнтовані на роботу з людьми, навчання та комунікацію.',
-                'sign' => 'Вам підходить робота зі знаковими системами, числами та інформацією.',
-                'art' => 'Ви маєте схильність до творчості та художньої діяльності.'
-            ];
+            $scale = $interpretation['modules']['module1']['scales'][$topType];
             
-            $summary .= $descriptions[$topType] ?? '';
+            // Находим подходящую интерпретацию
+            foreach ($scale['interpretation'] as $level => $data) {
+                if ($score >= $data['range'][0] && $score <= $data['range'][1]) {
+                    $summary .= $data['text'];
+                    break;
+                }
+            }
         }
         
         return $summary;
+    }
+
+    /**
+     * Генерация PDF-отчёта для пользователя
+     */
+    public function generateReport($sessionId)
+    {
+        $session = QuizSession::with('user')->findOrFail($sessionId);
+        
+        // Проверяем, что пользователь имеет доступ к этому отчёту
+        $user = Auth::user();
+        if (!$user->is_admin && $session->user_id !== $user->id) {
+            abort(403, 'Доступ запрещён');
+        }
+        
+        // Получаем результаты
+        $result = QuizResult::where('session_id', $sessionId)->first();
+        
+        if (!$result) {
+            // Если результатов нет, пересчитываем
+            $result = $this->calculateResults($session);
+        }
+        
+        // Получаем все ответы
+        $answers = QuizAnswer::where('session_id', $sessionId)->get();
+        $totalAnswers = $answers->count();
+        
+        // Получаем баллы по модулям
+        $scores = $result->module_scores;
+        
+        // Генерируем PDF
+        $pdf = Pdf::loadView('reports.quiz-report-pdf', [
+            'user' => $session->user,
+            'session' => $session,
+            'result' => $result,
+            'scores' => $scores,
+            'totalAnswers' => $totalAnswers
+        ]);
+        
+        $pdf->setPaper('a4', 'portrait');
+        
+        // Формируем имя файла
+        $fileName = 'quiz_report_' . $session->user->id . '_' . $session->id . '.pdf';
+        
+        return $pdf->download($fileName);
+    }
+    
+    /**
+     * Просмотр отчёта в браузере (HTML)
+     */
+    public function viewReport($sessionId)
+    {
+        $session = QuizSession::with('user')->findOrFail($sessionId);
+        
+        // Проверяем доступ
+        $user = Auth::user();
+        if (!$user->is_admin && $session->user_id !== $user->id) {
+            abort(403, 'Доступ запрещён');
+        }
+        
+        $result = QuizResult::where('session_id', $sessionId)->first();
+        
+        if (!$result) {
+            $result = $this->calculateResults($session);
+        }
+        
+        $answers = QuizAnswer::where('session_id', $sessionId)->get();
+        $totalAnswers = $answers->count();
+        $scores = $result->module_scores;
+        
+        return view('reports.quiz-report-styled', [
+            'user' => $session->user,
+            'session' => $session,
+            'result' => $result,
+            'scores' => $scores,
+            'totalAnswers' => $totalAnswers
+        ]);
     }
 }

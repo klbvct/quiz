@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Результати тестування - Quiz Education')
+@section('title', 'Результати тестування - Дизайн Освіти')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/results.css') }}">
@@ -45,34 +45,6 @@
             </div>
         </div>
 
-        @if(isset($result->module_scores['module1']))
-        <div class="results-section">
-            <h3>Типи професійної спрямованості (ДДО)</h3>
-            <div class="scores-chart">
-                @php
-                    $ddo = $result->module_scores['module1'];
-                    $maxScore = max($ddo);
-                    $typeNames = [
-                        'nature' => 'Людина-Природа',
-                        'technic' => 'Людина-Техніка',
-                        'human' => 'Людина-Людина',
-                        'sign' => 'Людина-Знакова система',
-                        'art' => 'Людина-Художній образ'
-                    ];
-                @endphp
-                @foreach($ddo as $type => $score)
-                <div class="score-bar">
-                    <div class="score-label">{{ $typeNames[$type] }}</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: {{ ($score / 8) * 100 }}%"></div>
-                    </div>
-                    <div class="score-value">{{ $score }}/8</div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-        @endif
-
         @if(isset($result->recommendations['professional_types']))
         <div class="results-section recommendations">
             <h3>Рекомендовані професійні напрямки</h3>
@@ -89,7 +61,8 @@
 
         <div class="results-actions">
             <a href="{{ route('home') }}" class="btn btn-primary">Повернутися до кабінету</a>
-            <button onclick="window.print()" class="btn btn-secondary">Роздрукувати результати</button>
+            <a href="{{ route('quiz.report.view', ['sessionId' => $session->id]) }}" class="btn btn-info">Переглянути повний звіт</a>
+            <a href="{{ route('quiz.report.download', ['sessionId' => $session->id]) }}" class="btn btn-success">Завантажити PDF</a>
         </div>
         @endif
     </div>
