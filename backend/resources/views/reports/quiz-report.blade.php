@@ -12,16 +12,7 @@
     <div class="report-header">
         <div class="logo">
             <a href="{{ route('home') }}">
-                <svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="25" cy="25" r="25" fill="url(#gradient)"/>
-                    <text x="25" y="32" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">Q</text>
-                    <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                </svg>
+                <img src="{{ asset('images/logo_education_design.svg') }}" alt="Education Design" class="logo-image">
             </a>
         </div>
         <h1>Звіт профорієнтаційного тестування</h1>

@@ -6,6 +6,10 @@ body.results-page {
     min-height: 100vh;
 }
 
+.logo-image {
+    width: 70px;
+}
+
 .results-wrapper {
     min-height: 100vh;
     background: #f9fafb;
