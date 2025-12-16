@@ -75,13 +75,13 @@
                     <!-- Область під лінією -->
                     <defs>
                         <linearGradient id="lineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.3" />
-                            <stop offset="100%" style="stop-color:#667eea;stop-opacity:0.05" />
+                            <stop offset="0%" style="stop-color:#0c68f5;stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:#0c68f5;stop-opacity:0.05" />
                         </linearGradient>
                     </defs>
                     
                     <path d="{{ $pathData }} L 1000,300 L 0,300 Z" fill="url(#lineGradient)" />
-                    <path d="{{ $pathData }}" stroke="#667eea" stroke-width="3" fill="none" />
+                    <path d="{{ $pathData }}" stroke="#0c68f5" stroke-width="3" fill="none" />
                     
                     <!-- Точки на графіку -->
                     @foreach($dailyRevenue as $index => $day)
@@ -89,7 +89,7 @@
                             $x = ($index / max($count - 1, 1)) * 1000;
                             $y = 300 - (($day->count / $maxCount) * 280);
                         @endphp
-                        <circle cx="{{ $x }}" cy="{{ $y }}" r="5" fill="#667eea" class="chart-point">
+                        <circle cx="{{ $x }}" cy="{{ $y }}" r="5" fill="#0c68f5" class="chart-point">
                             <title>{{ \Carbon\Carbon::parse($day->date)->format('d.m.Y') }}: {{ $day->count }} платежів ({{ number_format($day->total, 0, ',', ' ') }} ₴)</title>
                         </circle>
                     @endforeach
@@ -371,7 +371,7 @@
 
 .label-count {
     font-size: 11px;
-    color: #667eea;
+    color: #0c68f5;
     font-weight: 600;
 }
 </style>

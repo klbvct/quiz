@@ -10,7 +10,7 @@
     
     <style>
         :root {
-            --primary-color: #667eea;
+            --primary-color: #0c68f5;
             --secondary-color: #764ba2;
             --success-color: #10b981;
             --error-color: #ef4444;
@@ -26,7 +26,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
             min-height: 100vh;
             margin: 0;
             padding: 0;

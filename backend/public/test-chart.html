@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест кругової діаграми</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2D3748;
+            margin-bottom: 30px;
+        }
+        .chart-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+            gap: 40px;
+        }
+        .chart-svg {
+            flex: 0 0 300px;
+        }
+        .legend {
+            flex: 1;
+        }
+        .legend-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        .legend-text {
+            flex: 1;
+            min-width: 0;
+        }
+        .legend-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2D3748;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .legend-value {
+            font-size: 10px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Тест кругової діаграми - Домінуючі Типи Мислення</h1>
+        
+        <div class="chart-wrapper">
+            <!-- SVG Діаграма -->
+            <div class="chart-svg">
+                <svg viewBox="0 0 200 200" style="width: 300px; height: 300px; transform: rotate(-90deg);">
+                    <!-- Художнє: 5/42 = 11.9% -->
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="#FF6B6B"
+                        stroke-width="40"
+                        stroke-dasharray="59.84 442.81"
+                        stroke-dashoffset="0"
+                        opacity="0.9"
+                    />
+                    
+                    <!-- Теоретичне: 8/42 = 19.0% -->
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="#4ECDC4"
+                        stroke-width="40"
+                        stroke-dasharray="95.74 406.91"
+                        stroke-dashoffset="-59.84"
+                        opacity="0.9"
+                    />
+                    
+                    <!-- Практичне: 6/42 = 14.3% -->
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="#95E1D3"
+                        stroke-width="40"
+                        stroke-dasharray="71.81 430.84"
+                        stroke-dashoffset="-155.58"
+                        opacity="0.9"
+                    />
+                    
+                    <!-- Творче: 7/42 = 16.7% -->
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="#FFD93D"
+                        stroke-width="40"
+                        stroke-dasharray="83.78 418.87"
+                        stroke-dashoffset="-227.39"
+                        opacity="0.9"
+                    />
+                    
+                    <!-- Конвергентне: 4/42 = 9.5% -->
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="#6BCF7F"
+                        stroke-width="40"
+                        stroke-dasharray="47.87 454.78"
+                        stroke-dashoffset="-311.17"
+                        opacity="0.9"
+                    />
+                    
+                    <!-- Інтуїтивне: 3/42 = 7.1% -->
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="#A78BFA"
+                        stroke-width="40"
+                        stroke-dasharray="35.90 466.75"
+                        stroke-dashoffset="-359.04"
+                        opacity="0.9"
+                    />
+                    
+                    <!-- Аналітичне: 9/42 = 21.4% -->
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="#60A5FA"
+                        stroke-width="40"
+                        stroke-dasharray="107.71 394.94"
+                        stroke-dashoffset="-394.94"
+                        opacity="0.9"
+                    />
+                    
+                    <!-- Центральний білий круг -->
+                    <circle cx="100" cy="100" r="50" fill="white"/>
+                                        <!-- Проценти на сегментах -->
+                    <!-- Художнє: 12% на куті 6° (середина 11.9%) -->
+                    <text x="156" y="112" text-anchor="middle" dominant-baseline="middle"
+                          style="font-size: 14px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: 156px 112px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        12%
+                    </text>
+                    
+                    <!-- Теоретичне: 19% на куті 21° -->
+                    <text x="181" y="139" text-anchor="middle" dominant-baseline="middle"
+                          style="font-size: 14px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: 181px 139px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        19%
+                    </text>
+                    
+                    <!-- Практичне: 14% на куті 38° -->
+                    <text x="180" y="180" text-anchor="middle" dominant-baseline="middle"
+                          style="font-size: 14px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: 180px 180px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        14%
+                    </text>
+                    
+                    <!-- Творче: 17% на куті 53° -->
+                    <text x="148" y="200" text-anchor="middle" dominant-baseline="middle"
+                          style="font-size: 14px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: 148px 200px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        17%
+                    </text>
+                    
+                    <!-- Конвергентне: 10% на куті 67° -->
+                    <text x="106" y="193" text-anchor="middle" dominant-baseline="middle"
+                          style="font-size: 14px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: 106px 193px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        10%
+                    </text>
+                    
+                    <!-- Інтуїтивне: 7% на куті 75° -->
+                    <text x="76" y="177" text-anchor="middle" dominant-baseline="middle"
+                          style="font-size: 14px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: 76px 177px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        7%
+                    </text>
+                    
+                    <!-- Аналітичне: 21% на куті 90° -->
+                    <text x="20" y="100" text-anchor="middle" dominant-baseline="middle"
+                          style="font-size: 14px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: 20px 100px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        21%
+                    </text>
+                                        <!-- Текст в центрі -->
+                    <text x="100" y="95" text-anchor="middle" style="font-size: 16px; font-weight: bold; fill: #2D3748; transform: rotate(90deg); transform-origin: 100px 100px;">
+                        Типи
+                    </text>
+                    <text x="100" y="110" text-anchor="middle" style="font-size: 14px; fill: #4A5568; transform: rotate(90deg); transform-origin: 100px 100px;">
+                        мислення
+                    </text>
+                </svg>
+            </div>
+            
+            <!-- Легенда -->
+            <div class="legend">
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #FF6B6B;"></div>
+                        <div class="legend-text">
+                            <div class="legend-name">Художнє (наочно-образне)</div>
+                            <div class="legend-value">5 балів (12%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #4ECDC4;"></div>
+                        <div class="legend-text">
+                            <div class="legend-name">Теоретичне</div>
+                            <div class="legend-value">8 балів (19%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #95E1D3;"></div>
+                        <div class="legend-text">
+                            <div class="legend-name">Практичне</div>
+                            <div class="legend-value">6 балів (14%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #FFD93D;"></div>
+                        <div class="legend-text">
+                            <div class="legend-name">Творче (продуктивне)</div>
+                            <div class="legend-value">7 балів (17%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #6BCF7F;"></div>
+                        <div class="legend-text">
+                            <div class="legend-name">Конвергентне</div>
+                            <div class="legend-value">4 бали (10%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #A78BFA;"></div>
+                        <div class="legend-text">
+                            <div class="legend-name">Інтуїтивне</div>
+                            <div class="legend-value">3 бали (7%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #60A5FA;"></div>
+                        <div class="legend-text">
+                            <div class="legend-name">Аналітичне</div>
+                            <div class="legend-value">9 балів (21%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p style="color: #666; margin-top: 30px;">
+            Це тестова діаграма з даними: Художнє (5), Теоретичне (8), Практичне (6), 
+            Творче (7), Конвергентне (4), Інтуїтивне (3), Аналітичне (9). Всього: 42 бали.
+        </p>
+    </div>
+</body>
+</html>

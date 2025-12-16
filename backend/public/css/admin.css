@@ -202,7 +202,7 @@ body {
 }
 
 .stat-card-highlight {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     color: #fff;
 }
 
@@ -792,7 +792,7 @@ body {
     padding: 12px;
     background: #f7fafc;
     border-radius: 8px;
-    border-left: 3px solid #667eea;
+    border-left: 3px solid #0c68f5;
 }
 
 .result-label {
@@ -804,7 +804,7 @@ body {
 .result-value {
     font-size: 18px;
     font-weight: 700;
-    color: #667eea;
+    color: #0c68f5;
 }
 
 .danger-zone {

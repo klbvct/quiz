@@ -32,7 +32,7 @@
             <h1>{{ __('landing.hero_title') }}</h1>
             <p>{{ __('landing.hero_subtitle') }}</p>
             <div class="hero-buttons">
-                <button id="startTestBtn" class="btn btn-primary" style="background: white; color: #667eea;">{{ __('landing.hero_cta') }}</button>
+                <button id="startTestBtn" class="btn btn-primary" style="background: white; color: #0c68f5;">{{ __('landing.hero_cta') }}</button>
                 <a href="#about" class="btn btn-outline" style="border-color: white; color: white;">{{ app()->getLocale() == 'uk' ? 'Дізнатися більше' : 'Узнать больше' }}</a>
             </div>
         </div>
@@ -103,7 +103,7 @@
     <section class="cta-section">
         <h2>{{ app()->getLocale() == 'uk' ? 'Готові дізнатися своє покликання?' : 'Готовы узнать свое призвание?' }}</h2>
         <p>{{ app()->getLocale() == 'uk' ? 'Пройдіть тестування прямо зараз і отримайте персональні рекомендації' : 'Пройдите тестирование прямо сейчас и получите персональные рекомендации' }}</p>
-        <button id="startTestBtn2" class="btn btn-primary" style="background: white; color: #667eea;">{{ __('landing.hero_cta') }}</button>
+        <button id="startTestBtn2" class="btn btn-primary" style="background: white; color: #0c68f5;">{{ __('landing.hero_cta') }}</button>
     </section>
 
     <!-- Footer -->

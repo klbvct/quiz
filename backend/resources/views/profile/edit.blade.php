@@ -21,13 +21,13 @@
         }
         
         .profile-card h2 {
-            color: #667eea;
+            color: #0c68f5;
             margin-bottom: 10px;
             font-size: 24px;
         }
         
         .profile-card h3 {
-            color: #667eea;
+            color: #0c68f5;
             margin-bottom: 20px;
             font-size: 20px;
             padding-top: 30px;
@@ -63,7 +63,7 @@
         
         .form-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #0c68f5;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
@@ -75,7 +75,7 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
             color: white;
             padding: 12px 24px;
             border: none;
@@ -121,7 +121,7 @@
     
     <div class="profile-content">
         <div style="text-align: center; margin-bottom: 20px;">
-            <a href="{{ route('home') }}" style="color: #667eea; text-decoration: none; font-weight: 600;">← Повернутися до кабінету</a>
+            <a href="{{ route('home') }}" style="color: #0c68f5; text-decoration: none; font-weight: 600;">← Повернутися до кабінету</a>
         </div>
         
         @if(session('success'))

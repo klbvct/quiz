@@ -13,18 +13,18 @@
         }
         
         h1 {
-            color: #667eea;
+            color: #0c68f5;
             font-size: 24px;
             text-align: center;
             margin-bottom: 20px;
         }
         
         h2 {
-            color: #667eea;
+            color: #0c68f5;
             font-size: 18px;
             margin-top: 20px;
             margin-bottom: 10px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #0c68f5;
             padding-left: 10px;
         }
         
@@ -66,7 +66,7 @@
         }
         
         table th {
-            background: #667eea;
+            background: #0c68f5;
             color: white;
             padding: 8px;
             text-align: left;

@@ -55,7 +55,7 @@ body {
 }
 
 .user-info strong {
-    color: #667eea;
+    color: #0c68f5;
 }
 
 .module-block {
@@ -68,10 +68,10 @@ body {
 }
 
 .module-block h2 {
-    color: #667eea;
+    color: #0c68f5;
     font-size: 24px;
     margin-bottom: 10px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #0c68f5;
     padding-left: 15px;
 }
 
@@ -102,7 +102,7 @@ body {
 }
 
 .scores-table th {
-    background: #667eea;
+    background: #0c68f5;
     color: white;
     padding: 12px;
     text-align: left;
@@ -157,7 +157,7 @@ body {
 
 .bar-fill {
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     border-radius: 15px;
     transition: width 0.5s ease;
 }
@@ -166,7 +166,7 @@ body {
     min-width: 60px;
     text-align: right;
     font-weight: 600;
-    color: #667eea;
+    color: #0c68f5;
 }
 
 .recommendations {

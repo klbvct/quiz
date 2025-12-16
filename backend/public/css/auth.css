@@ -45,7 +45,7 @@ body.auth-page {
 }
 
 .form-header h1 {
-    color: #667eea;
+    color: #0c68f5;
     font-size: 32px;
     margin-bottom: 10px;
 }
@@ -84,7 +84,7 @@ body.auth-page {
 
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #0c68f5;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -114,7 +114,7 @@ body.auth-page {
 }
 
 .toggle-password:hover {
-    color: #667eea;
+    color: #0c68f5;
 }
 
 .toggle-password .eye-icon {
@@ -170,7 +170,7 @@ body.auth-page {
 }
 
 .checkbox-label a {
-    color: #667eea;
+    color: #0c68f5;
     text-decoration: none;
 }
 
@@ -179,7 +179,7 @@ body.auth-page {
 }
 
 .forgot-password {
-    color: #667eea;
+    color: #0c68f5;
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
@@ -202,7 +202,7 @@ body.auth-page {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     color: white;
 }
 
@@ -221,7 +221,7 @@ body.auth-page {
 }
 
 .form-footer a {
-    color: #667eea;
+    color: #0c68f5;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;

@@ -17,7 +17,7 @@
 
     <div class="results-content">
         <div style="text-align: center; margin-bottom: 30px;">
-            <a href="{{ route('home') }}" style="color: #667eea; text-decoration: none; font-weight: 600; font-size: 16px;">← Повернутися до кабінету</a>
+            <a href="{{ route('home') }}" style="color: #0c68f5; text-decoration: none; font-weight: 600; font-size: 16px;">← Повернутися до кабінету</a>
         </div>
         
         <div class="completion-badge">

@@ -14,7 +14,7 @@
             padding: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -28,7 +28,7 @@
         .button {
             display: inline-block;
             padding: 12px 30px;
-            background: #667eea;
+            background: #0c68f5;
             color: #ffffff !important;
             text-decoration: none;
             border-radius: 8px;
@@ -66,7 +66,7 @@
             
             <p style="margin-top: 30px; font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb; padding-top: 20px;">
                 Якщо у вас виникли проблеми з натисканням кнопки "Скинути пароль", скопіюйте та вставте URL-адресу нижче в свій браузер:<br>
-                <a href="{{ $resetUrl }}" style="color: #667eea; word-break: break-all;">{{ $resetUrl }}</a>
+                <a href="{{ $resetUrl }}" style="color: #0c68f5; word-break: break-all;">{{ $resetUrl }}</a>
             </p>
         </div>
     </div>

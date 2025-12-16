@@ -300,7 +300,7 @@
     background: #f9fafb;
     padding: 20px;
     border-radius: 10px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #0c68f5;
     text-align: center;
 }
 
@@ -313,7 +313,7 @@
 .score-value {
     font-size: 28px;
     font-weight: 700;
-    color: #667eea;
+    color: #0c68f5;
 }
 
 .summary-section, .recommendations-section {
@@ -323,7 +323,7 @@
 }
 
 .summary-section h3, .recommendations-section h3 {
-    color: #667eea;
+    color: #0c68f5;
     margin-bottom: 15px;
 }
 
@@ -359,7 +359,7 @@
 }
 
 .module-title {
-    color: #667eea;
+    color: #0c68f5;
     font-size: 20px;
     margin-bottom: 20px;
     padding: 15px;
@@ -400,12 +400,12 @@
 }
 
 .answer-value {
-    color: #667eea;
+    color: #0c68f5;
     font-weight: 600;
     background: white;
     padding: 5px 15px;
     border-radius: 5px;
-    border: 1px solid #667eea;
+    border: 1px solid #0c68f5;
 }
 
 .answer-response ul {

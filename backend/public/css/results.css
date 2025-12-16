@@ -2,7 +2,7 @@ body.results-page {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     min-height: 100vh;
 }
 
@@ -51,7 +51,7 @@ body.results-page {
     width: 80px;
     height: 80px;
     margin: 0 auto 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -80,7 +80,7 @@ body.results-page {
 }
 
 .results-section h3 {
-    color: #667eea;
+    color: #0c68f5;
     font-size: 24px;
     margin-bottom: 20px;
 }
@@ -120,7 +120,7 @@ body.results-page {
 
 .bar-fill {
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     border-radius: 15px;
     transition: width 0.5s ease;
 }
@@ -129,7 +129,7 @@ body.results-page {
     min-width: 50px;
     text-align: right;
     font-weight: 600;
-    color: #667eea;
+    color: #0c68f5;
 }
 
 .recommendations .recommendation-list {
@@ -174,7 +174,7 @@ body.results-page {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     color: white;
 }
 

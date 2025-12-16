@@ -35,7 +35,7 @@ body.home-page {
 .logo-text {
     font-size: 24px;
     font-weight: 700;
-    color: #667eea;
+    color: #0c68f5;
     white-space: nowrap;
 }
 
@@ -63,7 +63,7 @@ body.home-page {
 }
 
 .btn-admin {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     color: white;
     padding: 10px 20px;
     font-size: 14px;
@@ -135,7 +135,7 @@ body.home-page {
 }
 
 .card h3 {
-    color: #667eea;
+    color: #0c68f5;
     margin-bottom: 15px;
     font-size: 22px;
 }
@@ -165,7 +165,7 @@ body.home-page {
 }
 
 .card-active {
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #0c68f5;
     background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
 }
 
@@ -195,7 +195,7 @@ body.home-page {
 .btn-start {
     display: inline-block;
     padding: 12px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
     color: white;
     text-decoration: none;
     border-radius: 8px;
