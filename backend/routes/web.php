@@ -66,6 +66,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz/report/{sessionId}', [\App\Http\Controllers\QuizController::class, 'viewReport'])->name('quiz.report.view');
     Route::get('/quiz/report/{sessionId}/download', [\App\Http\Controllers\QuizController::class, 'generateReport'])->name('quiz.report.download');
     
+    // Діагностичний маршрут для перевірки даних
+    Route::get('/quiz/debug/{sessionId}', function($sessionId) {
+        $result = \App\Models\QuizResult::where('session_id', $sessionId)->first();
+        if (!$result) {
+            return response()->json(['error' => 'Result not found']);
+        }
+        return response()->json([
+            'module_scores' => $result->module_scores,
+            'recommendations' => $result->recommendations,
+            'module1_exists' => isset($result->module_scores['module1']),
+            'module1_data' => $result->module_scores['module1'] ?? null,
+            'module1_sum' => isset($result->module_scores['module1']) ? array_sum($result->module_scores['module1']) : 0
+        ]);
+    })->name('quiz.debug');
+    
     // Маршруты для профиля
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');

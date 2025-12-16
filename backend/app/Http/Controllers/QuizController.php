@@ -190,7 +190,7 @@ class QuizController extends Controller
     private function calculateResults($session)
     {
         // Загружаем интерпретатор
-        $interpretationPath = storage_path('app/ai_templates/interpretation.json');
+        $interpretationPath = storage_path('app/ai_templates/interpretation-new.json');
         if (!file_exists($interpretationPath)) {
             \Log::error('interpretation.json not found');
             return null;
@@ -257,22 +257,24 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 1: ДДО (Климов)
+     * Модуль 1: Домінуючі типи мислення
      */
     private function calculateModule1($answers, $interpretation)
     {
         $keys = $interpretation['modules']['module1']['scoring_keys'];
         $scores = [
-            'nature' => 0,
-            'technic' => 0,
-            'human' => 0,
-            'sign' => 0,
-            'art' => 0
+            'artistic' => 0,         // Художнє
+            'theoretical' => 0,      // Теоретичне
+            'practical' => 0,        // Практичне
+            'creative' => 0,         // Творче
+            'convergent' => 0,       // Конвергентне
+            'intuitive' => 0,        // Інтуїтивне
+            'analytical' => 0        // Аналітичне
         ];
 
         foreach ($answers as $answer) {
             $q = (string)$answer->question_number;
-            $a = $answer->answer; // 'a' или 'b'
+            $a = $answer->answer; // 'a' або 'b'
             
             if (isset($keys[$q][$a])) {
                 $scale = $keys[$q][$a];
@@ -284,7 +286,7 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 2: Карта интересов
+     * Модуль 2: Індивідуальні інтереси і здібності в навчанні
      */
     private function calculateModule2($answers, $interpretation)
     {
@@ -315,29 +317,86 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 3: Опросник Холланда
+     * Модуль 3: Типи професійної взаємодії (Климов ДДО)
      */
     private function calculateModule3($answers, $interpretation)
     {
         $keys = $interpretation['modules']['module3']['scoring_keys'];
         $scores = [
-            'realistic' => 0,
-            'intellectual' => 0,
-            'social' => 0,
-            'conventional' => 0,
-            'enterprising' => 0,
-            'artistic' => 0
+            'nature' => 0,   // Людина-Природа
+            'technic' => 0,  // Людина-Техніка
+            'human' => 0,    // Людина-Людина
+            'sign' => 0,     // Людина-Знакова система
+            'art' => 0       // Людина-Художній образ
         ];
 
         foreach ($answers as $answer) {
-            $q = $answer->question_number;
-            $a = $answer->answer; // 'a' или 'b'
-            $key = $q . $a; // например "1a", "2b"
+            $q = (string)$answer->question_number;
+            $a = $answer->answer; // 'a' або 'b'
             
-            foreach ($keys as $type => $typeKeys) {
-                if (in_array($key, $typeKeys)) {
-                    $scores[$type]++;
-                    break;
+            if (isset($keys[$q][$a])) {
+                $scale = $keys[$q][$a];
+                $scores[$scale]++;
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 4: Типологія сприйняття
+     */
+    private function calculateModule4($answers, $interpretation)
+    {
+        $keys = $interpretation['modules']['module4']['scoring_keys'];
+        $scores = [
+            'kinesthetic' => 0,  // Кінестетик
+            'discrete' => 0,     // Дискрет
+            'audial' => 0,       // Аудіал
+            'visual' => 0        // Візуал
+        ];
+
+        foreach ($answers as $answer) {
+            $q = (string)$answer->question_number;
+            $a = $answer->answer; // 'a' або 'b'
+            
+            if (isset($keys[$q][$a])) {
+                $scale = $keys[$q][$a];
+                $scores[$scale]++;
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 5: Типи інтелекту за Говардом Гарднером
+     */
+    private function calculateModule5($answers, $interpretation)
+    {
+        $keys = $interpretation['modules']['module5']['scoring_keys'];
+        $scores = [
+            'linguistic' => 0,              // Лінгвістичний
+            'logical_mathematical' => 0,    // Логіко-математичний
+            'spatial' => 0,                 // Просторовий
+            'bodily_kinesthetic' => 0,      // Тілесно-кінестетичний
+            'musical' => 0,                 // Музичний
+            'interpersonal' => 0,           // Міжособистісний
+            'intrapersonal' => 0,           // Внутрішньоособистісний
+            'naturalistic' => 0             // Натуралістичний
+        ];
+
+        // Создаём массив ответов по номерам вопросов
+        $answersByQuestion = [];
+        foreach ($answers as $answer) {
+            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
+        }
+
+        // Подсчитываем баллы по каждому типу интеллекта
+        foreach ($keys as $intelligenceType => $questions) {
+            foreach ($questions as $q) {
+                if (isset($answersByQuestion[$q])) {
+                    $scores[$intelligenceType] += $answersByQuestion[$q];
                 }
             }
         }
@@ -346,20 +405,59 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 4: Якоря карьеры (Шейн)
+     * Модуль 6: Орієнтаційна анкета (Басс)
      */
-    private function calculateModule4($answers, $interpretation)
+    private function calculateModule6($answers, $interpretation)
     {
-        $keys = $interpretation['modules']['module4']['scoring_keys'];
+        $keys = $interpretation['modules']['module6']['scoring_keys'];
         $scores = [
-            'professional_competence' => 0,
-            'management' => 0,
-            'autonomy' => 0,
-            'stability_place' => 0,
-            'stability_residence' => 0,
-            'service' => 0,
-            'challenge' => 0,
-            'entrepreneurship' => 0
+            'self' => 0,         // На себе
+            'interaction' => 0,  // На взаємодію
+            'task' => 0          // На завдання
+        ];
+
+        // Создаём массив ответов по номерам вопросов
+        $answersByQuestion = [];
+        foreach ($answers as $answer) {
+            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
+        }
+
+        // Подсчитываем баллы по каждой направленности
+        foreach ($keys as $direction => $directionKeys) {
+            // Прямые вопросы
+            foreach ($directionKeys['direct'] as $q) {
+                if (isset($answersByQuestion[$q])) {
+                    $scores[$direction] += $answersByQuestion[$q];
+                }
+            }
+            // Обратные вопросы (вычитаем из 6)
+            if (isset($directionKeys['reverse'])) {
+                foreach ($directionKeys['reverse'] as $q) {
+                    if (isset($answersByQuestion[$q])) {
+                        $scores[$direction] += (6 - $answersByQuestion[$q]);
+                    }
+                }
+            }
+        }
+
+        return $scores;
+    }
+    
+    /**
+     * Модуль 7: Кар'єрні якоря (Шейн)
+     */
+    private function calculateModule7($answers, $interpretation)
+    {
+        $keys = $interpretation['modules']['module7']['scoring_keys'];
+        $scores = [
+            'professional_competence' => 0,  // Професійна компетентність
+            'management' => 0,                // Менеджмент
+            'autonomy' => 0,                  // Автономія
+            'stability_place' => 0,           // Стабільність місця роботи
+            'stability_residence' => 0,       // Стабільність місця проживання
+            'service' => 0,                   // Служіння
+            'challenge' => 0,                 // Виклик
+            'entrepreneurship' => 0           // Підприємництво
         ];
 
         // Создаём массив ответов по номерам вопросов
@@ -381,122 +479,15 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 5: Мотивы выбора профессии
-     */
-    private function calculateModule5($answers, $interpretation)
-    {
-        $keys = $interpretation['modules']['module5']['scoring_keys'];
-        $scores = [
-            'internal_individual' => 0,
-            'internal_social' => 0,
-            'external_positive' => 0,
-            'external_negative' => 0
-        ];
-
-        // Создаём массив ответов по номерам вопросов
-        $answersByQuestion = [];
-        foreach ($answers as $answer) {
-            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
-        }
-
-        // Подсчитываем баллы по каждому мотиву
-        foreach ($keys as $motive => $questions) {
-            foreach ($questions as $q) {
-                if (isset($answersByQuestion[$q])) {
-                    $scores[$motive] += $answersByQuestion[$q];
-                }
-            }
-        }
-
-        return $scores;
-    }
-    
-    /**
-     * Модуль 6: Ориентационная анкета (Басс)
-     */
-    private function calculateModule6($answers, $interpretation)
-    {
-        $keys = $interpretation['modules']['module6']['scoring_keys'];
-        $scores = [
-            'self' => 0,
-            'interaction' => 0,
-            'task' => 0
-        ];
-
-        // Создаём массив ответов по номерам вопросов
-        $answersByQuestion = [];
-        foreach ($answers as $answer) {
-            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
-        }
-
-        // Подсчитываем баллы по каждой направленности
-        foreach ($keys as $direction => $directionKeys) {
-            // Прямые вопросы
-            foreach ($directionKeys['direct'] as $q) {
-                if (isset($answersByQuestion[$q])) {
-                    $scores[$direction] += $answersByQuestion[$q];
-                }
-            }
-            // Обратные вопросы (вычитаем из 6)
-            foreach ($directionKeys['reverse'] as $q) {
-                if (isset($answersByQuestion[$q])) {
-                    $scores[$direction] += (6 - $answersByQuestion[$q]);
-                }
-            }
-        }
-
-        return $scores;
-    }
-    
-    /**
-     * Модуль 7: Эмоциональная направленность
-     */
-    private function calculateModule7($answers, $interpretation)
-    {
-        $keys = $interpretation['modules']['module7']['scoring_keys'];
-        $scores = [
-            'altruistic' => 0,
-            'communicative' => 0,
-            'gloric' => 0,
-            'praxic' => 0,
-            'pugnistic' => 0,
-            'romantic' => 0,
-            'gnostic' => 0,
-            'aesthetic' => 0,
-            'hedonistic' => 0,
-            'acquisitive' => 0
-        ];
-
-        // Создаём массив ответов по номерам вопросов
-        $answersByQuestion = [];
-        foreach ($answers as $answer) {
-            $q = $answer->question_number;
-            // Модуль 7 использует 'a'/'b' вместо yes/no
-            $answersByQuestion[$q] = ($answer->answer === 'a' || $answer->answer === 'yes' || $answer->answer === '1') ? 1 : 0;
-        }
-
-        // Подсчитываем баллы по каждому типу эмоций
-        foreach ($keys as $emotionType => $questions) {
-            foreach ($questions as $q) {
-                if (isset($answersByQuestion[$q])) {
-                    $scores[$emotionType] += $answersByQuestion[$q];
-                }
-            }
-        }
-
-        return $scores;
-    }
-    
-    /**
      * Модуль 8: Темперамент (ранжирование 4 вариантов в каждом вопросе)
      */
     private function calculateModule8($answers, $interpretation)
     {
         $scores = [
-            'choleric' => 0,
-            'sanguine' => 0,
-            'phlegmatic' => 0,
-            'melancholic' => 0
+            'choleric' => 0,     // Холерик
+            'sanguine' => 0,     // Сангвінік
+            'phlegmatic' => 0,   // Флегматик
+            'melancholic' => 0   // Меланхолік
         ];
 
         // Модуль 8 использует ранжирование: [4,3,2,1] где 4=наиболее подходит, 1=наименее
@@ -524,12 +515,12 @@ class QuizController extends Controller
     {
         $recommendations = [];
         
-        // На основе модуля 1 (ДДО)
-        if (isset($moduleScores['module1'])) {
-            $ddo = $moduleScores['module1'];
-            arsort($ddo);
+        // На основе модуля 3 (Типи професійної взаємодії - Климов)
+        if (isset($moduleScores['module3'])) {
+            $klimov = $moduleScores['module3'];
+            arsort($klimov);
             
-            $topTypes = array_slice(array_keys($ddo), 0, 2, true);
+            $topTypes = array_slice(array_keys($klimov), 0, 2, true);
             
             $typeNames = [
                 'nature' => 'Людина-Природа',
@@ -540,23 +531,22 @@ class QuizController extends Controller
             ];
             
             $recommendations['professional_types'] = [];
+            
             foreach ($topTypes as $type) {
-                $scale = $interpretation['modules']['module1']['scales'][$type];
-                $score = $ddo[$type];
+                $score = $klimov[$type];
+                $scale = $interpretation['modules']['module3']['scales'][$type];
                 
-                // Находим подходящую интерпретацию
-                foreach ($scale['interpretation'] as $level => $data) {
-                    if ($score >= $data['range'][0] && $score <= $data['range'][1]) {
-                        if (!empty($data['professions'])) {
-                            $recommendations['professional_types'][] = [
-                                'type' => $typeNames[$type],
-                                'score' => $score,
-                                'description' => $data['text'],
-                                'professions' => $data['professions']
-                            ];
-                        }
-                        break;
-                    }
+                // Берем рекомендации из professional_recommendations
+                if (isset($interpretation['professional_recommendations'][$type])) {
+                    $profRec = $interpretation['professional_recommendations'][$type];
+                    
+                    $recommendations['professional_types'][] = [
+                        'type' => $typeNames[$type],
+                        'score' => $score,
+                        'description' => $scale['description'],
+                        'majors' => $profRec['majors'] ?? [],
+                        'minors' => $profRec['minors'] ?? []
+                    ];
                 }
             }
         }
@@ -571,21 +561,40 @@ class QuizController extends Controller
     {
         $summary = "Ваш профіль професійних схильностей визначено на основі комплексної діагностики. ";
         
+        // Анализ типов мышления (модуль 1)
         if (isset($moduleScores['module1'])) {
-            $ddo = $moduleScores['module1'];
-            arsort($ddo);
-            $topType = array_key_first($ddo);
-            $score = $ddo[$topType];
+            $thinking = $moduleScores['module1'];
+            arsort($thinking);
+            $topThinking = array_key_first($thinking);
             
-            $scale = $interpretation['modules']['module1']['scales'][$topType];
+            $thinkingNames = [
+                'artistic' => 'художнє (наочно-образне) мислення',
+                'theoretical' => 'теоретичне мислення',
+                'practical' => 'практичне мислення',
+                'creative' => 'творче (продуктивне) мислення',
+                'convergent' => 'конвергентне мислення (бізнес-мислення)',
+                'intuitive' => 'інтуїтивне мислення',
+                'analytical' => 'аналітичне мислення'
+            ];
             
-            // Находим подходящую интерпретацию
-            foreach ($scale['interpretation'] as $level => $data) {
-                if ($score >= $data['range'][0] && $score <= $data['range'][1]) {
-                    $summary .= $data['text'];
-                    break;
-                }
-            }
+            $summary .= "У вас домінує " . ($thinkingNames[$topThinking] ?? $topThinking) . ". ";
+        }
+        
+        // Анализ профессиональной взаємодії (модуль 3)
+        if (isset($moduleScores['module3'])) {
+            $klimov = $moduleScores['module3'];
+            arsort($klimov);
+            $topType = array_key_first($klimov);
+            
+            $typeNames = [
+                'nature' => 'Людина-Природа',
+                'technic' => 'Людина-Техніка',
+                'human' => 'Людина-Людина',
+                'sign' => 'Людина-Знакова система',
+                'art' => 'Людина-Художній образ'
+            ];
+            
+            $summary .= "Найбільша схильність до професійного типу: " . ($typeNames[$topType] ?? $topType) . ". ";
         }
         
         return $summary;

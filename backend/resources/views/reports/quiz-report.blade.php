@@ -416,11 +416,20 @@
                 <p>{{ $recommendation['description'] }}</p>
             @endif
             
-            @if(isset($recommendation['professions']) && count($recommendation['professions']) > 0)
-                <h4>Рекомендовані професії:</h4>
+            @if(isset($recommendation['majors']) && count($recommendation['majors']) > 0)
+                <h4>Рекомендовані напрямки (Major):</h4>
                 <ul class="professions-list">
-                    @foreach($recommendation['professions'] as $profession)
-                        <li>{{ $profession }}</li>
+                    @foreach($recommendation['majors'] as $major)
+                        <li>{{ $major }}</li>
+                    @endforeach
+                </ul>
+            @endif
+            
+            @if(isset($recommendation['minors']) && count($recommendation['minors']) > 0)
+                <h4>Додаткове навчання (Minor):</h4>
+                <ul class="professions-list">
+                    @foreach($recommendation['minors'] as $minor)
+                        <li>{{ $minor }}</li>
                     @endforeach
                 </ul>
             @endif
