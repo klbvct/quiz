@@ -135,18 +135,88 @@ body.results-page {
 .recommendations .recommendation-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .recommendation-item {
+    padding: 25px;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.recommendation-item:hover {
+    border-color: #0c68f5;
+    box-shadow: 0 4px 12px rgba(12, 104, 245, 0.1);
+}
+
+.recommendation-item h4 {
+    color: #0c68f5;
+    font-size: 20px;
+    margin: 0 0 12px 0;
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background: #f3f4f6;
-    border-radius: 10px;
-    font-size: 16px;
+    gap: 10px;
+}
+
+.recommendation-item h4::before {
+    content: "🎯";
+    font-size: 24px;
+}
+
+.recommendation-item .type-description {
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.recommendation-item .type-score {
+    display: inline-block;
+    background: linear-gradient(135deg, #0c68f5 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.recommendation-item .majors,
+.recommendation-item .minors {
+    margin-top: 15px;
+}
+
+.recommendation-item .majors strong,
+.recommendation-item .minors strong {
     color: #1f2937;
+    font-size: 15px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.recommendation-item .majors ul,
+.recommendation-item .minors ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.recommendation-item .majors li,
+.recommendation-item .minors li {
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.recommendation-item .majors li {
+    list-style-type: "✓ ";
+    padding-left: 5px;
+}
+
+.recommendation-item .minors li {
+    list-style-type: "• ";
+    padding-left: 5px;
 }
 
 .recommendation-icon {
@@ -257,6 +327,14 @@ body.results-page {
     .score-label {
         min-width: 100%;
         margin-bottom: 5px;
+    }
+
+    .recommendation-item {
+        padding: 20px;
+    }
+
+    .recommendation-item h4 {
+        font-size: 18px;
     }
 
     .results-actions {

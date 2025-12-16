@@ -38,10 +38,33 @@
         <div class="results-section recommendations">
             <h3>Рекомендовані професійні напрямки</h3>
             <div class="recommendation-list">
-                @foreach($result->recommendations['professional_types'] as $type)
+                @foreach($result->recommendations['professional_types'] as $profType)
                 <div class="recommendation-item">
-                    <span class="recommendation-icon">🎯</span>
-                    <span>{{ $type }}</span>
+                    <h4>{{ $profType['type'] }}</h4>
+                    <p class="type-description">{{ $profType['description'] }}</p>
+                    <div class="type-score">Балів: {{ $profType['score'] }}</div>
+                    
+                    @if(!empty($profType['majors']))
+                    <div class="majors">
+                        <strong>Рекомендовані напрямки:</strong>
+                        <ul>
+                            @foreach($profType['majors'] as $major)
+                            <li>{{ $major }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                    
+                    @if(!empty($profType['minors']))
+                    <div class="minors">
+                        <strong>Спеціалізації:</strong>
+                        <ul>
+                            @foreach($profType['minors'] as $minor)
+                            <li>{{ $minor }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </div>
                 @endforeach
             </div>
