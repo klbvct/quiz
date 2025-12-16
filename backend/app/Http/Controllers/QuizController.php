@@ -257,19 +257,17 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 1: Домінуючі типи мислення
+     * Модуль 1: Професійна спрямованість (за Климовим)
      */
     private function calculateModule1($answers, $interpretation)
     {
         $keys = $interpretation['modules']['module1']['scoring_keys'];
         $scores = [
-            'artistic' => 0,         // Художнє
-            'theoretical' => 0,      // Теоретичне
-            'practical' => 0,        // Практичне
-            'creative' => 0,         // Творче
-            'convergent' => 0,       // Конвергентне
-            'intuitive' => 0,        // Інтуїтивне
-            'analytical' => 0        // Аналітичне
+            'nature' => 0,   // Людина-Природа (П)
+            'technic' => 0,  // Людина-Техніка (Т)
+            'human' => 0,    // Людина-Людина (Ч)
+            'sign' => 0,     // Людина-Знакова система (З)
+            'art' => 0       // Людина-Художній образ (Х)
         ];
 
         foreach ($answers as $answer) {
