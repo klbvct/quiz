@@ -302,13 +302,13 @@
                 if($percent >= 75) {
                     $level = '++';
                     $levelText = 'дуже сильна';
-                } elseif($percent >= 60) {
+                } elseif($percent >= 50) {
                     $level = '+';
                     $levelText = 'добра';
-                } elseif($percent >= 40) {
+                } elseif($percent >= 30) {
                     $level = '0';
                     $levelText = 'сіра зона';
-                } elseif($percent >= 25) {
+                } elseif($percent >= 15) {
                     $level = '-';
                     $levelText = 'низька';
                 } else {
@@ -328,14 +328,9 @@
                 ];
             }
             
-            // Сортируем по уровню (сначала самые сильные) и затем по баллам
-            $levelOrder = ['++' => 5, '+' => 4, '0' => 3, '-' => 2, '--' => 1];
-            usort($industryScores, function($a, $b) use ($levelOrder) {
-                $levelDiff = $levelOrder[$b['level']] - $levelOrder[$a['level']];
-                if ($levelDiff !== 0) {
-                    return $levelDiff;
-                }
-                return $b['score'] - $a['score'];
+            // Сортируем по процентам (от большего к меньшему)
+            usort($industryScores, function($a, $b) {
+                return $b['percent'] <=> $a['percent'];
             });
             
             // Пересчитываем для treemap
@@ -352,7 +347,7 @@
         <h3 style="margin-bottom: 10px;">Деревоподібна карта інтересів та здібностей:</h3>
         
         {{-- Treemap visualization --}}
-        <div style="width: 100%; height: 500px; border: 2px solid #E5E7EB; border-radius: 10px; overflow: hidden; position: relative; background: #F9FAFB; display: flex; flex-wrap: wrap; align-content: flex-start;">
+        <div style="width: 100%; height: 100%; border: 2px solid #E5E7EB; border-radius: 10px; overflow: hidden; position: relative; background: #F9FAFB; display: flex; flex-wrap: wrap; align-content: flex-start;">
             @foreach($industryScores as $industry)
             @php
                 // Вычисляем размер блока пропорционально score
@@ -384,12 +379,11 @@
                         {{ $industry['name'] }}
                     </div>
                     <div style="background: rgba(255,255,255,0.9); color: {{ $industry['color'] }}; display: inline-block; padding: 2px 6px; border-radius: 8px; font-weight: bold; font-size: 16px; margin-top: 6px;">
-                        {{ $industry['level'] }}
+                        {{ round($industry['percent']) }}%
                     </div>
                 </div>
                 <div style="color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
-                    <div style="font-size: 10px; opacity: 0.95;">{{ $industry['levelText'] }}</div>
-                    <div style="font-size: 11px; font-weight: 600; margin-top: 3px;">{{ round($industry['percent']) }}%</div>
+                    <div style="font-size: 13px; font-weight: 600; opacity: 0.95;">{{ $industry['levelText'] }}</div>
                 </div>
             </div>
             @endforeach
