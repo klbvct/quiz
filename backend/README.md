@@ -71,31 +71,61 @@ php artisan serve
 
 ## API Endpoints
 
-### Публичные маршруты
+### Публічні маршруты (routes/auth.php)
 
-- `POST /api/register` - Регистрация нового пользователя
+- `POST /api/register` - Реєстрація користувача
   ```json
   {
-    "name": "Иван Иванов",
+    "name": "Іван Іванов",
+    "email": "ivan@example.com",
+    "password": "password123",
+    "birthdate": "2000-01-01"
+  }
+  ```
+
+- `POST /api/login` - Вхід
+  ```json
+  {
     "email": "ivan@example.com",
     "password": "password123"
   }
   ```
 
-- `POST /api/login` - Вход в систему
-  ```json
-  {
-    "email": "ivan@example.com",
-    "password": "password123"
-  }
-  ```
+- `POST /api/password/reset-request` - Запит на скидання паролю
+- `POST /api/password/reset` - Скидання паролю
 
-### Защищенные маршруты (требуют токен)
+### Захищені маршрути (routes/api.php)
 
-Добавьте заголовок: `Authorization: Bearer {your_token}`
+Додайте заголовок: `Authorization: Bearer {your_token}`
 
-- `GET /api/user` - Получить данные текущего пользователя
-- `POST /api/logout` - Выход из системы
+**Користувач:**
+- `GET /api/user` - Дані поточного користувача
+- `POST /api/logout` - Вихід
+
+**Тестування:**
+- `GET /api/quiz/modules` - Список модулів
+- `GET /api/quiz/module/{id}` - Питання модуля
+- `POST /api/quiz/start` - Початок тесту
+- `POST /api/quiz/answer` - Відповідь на питання
+- `POST /api/quiz/complete` - Завершення тесту
+- `GET /api/quiz/sessions` - Історія сесій
+- `GET /api/quiz/report/{session}` - PDF звіт
+
+**Платежі:**
+- `POST /api/payments/create` - Створити платіж Fondy
+- `POST /api/payments/callback` - Callback від Fondy
+- `GET /api/payments/history` - Історія платежів
+
+### Адмін маршрути (routes/web.php)
+
+Потрібен `is_admin = true`
+
+- `GET /admin/dashboard` - Панель адміністратора
+- `GET /admin/users` - Список користувачів (з фільтрами)
+- `GET /admin/users/{id}/edit` - Редагування користувача
+- `PUT /admin/users/{id}` - Оновлення користувача
+- `POST /admin/users/{id}/toggle-access` - Перемикання доступу
+- `DELETE /admin/users/{id}` - Видалення користувача
 
 ## Структура проекта
 
