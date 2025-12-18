@@ -1152,10 +1152,10 @@
         
         @php
             $perceptionTypes = [
-                'visual' => '👁️ Візуальний',
-                'auditory' => '🎵 Аудіальний',
-                'kinesthetic' => '🤲 Кінестетичний',
-                'digital' => '🧮 Дискретний/Дигітальний'
+                'visual' => 'Візуальний',
+                'auditory' => 'Аудіальний',
+                'kinesthetic' => 'Кінестетичний',
+                'digital' => 'Дискретний/Дигітальний'
             ];
             
             $perceptionColors = [
@@ -1201,85 +1201,85 @@
         
         @if(count($perceptionPercentages) > 0)
         
-        {{-- Кругова діаграма --}}
-        <div style="display: flex; align-items: center; justify-content: center; margin: 30px 0;">
-            <svg viewBox="0 0 200 200" style="width: 300px; height: 300px; transform: rotate(-90deg);">
-                @php
-                    $radius = 80;
-                    $circumference = 2 * pi() * $radius;
-                    $currentOffset = 0;
-                @endphp
-                
-                @foreach($perceptionPercentages as $key => $data)
+        {{-- Кругова діаграма з легендою --}}
+        <div style="display: flex; align-items: center; justify-content: center; margin: 30px auto; gap: 40px; max-width: 700px;">
+            {{-- Діаграма --}}
+            <div style="flex-shrink: 0;">
+                <svg viewBox="0 0 200 200" style="width: 300px; height: 300px; transform: rotate(-90deg);">
                     @php
-                        $strokeLength = ($data['percent'] / 100) * $circumference;
-                        $gap = 1;
+                        $radius = 80;
+                        $circumference = 2 * pi() * $radius;
+                        $currentOffset = 0;
                     @endphp
-                    <circle
-                        cx="100"
-                        cy="100"
-                        r="{{ $radius }}"
-                        fill="none"
-                        stroke="{{ $data['color'] }}"
-                        stroke-width="40"
-                        stroke-dasharray="{{ $strokeLength - $gap }} {{ $circumference - $strokeLength + $gap }}"
-                        stroke-dashoffset="{{ -$currentOffset }}"
-                        opacity="0.9"
-                    />
+                    
+                    @foreach($perceptionPercentages as $key => $data)
+                        @php
+                            $strokeLength = ($data['percent'] / 100) * $circumference;
+                            $gap = 1;
+                        @endphp
+                        <circle
+                            cx="100"
+                            cy="100"
+                            r="{{ $radius }}"
+                            fill="none"
+                            stroke="{{ $data['color'] }}"
+                            stroke-width="40"
+                            stroke-dasharray="{{ $strokeLength - $gap }} {{ $circumference - $strokeLength + $gap }}"
+                            stroke-dashoffset="{{ -$currentOffset }}"
+                            opacity="0.9"
+                        />
+                        @php
+                            $currentOffset += $strokeLength;
+                        @endphp
+                    @endforeach
+                    
+                    <circle cx="100" cy="100" r="50" fill="white"/>
+                    
+                    {{-- Проценти --}}
                     @php
-                        $currentOffset += $strokeLength;
+                        $currentAngle = 0;
                     @endphp
-                @endforeach
-                
-                <circle cx="100" cy="100" r="50" fill="white"/>
-                
-                {{-- Проценти --}}
-                @php
-                    $currentAngle = 0;
-                @endphp
-                @foreach($perceptionPercentages as $key => $data)
-                    @php
-                        $segmentAngle = ($data['percent'] / 100) * 360;
-                        $midAngle = $currentAngle + ($segmentAngle / 2);
-                        $midAngleRad = deg2rad($midAngle);
-                        $textRadius = $radius;
-                        $textX = 100 + $textRadius * cos($midAngleRad);
-                        $textY = 100 + $textRadius * sin($midAngleRad);
-                        $currentAngle += $segmentAngle;
-                        $showPercent = $data['percent'] >= 5;
-                    @endphp
-                    @if($showPercent)
-                    <text 
-                        x="{{ $textX }}" 
-                        y="{{ $textY }}" 
-                        text-anchor="middle" 
-                        dominant-baseline="middle"
-                        style="font-size: 12px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: {{ $textX }}px {{ $textY }}px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
-                        {{ round($data['percent']) }}%
+                    @foreach($perceptionPercentages as $key => $data)
+                        @php
+                            $segmentAngle = ($data['percent'] / 100) * 360;
+                            $midAngle = $currentAngle + ($segmentAngle / 2);
+                            $midAngleRad = deg2rad($midAngle);
+                            $textRadius = $radius;
+                            $textX = 100 + $textRadius * cos($midAngleRad);
+                            $textY = 100 + $textRadius * sin($midAngleRad);
+                            $currentAngle += $segmentAngle;
+                            $showPercent = $data['percent'] >= 5;
+                        @endphp
+                        @if($showPercent)
+                        <text 
+                            x="{{ $textX }}" 
+                            y="{{ $textY }}" 
+                            text-anchor="middle" 
+                            dominant-baseline="middle"
+                            style="font-size: 12px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: {{ $textX }}px {{ $textY }}px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                            {{ round($data['percent']) }}%
+                        </text>
+                        @endif
+                    @endforeach
+                    
+                    <text x="100" y="100" text-anchor="middle" style="font-size: 14px; font-weight: bold; fill: #2D3748; transform: rotate(90deg); transform-origin: 100px 100px;">
+                        Сприйняття
                     </text>
-                    @endif
-                @endforeach
-                
-                <text x="100" y="100" text-anchor="middle" style="font-size: 14px; font-weight: bold; fill: #2D3748; transform: rotate(90deg); transform-origin: 100px 100px;">
-                    Сприйняття
-                </text>
-            </svg>
-        </div>
-        
-        {{-- Горизонтальні стовпці --}}
-        <div style="margin: 30px 0;">
-            @foreach($perceptionPercentages as $key => $data)
-            <div style="margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                    <span style="font-size: 14px; font-weight: 600; color: #2D3748;">{{ $data['name'] }}</span>
-                    <span style="font-size: 16px; font-weight: bold; color: {{ $data['color'] }};">{{ round($data['percent']) }}%</span>
-                </div>
-                <div style="width: 100%; height: 28px; background: #E5E7EB; border-radius: 14px; overflow: hidden;">
-                    <div style="width: {{ $data['percent'] }}%; height: 100%; background: {{ $data['color'] }}; border-radius: 14px;"></div>
-                </div>
-                <div style="font-size: 11px; color: #6B7280; margin-top: 3px;">{{ $data['score'] }} балів</div>
+                </svg>
             </div>
-            @endforeach
+            
+            {{-- Легенда --}}
+            <div style="flex: 1; margin-left: 20px;">
+                @foreach($perceptionPercentages as $key => $data)
+                <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                    <div style="width: 20px; height: 20px; background: {{ $data['color'] }}; border-radius: 4px; margin-right: 10px; flex-shrink: 0;"></div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 600; color: #2D3748;">{{ $data['name'] }}</div>
+                        <div style="font-size: 12px; color: #6B7280;">{{ round($data['percent']) }}% ({{ $data['score'] }} балів)</div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
         
         {{-- Описи --}}
