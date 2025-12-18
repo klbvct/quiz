@@ -410,135 +410,387 @@
 
     <div class="page-break"></div>
 
-    {{-- Типи взаємодії з навколишнім світом --}}
+    {{-- Домінуючі типи мислення (Модуль 3) --}}
     @if(isset($scores['module3']))
-    <section id="interaction-types">
-        <h2>🌎 Типи взаємодії з навколишнім світом (професійна спрямованість)</h2>
+    <section id="thinking-types-module3">
+        <h2>🧠 Домінуючі типи мислення</h2>
+        <p>У людини задіяна велика кількість типів мислення. У даному випадку ми говоримо про ті, які <strong>переважають</strong>.</p>
         
         @php
-            $interactionTypes = [
-                'nature' => 'Людина-Природа',
-                'human' => 'Людина-Людина',
-                'sign' => 'Людина-Знакова система',
-                'technic' => 'Людина-Техніка',
-                'art' => 'Людина-Художній образ'
+            $thinkingTypesM3 = [
+                'artistic' => 'Художнє (наочно-образне)',
+                'theoretical' => 'Теоретичне',
+                'practical' => 'Практичне',
+                'creative' => 'Творче (продуктивне)',
+                'convergent' => 'Конвергентне',
+                'intuitive' => 'Інтуїтивне',
+                'analytical' => 'Аналітичне'
             ];
-            $klimovDescriptions = [
-                'nature' => 'Сфери діяльності, пов\'язані з дослідженнями природи, біології, тварин та мікроорганізмів, планети, атмосфери, Землі. Крім цього: високий рівень спостережливості, терпіння та наполегливості.',
-                'human' => 'Пов\'язаний з вивченням та діяльністю людини, її життя, лікування, навчання, соціальною сферою, обслуговуванням, захистом та безпекою, покращенням сфер життя. Крім цього: налагодження комунікацій різних груп людей, представників різних культур, вивчення їх особливостей та взаємодії.',
-                'sign' => 'Пов\'язаний із сферами діяльності: цифри, знаки, літери, схеми, таблиці. Основне завдання: вивчення знакових систем: мови, цифри, знаки, формули та символи, інженерні і технологічні розробки.',
-                'technic' => 'Напрями: винахід та створення, виробництво та переробка. Основне завдання: підтримка існуючого технічного прогресу або винахід нового.',
-                'art' => 'Освоєння, опис, художнє зображення дійсності. Почуття прекрасного, відчуття пропорцій та кольору, форми. Створення гармонії, естетики, краси, збереження культурної спадщини людства. Тяжіння до громадського визнання.'
+            
+            $thinkingColorsM3 = [
+                'artistic' => '#F59E0B',
+                'theoretical' => '#3B82F6',
+                'practical' => '#10B981',
+                'creative' => '#EC4899',
+                'convergent' => '#8B5CF6',
+                'intuitive' => '#14B8A6',
+                'analytical' => '#EF4444'
             ];
+            
+            $thinkingDescriptions = [
+                'artistic' => 'Інструмент, який дозволяє нам конструювати в уяві неіснуючу реальність або перетворювати існуючу на щось нове. Створювати образи та оперування ними у процесі вирішення поставлених завдань — основна стратегія цього типу мислення. Розвинуто візуальне сприйняття та уяву.',
+                'theoretical' => 'Дозволяє узагальнювати, порівнювати, аналізувати та класифікувати накопичені знання та уявлення, виражаючи у формі норм, правил, законів, концепцій, книг. Абстрактне, узагальнене відображення. Дозволяє знаходити причинно-наслідкові зв\'язки у явищах та предметах, шукати відповідь на запитання «чому?».',
+                'practical' => 'Теорії перевіряються практично — схеми, креслення, проекти, плани перетворюють теоретичні поняття на реальну дійсність. Думка набуває фізичної форми. Характерно для людей, орієнтованих на результат, а не на процес.',
+                'creative' => 'Оригінальність ідей, нетривіальність, гнучкість. Пошук нових рішень для існуючих завдань чи проблемних ситуацій. Така людина завжди прагне знайти своє власне оригінальне рішення. Здатність продукувати нові ідеї в різних ситуаціях невизначеності на основі раніше відомої інформації.',
+                'convergent' => '«Бізнес-мислення» — система поглядів на світ і особливостей розумового процесу, базою до якого є твердження: «ми самі відтворюємо своє життя». Визначається вірою в можливість будувати власну реальність, адаптуватися до певних умов. Ключовими умовами виступають: самостійність, відповідальність, широта поглядів, дальнобачність, готовність до ризику, віра в себе.',
+                'intuitive' => 'Це спосіб прийняття рішень, в якому результат виникає швидко й без явного логічного аналізу. Людина отримує відповідь на основі підсвідомого досвіду, емоцій або власних відчуттів, часто не усвідомлюючи, як саме вона до нього дійшла.',
+                'analytical' => 'Особливий тип абстрактного мислення, яке допомагає структурувати, конструювати і оперувати абстрактними поняттями. Стимулює здатність розкладувати великі завдання на дрібні складові, логічно переосмислюючи їх.'
+            ];
+            
+            $totalThinkingM3 = array_sum($scores['module3']);
+            
+            // Вычисляем проценты
+            $percentagesM3 = [];
+            if($totalThinkingM3 > 0) {
+                foreach($thinkingTypesM3 as $key => $name) {
+                    if(isset($scores['module3'][$key]) && $scores['module3'][$key] > 0) {
+                        $percent = ($scores['module3'][$key] / $totalThinkingM3) * 100;
+                        $percentagesM3[$key] = [
+                            'name' => $name,
+                            'value' => $scores['module3'][$key],
+                            'percent' => $percent,
+                            'color' => $thinkingColorsM3[$key]
+                        ];
+                    }
+                }
+                // Сортируем по проценту
+                uasort($percentagesM3, function($a, $b) {
+                    return $b['percent'] <=> $a['percent'];
+                });
+            }
         @endphp
         
+        @if($totalThinkingM3 > 0 && count($percentagesM3) > 0)
+        {{-- Горизонтальные столбцы с процентами --}}
+        <div style="margin: 20px 0;">
+            @foreach($percentagesM3 as $key => $data)
+            <div style="margin-bottom: 10px; page-break-inside: avoid;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <span style="font-size: 13px; font-weight: 600; color: #2D3748;">{{ $data['name'] }}</span>
+                    <span style="font-size: 14px; font-weight: bold; color: {{ $data['color'] }};">{{ round($data['percent']) }}%</span>
+                </div>
+                <div style="width: 100%; height: 24px; background: #E5E7EB; border-radius: 12px; overflow: hidden; position: relative;">
+                    <div style="width: {{ $data['percent'] }}%; height: 100%; background: {{ $data['color'] }}; border-radius: 12px;"></div>
+                </div>
+                <div style="font-size: 11px; color: #6B7280; margin-top: 2px;">{{ $data['value'] }} балів</div>
+            </div>
+            @endforeach
+        </div>
+        
+        {{-- Описания типов --}}
         <ul class="content-list">
-            @foreach($interactionTypes as $key => $name)
-                @if(isset($scores['module3'][$key]))
-                @php
-                    $score = $scores['module3'][$key];
-                    $level = $score >= 6 ? 'високий' : ($score >= 3 ? 'середній' : 'низький');
-                @endphp
-                <li><strong>{{ $name }} – показник {{ $level }}.</strong> {{ $klimovDescriptions[$key] }}</li>
-                @endif
+            @foreach($percentagesM3 as $key => $data)
+            <li><strong>{{ $data['name'] }} мислення ({{ round($data['percent']) }}%)</strong> — {{ $thinkingDescriptions[$key] }}</li>
             @endforeach
         </ul>
-        
-        <div class="chart-container">
-            @foreach($interactionTypes as $key => $name)
-                @if(isset($scores['module3'][$key]))
-                <div class="chart-bar">
-                    <div class="chart-label">
-                        <span class="chart-label-text">{{ $name }}</span>
-                        <span class="chart-label-value">{{ $scores['module3'][$key] }} балів ({{ round(($scores['module3'][$key] / 8) * 100) }}%)</span>
-                    </div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: {{ ($scores['module3'][$key] / 8) * 100 }}%"></div>
-                    </div>
-                </div>
-                @endif
-            @endforeach
-        </div>
+        @else
+        <p style="color: #666; font-style: italic;">Недостатньо даних для побудови діаграми. Переконайтеся, що тестування пройдено повністю.</p>
+        @endif
     </section>
     @endif
 
     <div class="page-break"></div>
 
-    {{-- Типологія сприйняття --}}
-    @if(isset($scores['module4']))
-    <section id="perception-types">
-        <h2>🎭 Аналіз особистості за типом сприйняття</h2>
-        <p>Тип сприйняття - це особливість виявлення та розкриття інформації, що надходить ззовні, домінантний канал надходження даних. Він може бути:<br>візуальним (зір), аудіальним (слух), кінестетичним (тактильні відчуття + нюх + рух), дискретним/дигітальним (логічний аналіз, оперування цифрами, символами, знаками).</p>
-        <p>Цій типології відповідають 4 базові типи того, як людина сприймає інформацію, що надходить ззовні: візуал, аудіал, кінестетик, дискрет/дигітал.</p>
+    {{-- Мотивація та цінності абітурієнта --}}
+    @if(isset($scores['module4']) && isset($scores['module6']))
+    <section id="motivation-values">
+        <h2>🎯 Мотивація та цінності абітурієнта</h2>
         
-        <div class="chart-container">
-            @php
-                $perceptionTypes = [
-                    'kinesthetic' => 'Кінестетик',
-                    'discrete' => 'Дискрет',
-                    'audial' => 'Аудіал',
-                    'visual' => 'Візуал'
-                ];
-            @endphp
-            @foreach($perceptionTypes as $key => $name)
-                @if(isset($scores['module4'][$key]))
-                <div class="chart-bar">
-                    <div class="chart-label">
-                        <span class="chart-label-text">{{ $name }}</span>
-                        <span class="chart-label-value">{{ $scores['module4'][$key] }} балів</span>
-                    </div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: {{ ($scores['module4'][$key] / 20) * 100 }}%"></div>
-                    </div>
-                </div>
-                @endif
-            @endforeach
-        </div>
-
-        <p><strong>Кінестетики</strong> – це люди, які найкраще сприймають інформацію через свої тіла. Вони живуть у світі відчуттів, дотиків, рухів і емоцій. Для них важливо не просто бачити чи чути, а відчувати тілом, рухатись. Основні характеристики кінестетиків: активні та рухливі, практичні, навчання через досвід.</p>
-        <p><strong>Дискрети</strong> – це люди, які сприймають світ через логіку, аналіз та факти. Вони мислять абстрактно, оперують поняттями та ідеями. Для дискретів важлива послідовність, чіткість і точність. Основні характеристики дискретів: логічні мислителі, абстрактне мислення, точність і деталізація, схильність до систематизації.</p>
-        <p><strong>Аудіали</strong> – це люди, які найкраще сприймають інформацію на слух. Вони живуть у світі звуків, інтонацій і ритмів. Для них важливо не тільки те, що говориться, але й як. Основні характеристики аудіалів: чуйні, розмовники, музичні, легко запам'ятовують інформацію, яку чули.</p>
-        <p><strong>Візуали</strong> – це люди, які найкраще сприймають інформацію через зір. Вони живуть у світі образів, кольорів та форм. Для них важливо бачити, щоб зрозуміти. Основні характеристики візуалів: образне мислення, увага до деталей, візуальна пам'ять, художні таланти.</p>
-    </section>
-    @endif
-
-    <div class="page-break"></div>
-
-    {{-- Типи інтелекту за теорією Говарда Гарднера --}}
-    @if(isset($scores['module5']))
-    <section id="intelligence-types">
-        <h2>🧩 Типи інтелекту за теорією Говарда Гарднера</h2>
+        @php
+        // Модуль 4: Ціннісні категорії (ранжування від 1 до 18)
+        $module4 = $scores['module4'] ?? [];
+        $veryImportant = [];
+        $moderatelyImportant = [];
+        $notImportant = [];
         
-        <div class="chart-container">
-            @php
-                $intelligenceTypes = [
-                    'linguistic' => 'Лінгвістичний',
-                    'logical_mathematical' => 'Логіко-математичний',
-                    'spatial' => 'Просторовий',
-                    'bodily_kinesthetic' => 'Тілесно-кінестетичний',
-                    'musical' => 'Музичний',
-                    'interpersonal' => 'Міжособистісний',
-                    'intrapersonal' => 'Внутрішньоособистісний',
-                    'naturalistic' => 'Натуралістичний'
-                ];
-            @endphp
-            @foreach($intelligenceTypes as $key => $name)
-                @if(isset($scores['module5'][$key]))
-                <div class="chart-bar">
-                    <div class="chart-label">
-                        <span class="chart-label-text">{{ $name }}</span>
-                        <span class="chart-label-value">{{ $scores['module5'][$key] }} балів</span>
+        if (is_array($module4) && count($module4) > 0) {
+            // Сортування цінностей за рангом (1 - найважливіше)
+            asort($module4);
+            
+            // Топ важливі цінності (ранг 1-6)
+            $veryImportant = array_filter($module4, function($rank) { 
+                return is_numeric($rank) && $rank >= 1 && $rank <= 6; 
+            });
+            
+            // Помірно важливі (ранг 7-12)
+            $moderatelyImportant = array_filter($module4, function($rank) { 
+                return is_numeric($rank) && $rank >= 7 && $rank <= 12; 
+            });
+            
+            // Не важливі (ранг 13-18)
+            $notImportant = array_filter($module4, function($rank) { 
+                return is_numeric($rank) && $rank >= 13 && $rank <= 18; 
+            });
+        }
+        
+        // Модуль 6: Мотиваційні фактори (шкала від -1 до 7)
+        $module6 = $scores['module6'] ?? [];
+        $strongMotivators = [];
+        $moderateMotivators = [];
+        $weakMotivators = [];
+        $demotivators = [];
+        
+        if (is_array($module6) && count($module6) > 0) {
+            // Сортування мотивацій за балами (від високих до низьких)
+            arsort($module6);
+            
+            // Сильні мотиватори (бали 6-7)
+            $strongMotivators = array_filter($module6, function($score) { 
+                return is_numeric($score) && $score >= 6; 
+            });
+            
+            // Помірні мотиватори (бали 4-5)
+            $moderateMotivators = array_filter($module6, function($score) { 
+                return is_numeric($score) && $score >= 4 && $score < 6; 
+            });
+            
+            // Слабкі мотиватори (бали 1-3)
+            $weakMotivators = array_filter($module6, function($score) { 
+                return is_numeric($score) && $score >= 1 && $score < 4; 
+            });
+            
+            // Демотиватори (бали -1 до 0)
+            $demotivators = array_filter($module6, function($score) { 
+                return is_numeric($score) && $score < 1; 
+            });
+        }
+        @endphp
+        
+        {{-- Ціннісні категорії --}}
+        <div style="margin-bottom: 30px;">
+            <h3 style="color: #2c5282; margin-bottom: 15px;">📊 Ціннісні категорії</h3>
+            <p style="margin-bottom: 20px; color: #4a5568;">
+                Результати показують, які аспекти життя є найбільш важливими для абітурієнта. 
+                Цінності впорядковані від найважливішої (ранг 1) до найменш важливої (ранг 18).
+            </p>
+            
+            @if(count($veryImportant) === 0 && count($moderatelyImportant) === 0 && count($notImportant) === 0)
+            <div style="padding: 20px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                <p style="color: #92400e; margin: 0;">
+                    ⚠️ Дані для модуля "Ціннісні категорії" відсутні. Переконайтеся, що користувач пройшов усі питання модуля 4.
+                </p>
+            </div>
+            @else
+            {{-- Крайне важливі цінності --}}
+            @if(count($veryImportant) > 0)
+            <div style="margin-bottom: 20px; padding: 15px; background: #e6fffa; border-left: 4px solid #0d9488; border-radius: 4px;">
+                <h4 style="color: #0f766e; margin-bottom: 10px;">✅ Крайне важливі цінності</h4>
+                <p style="color: #134e4a; margin-bottom: 10px; font-size: 0.9em;">
+                    Ці цінності визначають життєві пріоритети та керують основними рішеннями:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    @foreach($veryImportant as $value => $rank)
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="min-width: 40px; text-align: center; background: #14b8a6; color: white; border-radius: 4px; padding: 4px 8px; font-weight: bold; font-size: 0.85em;">
+                            {{ $rank }}
+                        </div>
+                        <div style="flex: 1;">
+                            <strong style="color: #0f766e;">{{ ucfirst($value) }}</strong>
+                        </div>
                     </div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: {{ ($scores['module5'][$key] / 25) * 100 }}%"></div>
-                    </div>
+                    @endforeach
                 </div>
-                @endif
-            @endforeach
+            </div>
+            @endif
+            
+            {{-- Помірно важливі цінності --}}
+            @if(count($moderatelyImportant) > 0)
+            <div style="margin-bottom: 20px; padding: 15px; background: #fef9c3; border-left: 4px solid #ca8a04; border-radius: 4px;">
+                <h4 style="color: #a16207; margin-bottom: 10px;">⚖️ Помірно важливі цінності</h4>
+                <p style="color: #713f12; margin-bottom: 10px; font-size: 0.9em;">
+                    Значущі, але не першочергові аспекти:
+                </p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    @foreach($moderatelyImportant as $value => $rank)
+                    <div style="background: white; border: 1px solid #fbbf24; border-radius: 4px; padding: 6px 12px; font-size: 0.9em;">
+                        <span style="color: #92400e; font-weight: bold;">{{ $rank }}.</span>
+                        <span style="color: #78350f;">{{ ucfirst($value) }}</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            
+            {{-- Не важливі цінності --}}
+            @if(count($notImportant) > 0)
+            <div style="margin-bottom: 20px; padding: 15px; background: #fee2e2; border-left: 4px solid #dc2626; border-radius: 4px;">
+                <h4 style="color: #991b1b; margin-bottom: 10px;">❌ Не важливі цінності</h4>
+                <p style="color: #7f1d1d; margin-bottom: 10px; font-size: 0.9em;">
+                    Ці аспекти не мають суттєвого значення для прийняття рішень:
+                </p>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    @foreach($notImportant as $value => $rank)
+                    <div style="background: white; border: 1px solid #f87171; border-radius: 4px; padding: 4px 10px; font-size: 0.85em; color: #991b1b;">
+                        {{ ucfirst($value) }} <span style="font-weight: bold;">({{ $rank }})</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            @endif
         </div>
-
-        <p>Говард Гарднер — психолог і професор Гарвардського університету, автор <strong>теорії множинного інтелекту</strong>. Він поставив під сумнів традиційне уявлення про інтелект як про один показник (IQ) і довів, що у людини може бути кілька різних типів інтелекту, які розвиваються по-різному.</p>
-        <p>Кожна людина має свій унікальний профіль сильних сторін, а успішність залежить не від одного показника, а від поєднання цих інтелектів.</p>
+        
+        {{-- Мотиваційні фактори --}}
+        <div style="margin-bottom: 30px;">
+            <h3 style="color: #2c5282; margin-bottom: 15px;">⚡ Мотиваційні фактори</h3>
+            <p style="margin-bottom: 20px; color: #4a5568;">
+                Оцінка факторів від -1 (абсолютне протиріччя) до 7 (повна відповідність цінностям). 
+                Результати показують, що саме мотивує абітурієнта, а що є демотивуючим.
+            </p>
+            
+            @if(count($strongMotivators) === 0 && count($moderateMotivators) === 0 && count($weakMotivators) === 0 && count($demotivators) === 0)
+            <div style="padding: 20px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                <p style="color: #92400e; margin: 0;">
+                    ⚠️ Дані для модуля "Мотиваційні фактори" відсутні. Переконайтеся, що користувач пройшов усі питання модуля 6.
+                </p>
+            </div>
+            @else
+            {{-- Сильні мотиватори --}}
+            @if(count($strongMotivators) > 0)
+            <div style="margin-bottom: 20px; padding: 15px; background: #dbeafe; border-left: 4px solid #2563eb; border-radius: 4px;">
+                <h4 style="color: #1e40af; margin-bottom: 10px;">🚀 Сильні мотиватори (6-7 балів)</h4>
+                <p style="color: #1e3a8a; margin-bottom: 10px; font-size: 0.9em;">
+                    Абсолютно відповідає ціннісним категоріям, максимально мотивує:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    @foreach($strongMotivators as $factor => $score)
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="min-width: 60px;">
+                            <div style="background: #2563eb; color: white; border-radius: 4px; padding: 6px 10px; text-align: center; font-weight: bold;">
+                                {{ $score }} / 7
+                            </div>
+                        </div>
+                        <div style="flex: 1; position: relative;">
+                            <div style="background: #e0e7ff; border-radius: 4px; height: 24px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%); height: 100%; width: {{ ($score / 7) * 100 }}%; transition: width 0.3s;"></div>
+                            </div>
+                            <div style="position: absolute; top: 0; left: 10px; line-height: 24px; font-weight: bold; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                                {{ ucfirst($factor) }}
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            
+            {{-- Помірні мотиватори --}}
+            @if(count($moderateMotivators) > 0)
+            <div style="margin-bottom: 20px; padding: 15px; background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 4px;">
+                <h4 style="color: #15803d; margin-bottom: 10px;">✔️ Помірні мотиватори (4-5 балів)</h4>
+                <p style="color: #166534; margin-bottom: 10px; font-size: 0.9em;">
+                    Має певне мотиваційне значення:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    @foreach($moderateMotivators as $factor => $score)
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="min-width: 60px;">
+                            <div style="background: #16a34a; color: white; border-radius: 4px; padding: 4px 8px; text-align: center; font-weight: bold; font-size: 0.9em;">
+                                {{ $score }} / 7
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <strong style="color: #15803d;">{{ ucfirst($factor) }}</strong>
+                        </div>
+                        <div style="width: 100px; background: #dcfce7; border-radius: 4px; height: 8px; overflow: hidden;">
+                            <div style="background: #16a34a; height: 100%; width: {{ ($score / 7) * 100 }}%;"></div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            
+            {{-- Слабкі мотиватори --}}
+            @if(count($weakMotivators) > 0)
+            <div style="margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-left: 4px solid #9ca3af; border-radius: 4px;">
+                <h4 style="color: #6b7280; margin-bottom: 10px;">➖ Слабкі мотиватори (1-3 бали)</h4>
+                <p style="color: #374151; margin-bottom: 10px; font-size: 0.9em;">
+                    Майже не впливає на мотивацію:
+                </p>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    @foreach($weakMotivators as $factor => $score)
+                    <div style="background: white; border: 1px solid #d1d5db; border-radius: 4px; padding: 4px 10px; font-size: 0.85em; color: #6b7280;">
+                        {{ ucfirst($factor) }} <span style="font-weight: bold;">({{ $score }})</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            
+            {{-- Демотиватори --}}
+            @if(count($demotivators) > 0)
+            <div style="margin-bottom: 20px; padding: 15px; background: #fef2f2; border-left: 4px solid #ef4444; border-radius: 4px;">
+                <h4 style="color: #b91c1c; margin-bottom: 10px;">⛔ Демотиватори (-1 до 0 балів)</h4>
+                <p style="color: #991b1b; margin-bottom: 10px; font-size: 0.9em;">
+                    Протирічить ціннісним категоріям, може викликати відторгнення:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    @foreach($demotivators as $factor => $score)
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="min-width: 60px;">
+                            <div style="background: #ef4444; color: white; border-radius: 4px; padding: 4px 8px; text-align: center; font-weight: bold; font-size: 0.9em;">
+                                {{ $score }}
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <strong style="color: #b91c1c;">{{ ucfirst($factor) }}</strong>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            @endif
+        </div>
+        
+        {{-- Підсумок та рекомендації --}}
+        @if((count($veryImportant) > 0 || count($moderatelyImportant) > 0 || count($notImportant) > 0) && 
+            (count($strongMotivators) > 0 || count($moderateMotivators) > 0 || count($weakMotivators) > 0 || count($demotivators) > 0))
+        <div style="padding: 20px; background: #f0f9ff; border: 2px solid #0284c7; border-radius: 8px;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">💡 Інтерпретація та рекомендації</h4>
+            <div style="color: #075985; line-height: 1.6;">
+                <p style="margin-bottom: 10px;">
+                    <strong>Ціннісний профіль:</strong> 
+                    @if(count($veryImportant) > 0)
+                        Для абітурієнта найбільш важливими є: 
+                        <strong style="color: #0369a1;">{{ implode(', ', array_map('ucfirst', array_keys(array_slice($veryImportant, 0, 3, true)))) }}</strong>.
+                    @else
+                        Недостатньо даних для аналізу.
+                    @endif
+                </p>
+                <p style="margin-bottom: 10px;">
+                    <strong>Мотиваційний профіль:</strong>
+                    @if(count($strongMotivators) > 0)
+                        Максимально мотивують: 
+                        <strong style="color: #0369a1;">{{ implode(', ', array_map('ucfirst', array_keys($strongMotivators))) }}</strong>.
+                    @endif
+                    @if(count($demotivators) > 0)
+                        Викликають відторгнення: 
+                        <strong style="color: #dc2626;">{{ implode(', ', array_map('ucfirst', array_keys($demotivators))) }}</strong>.
+                    @endif
+                    @if(count($strongMotivators) === 0 && count($demotivators) === 0)
+                        Недостатньо даних для аналізу.
+                    @endif
+                </p>
+                @if(count($veryImportant) > 0 || count($strongMotivators) > 0)
+                <p style="margin-top: 15px; padding: 10px; background: white; border-left: 3px solid #0284c7; border-radius: 4px;">
+                    <strong>Рекомендація:</strong> При виборі освітньої програми та майбутньої кар'єри варто орієнтуватися на цінності топ-6 та враховувати сильні мотиватори. Уникати напрямків, які суперечать ключовим цінностям або містять демотиваційні фактори.
+                </p>
+                @endif
+            </div>
+        </div>
+        @endif
     </section>
     @endif
 
@@ -616,22 +868,6 @@
             <tr>
                 <th>Темперамент</th>
                 <td>{{ $temperaments[$dominantTemp] ?? 'Не визначено' }}</td>
-            </tr>
-            @endif
-            
-            @if(isset($scores['module6']))
-            @php
-                $directions = [
-                    'self' => 'Спрямованість на себе',
-                    'interaction' => 'Спрямованість на взаємодію',
-                    'task' => 'Спрямованість на завдання'
-                ];
-                $maxDirection = max($scores['module6']);
-                $dominantDirection = array_search($maxDirection, $scores['module6']);
-            @endphp
-            <tr>
-                <th>Спрямованість особистості</th>
-                <td>{{ $directions[$dominantDirection] ?? 'Не визначено' }}</td>
             </tr>
             @endif
             

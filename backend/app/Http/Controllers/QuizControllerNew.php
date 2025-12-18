@@ -170,26 +170,52 @@ class QuizControllerNew extends Controller
     }
     
     /**
-     * Модуль 3: Типи професійної взаємодії (Климов ДДО)
+     * Модуль 3: Домінуючі типи мислення
      */
     private function calculateModule3($answers, $interpretation)
     {
-        $keys = $interpretation['modules']['module3']['scoring_keys'];
+        // Поки що немає scoring_keys, використовуємо просту логіку
+        // Якщо є ключі в інтерпретаторі - використовуємо їх
         $scores = [
-            'nature' => 0,   // Людина-Природа
-            'technic' => 0,  // Людина-Техніка
-            'human' => 0,    // Людина-Людина
-            'sign' => 0,     // Людина-Знакова система
-            'art' => 0       // Людина-Художній образ
+            'artistic' => 0,         // Художнє
+            'theoretical' => 0,      // Теоретичне
+            'practical' => 0,        // Практичне
+            'creative' => 0,         // Творче
+            'convergent' => 0,       // Конвергентне
+            'intuitive' => 0,        // Інтуїтивне
+            'analytical' => 0        // Аналітичне
         ];
 
-        foreach ($answers as $answer) {
-            $q = (string)$answer->question_number;
-            $a = $answer->answer; // 'a' або 'b'
+        // Якщо в інтерпретаторі є ключі - використовуємо їх
+        if (isset($interpretation['modules']['module3']['scoring_keys'])) {
+            $keys = $interpretation['modules']['module3']['scoring_keys'];
             
-            if (isset($keys[$q][$a])) {
-                $scale = $keys[$q][$a];
-                $scores[$scale]++;
+            foreach ($answers as $answer) {
+                $q = (string)$answer->question_number;
+                $a = $answer->answer; // 'a' або 'b'
+                
+                if (isset($keys[$q][$a])) {
+                    $scale = $keys[$q][$a];
+                    if (isset($scores[$scale])) {
+                        $scores[$scale]++;
+                    }
+                }
+            }
+        } else {
+            // Тимчасова логіка: розподіляємо відповіді по типах
+            // Це буде працювати поки не налаштуємо scoring_keys
+            $typesList = array_keys($scores);
+            $totalTypes = count($typesList);
+            
+            foreach ($answers as $answer) {
+                // Розподіляємо відповіді циклічно по типах
+                $index = ($answer->question_number - 1) % $totalTypes;
+                $type = $typesList[$index];
+                
+                // Додаємо бали в залежності від відповіді
+                if ($answer->answer === 'a') {
+                    $scores[$type]++;
+                }
             }
         }
 
@@ -201,25 +227,41 @@ class QuizControllerNew extends Controller
      */
     private function calculateModule4($answers, $interpretation)
     {
-        $keys = $interpretation['modules']['module4']['scoring_keys'];
-        $scores = [
-            'kinesthetic' => 0,  // Кінестетик
-            'discrete' => 0,     // Дискрет
-            'audial' => 0,       // Аудіал
-            'visual' => 0        // Візуал
+        // Модуль 4: Ціннісні категорії (ранжування від 1 до 18)
+        // Кожна відповідь містить ранг від 1 (найважливіше) до 18 (найменш важливе)
+        $values = [];
+        
+        // Маппінг питань на назви цінностей
+        $valueNames = [
+            1 => 'Активне, діяльне життя',
+            2 => 'Життєва мудрість',
+            3 => 'Здоров\'я',
+            4 => 'Цікава робота',
+            5 => 'Краса природи та мистецтва',
+            6 => 'Любов',
+            7 => 'Матеріальна забезпеченість',
+            8 => 'Наявність добрих друзів',
+            9 => 'Впевненість у собі',
+            10 => 'Пізнання',
+            11 => 'Свобода',
+            12 => 'Щасливе сімейне життя',
+            13 => 'Творчість',
+            14 => 'Суспільне визнання',
+            15 => 'Розваги',
+            16 => 'Продуктивне життя',
+            17 => 'Розвиток',
+            18 => 'Задоволеність собою'
         ];
-
+        
         foreach ($answers as $answer) {
-            $q = (string)$answer->question_number;
-            $a = $answer->answer; // 'a' або 'b'
+            $questionNum = $answer->question_number;
+            $valueName = $valueNames[$questionNum] ?? "Цінність {$questionNum}";
+            $rank = (int)$answer->answer; // Ранг від 1 до 18
             
-            if (isset($keys[$q][$a])) {
-                $scale = $keys[$q][$a];
-                $scores[$scale]++;
-            }
+            $values[$valueName] = $rank;
         }
-
-        return $scores;
+        
+        return $values;
     }
     
     /**
@@ -262,38 +304,51 @@ class QuizControllerNew extends Controller
      */
     private function calculateModule6($answers, $interpretation)
     {
-        $keys = $interpretation['modules']['module6']['scoring_keys'];
-        $scores = [
-            'self' => 0,         // На себе
-            'interaction' => 0,  // На взаємодію
-            'task' => 0          // На завдання
+        // Модуль 6: Мотиваційні фактори (шкала від -1 до 7)
+        // -1 = абсолютне протиріччя, 7 = повна відповідність
+        $motivations = [];
+        
+        // Групуємо по факторах (кожні 3 питання = 1 фактор)
+        $factorNames = [
+            'Високий заробіток',
+            'Комфортні умови праці',
+            'Можливість кар\'єрного зростання',
+            'Визнання та повага',
+            'Стабільність та надійність',
+            'Цікава та різноманітна робота',
+            'Самостійність та незалежність',
+            'Креативність та інновації',
+            'Можливість навчання',
+            'Баланс роботи та життя',
+            'Соціальна значущість',
+            'Робота з людьми',
+            'Можливість подорожувати',
+            'Гнучкий графік',
+            'Престижність професії',
+            'Можливість самореалізації',
+            'Безпечні умови праці',
+            'Близькість до дому',
+            'Дружній колектив'
         ];
-
-        // Создаём массив ответов по номерам вопросов
-        $answersByQuestion = [];
+        
+        // Групуємо відповіді по 3
+        $groupedAnswers = [];
         foreach ($answers as $answer) {
-            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
-        }
-
-        // Подсчитываем баллы по каждой направленности
-        foreach ($keys as $direction => $directionKeys) {
-            // Прямые вопросы
-            foreach ($directionKeys['direct'] as $q) {
-                if (isset($answersByQuestion[$q])) {
-                    $scores[$direction] += $answersByQuestion[$q];
-                }
+            $factorIndex = floor(($answer->question_number - 1) / 3);
+            if (!isset($groupedAnswers[$factorIndex])) {
+                $groupedAnswers[$factorIndex] = [];
             }
-            // Обратные вопросы (вычитаем из 6)
-            if (isset($directionKeys['reverse'])) {
-                foreach ($directionKeys['reverse'] as $q) {
-                    if (isset($answersByQuestion[$q])) {
-                        $scores[$direction] += (6 - $answersByQuestion[$q]);
-                    }
-                }
-            }
+            $groupedAnswers[$factorIndex][] = (int)$answer->answer;
         }
-
-        return $scores;
+        
+        // Вираховуємо середній бал для кожного фактора
+        foreach ($groupedAnswers as $index => $scores) {
+            $factorName = $factorNames[$index] ?? "Фактор " . ($index + 1);
+            $avgScore = array_sum($scores) / count($scores);
+            $motivations[$factorName] = round($avgScore, 1);
+        }
+        
+        return $motivations;
     }
     
     /**
@@ -513,9 +568,12 @@ class QuizControllerNew extends Controller
         
         $result = QuizResult::where('session_id', $sessionId)->first();
         
-        if (!$result) {
-            $result = $this->calculateResults($session);
+        // ТИМЧАСОВО: Завжди перераховуємо результати для модуля 3
+        // Видаляємо старий результат і рахуємо заново
+        if ($result) {
+            $result->delete();
         }
+        $result = $this->calculateResults($session);
         
         $answers = QuizAnswer::where('session_id', $sessionId)->get();
         $totalAnswers = $answers->count();
