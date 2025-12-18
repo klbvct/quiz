@@ -33,9 +33,9 @@ class QuizControllerNew extends Controller
     public function calculateResults($session)
     {
         // Загружаем интерпретатор
-        $interpretationPath = storage_path('app/ai_templates/interpretation-new.json');
+        $interpretationPath = resource_path('ai_templates/interpretation.json');
         if (!file_exists($interpretationPath)) {
-            \Log::error('interpretation-new.json not found');
+            \Log::error('interpretation.json not found');
             return null;
         }
         

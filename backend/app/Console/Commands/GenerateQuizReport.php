@@ -49,7 +49,7 @@ class GenerateQuizReport extends Command
             $this->warn('Результаты не найдены. Пересчитываю...');
             
             // Загружаем интерпретацию
-            $interpretationPath = storage_path('app/ai_templates/interpretation.json');
+            $interpretationPath = resource_path('ai_templates/interpretation.json');
             if (!file_exists($interpretationPath)) {
                 $this->error('Файл interpretation.json не найден!');
                 return 1;

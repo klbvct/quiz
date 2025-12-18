@@ -52,7 +52,7 @@ class TestQuizCalculation extends Command
         $this->info("---");
         
         // Проверяем interpretation.json
-        $interpretationPath = storage_path('app/ai_templates/interpretation.json');
+        $interpretationPath = resource_path('ai_templates/interpretation.json');
         if (!file_exists($interpretationPath)) {
             $this->error('Файл interpretation.json не найден!');
             $this->info("Ожидаемый путь: {$interpretationPath}");
