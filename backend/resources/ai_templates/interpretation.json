@@ -263,45 +263,79 @@
       }
     },
     "module7": {
-      "name": "Кар'єрні якоря (Шейн)",
-      "name_uk": "Якоря кар'єри",
-      "description": "Визначення ключових мотивів та цінностей в професійному розвитку",
-      "total_questions": 40,
+      "name": "Типологія професійних інтересів за Голландом (RIASEC)",
+      "name_uk": "Типи професійних інтересів",
+      "description": "Визначення домінуючих типів особистості та професійних інтересів за класифікацією Голланда",
+      "total_questions": 37,
       "scoring_keys": {
-        "order": ["autonomy", "stability", "technical", "entrepreneurship", "service", "challenge", "lifestyle", "management"]
+        "1": {"a": "realistic", "b": "investigative"},
+        "2": {"a": "artistic", "b": "social"},
+        "3": {"a": "enterprising", "b": "conventional"},
+        "4": {"a": "realistic", "b": "investigative"},
+        "5": {"a": "social", "b": "enterprising"},
+        "6": {"a": "conventional", "b": "realistic"},
+        "7": {"a": "investigative", "b": "artistic"},
+        "8": {"a": "social", "b": "enterprising"},
+        "9": {"a": "conventional", "b": "realistic"},
+        "10": {"a": "investigative", "b": "artistic"},
+        "11": {"a": "social", "b": "enterprising"},
+        "12": {"a": "conventional", "b": "realistic"},
+        "13": {"a": "investigative", "b": "artistic"},
+        "14": {"a": "social", "b": "enterprising"},
+        "15": {"a": "conventional", "b": "realistic"},
+        "16": {"a": "investigative", "b": "artistic"},
+        "17": {"a": "social", "b": "enterprising"},
+        "18": {"a": "conventional", "b": "realistic"},
+        "19": {"a": "investigative", "b": "artistic"},
+        "20": {"a": "social", "b": "enterprising"},
+        "21": {"a": "conventional", "b": "realistic"},
+        "22": {"a": "investigative", "b": "artistic"},
+        "23": {"a": "social", "b": "enterprising"},
+        "24": {"a": "conventional", "b": "realistic"},
+        "25": {"a": "investigative", "b": "artistic"},
+        "26": {"a": "social", "b": "enterprising"},
+        "27": {"a": "conventional", "b": "realistic"},
+        "28": {"a": "investigative", "b": "artistic"},
+        "29": {"a": "social", "b": "enterprising"},
+        "30": {"a": "conventional", "b": "realistic"},
+        "31": {"a": "investigative", "b": "artistic"},
+        "32": {"a": "enterprising", "b": "conventional"},
+        "33": {"a": "realistic", "b": "investigative"},
+        "34": {"a": "artistic", "b": "social"},
+        "35": {"a": "enterprising", "b": "conventional"},
+        "36": {"a": "realistic", "b": "investigative"},
+        "37": {"a": "artistic", "b": "social"}
       },
       "scales": {
-        "autonomy": {
-          "name": "Автономія/незалежність",
-          "description": "Бажання мати свободу дій, працювати самостійно без жорсткого контролю."
+        "realistic": {
+          "name": "Реалістичний (R)",
+          "abbreviation": "R",
+          "description": "Практик. Делатель. Орієнтація на роботу з інструментами, машинами, технікою. Цінує конкретні результати, практичні навички."
         },
-        "stability": {
-          "name": "Стабільність роботи",
-          "description": "Прагнення до стабільності, передбачуваності, надійності місця роботи."
+        "investigative": {
+          "name": "Дослідницький (I)",
+          "abbreviation": "I",
+          "description": "Мислитель. Дослідник. Схильність до аналізу, наукового мислення, вирішення складних інтелектуальних завдань."
         },
-        "technical": {
-          "name": "Професійна компетентність",
-          "description": "Глибокі знання у конкретній сфері, експертність, майстерність."
+        "artistic": {
+          "name": "Артистичний (A)",
+          "abbreviation": "A",
+          "description": "Творець. Орієнтація на самовираження, творчість, естетичні цінності. Нестандартний підхід."
         },
-        "entrepreneurship": {
-          "name": "Підприємництво",
-          "description": "Бажання створювати нове, ризикувати, будувати свій бізнес."
+        "social": {
+          "name": "Соціальний (S)",
+          "abbreviation": "S",
+          "description": "Помічник. Націленість на взаємодію з людьми, допомогу, навчання, турботу про інших."
         },
-        "service": {
-          "name": "Служіння",
-          "description": "Орієнтація на допомогу людям, суспільну користь."
+        "enterprising": {
+          "name": "Підприємницький (E)",
+          "abbreviation": "E",
+          "description": "Лідер. Прагнення до впливу, управління, досягнення цілей, організації та керівництва."
         },
-        "challenge": {
-          "name": "Виклик",
-          "description": "Пошук нових викликів, складних завдань, подолання перешкод."
-        },
-        "lifestyle": {
-          "name": "Інтеграція стилів життя",
-          "description": "Баланс між кар'єрою та особистим життям."
-        },
-        "management": {
-          "name": "Менеджмент",
-          "description": "Прагнення до управління людьми, організації процесів."
+        "conventional": {
+          "name": "Конвенційний (C)",
+          "abbreviation": "C",
+          "description": "Організатор. Цінує порядок, структуру, чіткі правила, систематизацію даних та інформації."
         }
       }
     },

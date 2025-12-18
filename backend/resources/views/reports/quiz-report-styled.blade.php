@@ -973,6 +973,177 @@
     
     <div class="page-break"></div>
 
+    {{-- Система Голланда RIASEC (Модуль 7) --}}
+    @if(isset($scores['module7']))
+    <section id="holland-riasec">
+        <h2>🎯 Типологія професійних інтересів за Голландом (RIASEC)</h2>
+        <p>Визначення домінуючого типу особистості за системою професійних інтересів Джона Голланда.</p>
+        
+        @php
+            // Типы по системе Голланда RIASEC
+            $hollandTypes = [
+                'realistic' => ['R', 'Практик (Realistic)', '#10B981'],
+                'investigative' => ['I', 'Мислитель. Дослідник (Investigative)', '#3B82F6'],
+                'artistic' => ['A', 'Творець (Artistic)', '#EC4899'],
+                'social' => ['S', 'Помічник (Social)', '#F59E0B'],
+                'enterprising' => ['E', 'Лідер (Enterprising)', '#EF4444'],
+                'conventional' => ['C', 'Організатор (Conventional)', '#8B5CF6']
+            ];
+            
+            $hollandDescriptions = [
+                'realistic' => 'Люди цього типу віддають перевагу роботі з конкретними об\'єктами та їх практичному використанню. Характерні професії: інженер, механік, електрик, будівельник, фермер, водій.',
+                'investigative' => 'Схильність до дослідницької діяльності, аналітичного мислення, вирішення інтелектуальних завдань. Характерні професії: науковець, дослідник, аналітик, лікар, програміст.',
+                'artistic' => 'Творчі особистості, які прагнуть самовираження через мистецтво та креативність. Характерні професії: художник, дизайнер, музикант, письменник, актор, архітектор.',
+                'social' => 'Орієнтовані на роботу з людьми, допомогу іншим, навчання та підтримку. Характерні професії: вчитель, психолог, соціальний працівник, медсестра, консультант.',
+                'enterprising' => 'Лідерські якості, прагнення до організації та управління, підприємливість. Характерні професії: менеджер, підприємець, юрист, політик, маркетолог.',
+                'conventional' => 'Схильність до структурованої роботи, порядку, обробки даних та документації. Характерні професії: бухгалтер, секретар, адміністратор, банкір, аналітик даних.'
+            ];
+            
+            // Сортируем по баллам
+            $hollandScores = $scores['module7'];
+            arsort($hollandScores);
+            
+            // Формируем доминирующий код из 3 букв
+            $topThree = array_slice($hollandScores, 0, 3, true);
+            $hollandCode = '';
+            foreach($topThree as $type => $score) {
+                if(isset($hollandTypes[$type])) {
+                    $hollandCode .= $hollandTypes[$type][0];
+                }
+            }
+            
+            // Вычисляем максимальный балл для нормализации
+            $maxScore = max($hollandScores);
+            $minScore = min($hollandScores);
+        @endphp
+        
+        @if(count($hollandScores) > 0)
+        
+        {{-- Доминирующий код --}}
+        <div style="padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin: 25px 0; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 14px; color: rgba(255,255,255,0.9); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">
+                Ваш професійний код
+            </div>
+            <div style="font-size: 48px; font-weight: bold; color: white; letter-spacing: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                {{ $hollandCode }}
+            </div>
+            <div style="font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 12px;">
+                @php
+                    $names = [];
+                    foreach($topThree as $type => $score) {
+                        if(isset($hollandTypes[$type])) {
+                            $names[] = explode(' ', $hollandTypes[$type][1])[0];
+                        }
+                    }
+                @endphp
+                {{ implode(' → ', $names) }}
+            </div>
+        </div>
+        
+        {{-- Визуализация типов --}}
+        <h3 style="margin-top: 30px; margin-bottom: 15px;">Розподіл типів професійних інтересів:</h3>
+        <div style="margin: 20px 0;">
+            @foreach($hollandScores as $type => $score)
+            @php
+                $typeData = $hollandTypes[$type] ?? ['?', 'Невідомий тип', '#6B7280'];
+                $letter = $typeData[0];
+                $name = $typeData[1];
+                $color = $typeData[2];
+                
+                // Нормализуем балл к процентам
+                if ($maxScore > $minScore) {
+                    $percent = (($score - $minScore) / ($maxScore - $minScore)) * 100;
+                } else {
+                    $percent = 100;
+                }
+                
+                // Определяем уровень проявленности
+                if ($percent >= 80) {
+                    $level = 'дуже високий';
+                } elseif ($percent >= 60) {
+                    $level = 'високий';
+                } elseif ($percent >= 40) {
+                    $level = 'середній';
+                } elseif ($percent >= 20) {
+                    $level = 'низький';
+                } else {
+                    $level = 'дуже низький';
+                }
+                
+                // Проверяем, входит ли в топ-3
+                $isTop3 = array_key_exists($type, $topThree);
+            @endphp
+            <div style="margin-bottom: 18px; @if($isTop3) padding: 12px; background: #F0F9FF; border-radius: 8px; border-left: 4px solid {{ $color }}; @endif">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; background: {{ $color }}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            {{ $letter }}
+                        </div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 600; color: #2D3748;">{{ $name }}</div>
+                            <div style="font-size: 11px; color: #6B7280;">{{ $score }} балів • {{ $level }} рівень</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 16px; font-weight: bold; color: {{ $color }};">
+                        {{ round($percent) }}%
+                    </div>
+                </div>
+                
+                {{-- Прогресс бар --}}
+                <div style="width: 100%; height: 12px; background: #E5E7EB; border-radius: 6px; overflow: hidden;">
+                    <div style="width: {{ $percent }}%; height: 100%; background: linear-gradient(90deg, {{ $color }} 0%, {{ $color }}dd 100%); transition: width 0.3s;"></div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        
+        {{-- Описания типов --}}
+        <h3 style="margin-top: 35px; margin-bottom: 15px;">Детальна характеристика домінуючих типів:</h3>
+        <ul class="content-list">
+            @foreach($topThree as $type => $score)
+            @php
+                $typeData = $hollandTypes[$type] ?? ['?', 'Невідомий тип', '#6B7280'];
+                $letter = $typeData[0];
+                $name = $typeData[1];
+            @endphp
+            <li>
+                <strong>{{ $letter }} – {{ $name }}</strong><br>
+                {{ $hollandDescriptions[$type] ?? '' }}
+            </li>
+            @endforeach
+        </ul>
+        
+        {{-- Рекомендации --}}
+        <div style="margin-top: 30px; padding: 20px; background: #FEF3C7; border-left: 4px solid #F59E0B; border-radius: 8px;">
+            <h4 style="color: #92400E; margin-top: 0;">💡 Інтерпретація коду {{ $hollandCode }}:</h4>
+            <p style="color: #78350F; margin-bottom: 10px;">
+                Перша буква <strong style="color: #92400E;">({{ substr($hollandCode, 0, 1) }})</strong> вказує на найбільш виражений тип особистості — це ваша основна професійна орієнтація.
+            </p>
+            <p style="color: #78350F; margin-bottom: 10px;">
+                Друга буква <strong style="color: #92400E;">({{ substr($hollandCode, 1, 1) }})</strong> показує додатковий тип, який доповнює основний.
+            </p>
+            <p style="color: #78350F; margin-bottom: 0;">
+                Третя буква <strong style="color: #92400E;">({{ substr($hollandCode, 2, 1) }})</strong> вказує на менш виражений, але все ж значущий аспект вашої професійної особистості.
+            </p>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 20px; background: #ECFDF5; border-left: 4px solid #10B981; border-radius: 8px;">
+            <h4 style="color: #065F46; margin-top: 0;">🎓 Рекомендації щодо вибору професії:</h4>
+            <p style="color: #047857; margin-bottom: 0;">
+                При виборі професії шукайте ті сфери діяльності, які поєднують характеристики всіх трьох домінуючих типів вашого коду. 
+                Це забезпечить найбільшу задоволеність від роботи та професійний успіх. 
+                Звертайте увагу на професії, які дозволяють розвивати ваші природні схильності та інтереси.
+            </p>
+        </div>
+        
+        @else
+        <p style="color: #666; font-style: italic;">Недостатньо даних для визначення типу за системою Голланда. Переконайтеся, що тестування пройдено повністю.</p>
+        @endif
+    </section>
+    @endif
+    
+    <div class="page-break"></div>
+
     {{-- Рекомендації до вибору професійних напрямків --}}
     <section id="recommendations">
         <h2>🎯 Рекомендації до вибору професійних напрямків</h2>

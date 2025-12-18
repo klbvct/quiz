@@ -500,33 +500,28 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 7: Кар'єрні якоря (Шейн)
+     * Модуль 7: Типологія професійних інтересів за Голландом (RIASEC)
      */
     private function calculateModule7($answers, $interpretation)
     {
         $keys = $interpretation['modules']['module7']['scoring_keys'];
         $scores = [
-            'professional_competence' => 0,  // Професійна компетентність
-            'management' => 0,                // Менеджмент
-            'autonomy' => 0,                  // Автономія
-            'stability_place' => 0,           // Стабільність місця роботи
-            'stability_residence' => 0,       // Стабільність місця проживання
-            'service' => 0,                   // Служіння
-            'challenge' => 0,                 // Виклик
-            'entrepreneurship' => 0           // Підприємництво
+            'realistic' => 0,        // Реалістичний (R)
+            'investigative' => 0,    // Дослідницький (I)
+            'artistic' => 0,         // Артистичний (A)
+            'social' => 0,           // Соціальний (S)
+            'enterprising' => 0,     // Підприємницький (E)
+            'conventional' => 0      // Конвенційний (C)
         ];
 
-        // Создаём массив ответов по номерам вопросов
-        $answersByQuestion = [];
         foreach ($answers as $answer) {
-            $answersByQuestion[$answer->question_number] = (int)$answer->answer;
-        }
-
-        // Суммируем баллы по каждому якорю
-        foreach ($keys as $anchor => $questions) {
-            foreach ($questions as $q) {
-                if (isset($answersByQuestion[$q])) {
-                    $scores[$anchor] += $answersByQuestion[$q];
+            $q = (string)$answer->question_number;
+            $a = $answer->answer; // 'a' або 'b'
+            
+            if (isset($keys[$q][$a])) {
+                $scale = $keys[$q][$a];
+                if (isset($scores[$scale])) {
+                    $scores[$scale]++;
                 }
             }
         }
