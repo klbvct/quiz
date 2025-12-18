@@ -1144,6 +1144,174 @@
     
     <div class="page-break"></div>
 
+    {{-- Типологія сприйняття (Модуль 8) --}}
+    @if(isset($scores['module8']))
+    <section id="perception-types">
+        <h2>👁️ Типологія сприйняття</h2>
+        <p>Визначення домінуючих каналів отримання та обробки інформації.</p>
+        
+        @php
+            $perceptionTypes = [
+                'visual' => '👁️ Візуальний',
+                'auditory' => '🎵 Аудіальний',
+                'kinesthetic' => '🤲 Кінестетичний',
+                'digital' => '🧮 Дискретний/Дигітальний'
+            ];
+            
+            $perceptionColors = [
+                'visual' => '#3B82F6',
+                'auditory' => '#10B981',
+                'kinesthetic' => '#F59E0B',
+                'digital' => '#8B5CF6'
+            ];
+            
+            $perceptionDescriptions = [
+                'visual' => 'Зорове сприйняття. Краще сприймає інформацію через образи, діаграми, відео. Мислить картинками.',
+                'auditory' => 'Слухове сприйняття. Краще сприймає інформацію на слух, через лекції, аудіокниги, обговорення.',
+                'kinesthetic' => 'Тактильне сприйняття + нюх + рух. Потребує практичного досвіду, фізичної взаємодії з матеріалом.',
+                'digital' => 'Логічний аналіз, робота з цифрами, символами, знаками. Сприймає через логічні схеми та структури.'
+            ];
+            
+            // Нормалізуємо до 100%
+            $totalScore = array_sum($scores['module8']);
+            $perceptionPercentages = [];
+            
+            if($totalScore > 0) {
+                foreach($perceptionTypes as $key => $name) {
+                    if(isset($scores['module8'][$key])) {
+                        $percent = ($scores['module8'][$key] / $totalScore) * 100;
+                        $perceptionPercentages[$key] = [
+                            'name' => $name,
+                            'score' => $scores['module8'][$key],
+                            'percent' => $percent,
+                            'color' => $perceptionColors[$key]
+                        ];
+                    }
+                }
+                
+                // Сортуємо за процентом
+                uasort($perceptionPercentages, function($a, $b) {
+                    return $b['percent'] <=> $a['percent'];
+                });
+            }
+            
+            // Визначаємо домінуючий тип
+            $dominantType = array_key_first($perceptionPercentages);
+        @endphp
+        
+        @if(count($perceptionPercentages) > 0)
+        
+        {{-- Кругова діаграма --}}
+        <div style="display: flex; align-items: center; justify-content: center; margin: 30px 0;">
+            <svg viewBox="0 0 200 200" style="width: 300px; height: 300px; transform: rotate(-90deg);">
+                @php
+                    $radius = 80;
+                    $circumference = 2 * pi() * $radius;
+                    $currentOffset = 0;
+                @endphp
+                
+                @foreach($perceptionPercentages as $key => $data)
+                    @php
+                        $strokeLength = ($data['percent'] / 100) * $circumference;
+                        $gap = 1;
+                    @endphp
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r="{{ $radius }}"
+                        fill="none"
+                        stroke="{{ $data['color'] }}"
+                        stroke-width="40"
+                        stroke-dasharray="{{ $strokeLength - $gap }} {{ $circumference - $strokeLength + $gap }}"
+                        stroke-dashoffset="{{ -$currentOffset }}"
+                        opacity="0.9"
+                    />
+                    @php
+                        $currentOffset += $strokeLength;
+                    @endphp
+                @endforeach
+                
+                <circle cx="100" cy="100" r="50" fill="white"/>
+                
+                {{-- Проценти --}}
+                @php
+                    $currentAngle = 0;
+                @endphp
+                @foreach($perceptionPercentages as $key => $data)
+                    @php
+                        $segmentAngle = ($data['percent'] / 100) * 360;
+                        $midAngle = $currentAngle + ($segmentAngle / 2);
+                        $midAngleRad = deg2rad($midAngle);
+                        $textRadius = $radius;
+                        $textX = 100 + $textRadius * cos($midAngleRad);
+                        $textY = 100 + $textRadius * sin($midAngleRad);
+                        $currentAngle += $segmentAngle;
+                        $showPercent = $data['percent'] >= 5;
+                    @endphp
+                    @if($showPercent)
+                    <text 
+                        x="{{ $textX }}" 
+                        y="{{ $textY }}" 
+                        text-anchor="middle" 
+                        dominant-baseline="middle"
+                        style="font-size: 12px; font-weight: bold; fill: white; transform: rotate(90deg); transform-origin: {{ $textX }}px {{ $textY }}px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        {{ round($data['percent']) }}%
+                    </text>
+                    @endif
+                @endforeach
+                
+                <text x="100" y="100" text-anchor="middle" style="font-size: 14px; font-weight: bold; fill: #2D3748; transform: rotate(90deg); transform-origin: 100px 100px;">
+                    Сприйняття
+                </text>
+            </svg>
+        </div>
+        
+        {{-- Горизонтальні стовпці --}}
+        <div style="margin: 30px 0;">
+            @foreach($perceptionPercentages as $key => $data)
+            <div style="margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <span style="font-size: 14px; font-weight: 600; color: #2D3748;">{{ $data['name'] }}</span>
+                    <span style="font-size: 16px; font-weight: bold; color: {{ $data['color'] }};">{{ round($data['percent']) }}%</span>
+                </div>
+                <div style="width: 100%; height: 28px; background: #E5E7EB; border-radius: 14px; overflow: hidden;">
+                    <div style="width: {{ $data['percent'] }}%; height: 100%; background: {{ $data['color'] }}; border-radius: 14px;"></div>
+                </div>
+                <div style="font-size: 11px; color: #6B7280; margin-top: 3px;">{{ $data['score'] }} балів</div>
+            </div>
+            @endforeach
+        </div>
+        
+        {{-- Описи --}}
+        <h3 style="margin-top: 30px; margin-bottom: 15px;">Характеристика типів сприйняття:</h3>
+        <ul class="content-list">
+            @foreach($perceptionPercentages as $key => $data)
+            <li>
+                <strong>{{ $data['name'] }} ({{ round($data['percent']) }}%)</strong> — 
+                {{ $perceptionDescriptions[$key] }}
+            </li>
+            @endforeach
+        </ul>
+        
+        {{-- Рекомендації --}}
+        @if($dominantType)
+        <div style="margin-top: 30px; padding: 20px; background: #EFF6FF; border-left: 4px solid {{ $perceptionColors[$dominantType] }}; border-radius: 8px;">
+            <h4 style="color: #1E40AF; margin-top: 0;">💡 Рекомендації для навчання:</h4>
+            <p style="color: #1E3A8A; margin-bottom: 0;">
+                <strong>Домінуючий тип сприйняття:</strong> {{ $perceptionTypes[$dominantType] }}<br>
+                Рекомендується використовувати навчальні матеріали, які відповідають вашому типу сприйняття. 
+                Однак розвивайте всі канали, оскільки комплексне сприйняття інформації підвищує ефективність навчання.
+            </p>
+        </div>
+        @endif
+        
+        @else
+        <p style="color: #666; font-style: italic;">Недостатньо даних для визначення типу сприйняття. Переконайтеся, що тестування пройдено повністю.</p>
+        @endif
+    </section>
+    @endif
+    <div class="page-break"></div>
+
     {{-- Рекомендації до вибору професійних напрямків --}}
     <section id="recommendations">
         <h2>🎯 Рекомендації до вибору професійних напрямків</h2>

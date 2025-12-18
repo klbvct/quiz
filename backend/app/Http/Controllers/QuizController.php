@@ -530,20 +530,20 @@ class QuizController extends Controller
     }
     
     /**
-     * Модуль 8: Темперамент (ранжирование 4 вариантов в каждом вопросе)
+     * Модуль 8: Типологія сприйняття (ранжування 4 варіантів у кожному питанні)
      */
     private function calculateModule8($answers, $interpretation)
     {
         $scores = [
-            'choleric' => 0,     // Холерик
-            'sanguine' => 0,     // Сангвінік
-            'phlegmatic' => 0,   // Флегматик
-            'melancholic' => 0   // Меланхолік
+            'visual' => 0,       // Візуальний
+            'auditory' => 0,     // Аудіальний
+            'kinesthetic' => 0,  // Кінестетичний
+            'digital' => 0       // Дискретний/Дигітальний
         ];
 
-        // Модуль 8 использует ранжирование: [4,3,2,1] где 4=наиболее подходит, 1=наименее
-        // Порядок типов в каждом вопросе: холерик, сангвиник, флегматик, меланхолик
-        $types = ['choleric', 'sanguine', 'phlegmatic', 'melancholic'];
+        // Модуль 8: 5 блоків по 4 питання, ранжування від 1 до 4
+        // Порядок типів у кожному блоці: візуальний, аудіальний, кінестетичний, дискретний
+        $types = ['visual', 'auditory', 'kinesthetic', 'digital'];
 
         foreach ($answers as $answer) {
             $ranking = json_decode($answer->answer, true);
