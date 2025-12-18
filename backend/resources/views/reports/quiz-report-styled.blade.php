@@ -1374,18 +1374,18 @@
         <table class="info-table">
             @if(isset($scores['module8']))
             @php
-                $temperaments = [
-                    'choleric' => 'Холерик',
-                    'sanguine' => 'Сангвінік',
-                    'phlegmatic' => 'Флегматик',
-                    'melancholic' => 'Меланхолік'
+                $perceptionTypes = [
+                    'visual' => 'Візуальний',
+                    'auditory' => 'Аудіальний',
+                    'kinesthetic' => 'Кінестетичний',
+                    'digital' => 'Дискретний/Дигітальний'
                 ];
-                $maxTemp = max($scores['module8']);
-                $dominantTemp = array_search($maxTemp, $scores['module8']);
+                arsort($scores['module8']);
+                $dominantPerception = array_key_first($scores['module8']);
             @endphp
             <tr>
-                <th>Темперамент</th>
-                <td>{{ $temperaments[$dominantTemp] ?? 'Не визначено' }}</td>
+                <th>Тип сприйняття</th>
+                <td>{{ $perceptionTypes[$dominantPerception] ?? 'Не визначено' }}</td>
             </tr>
             @endif
             
@@ -1406,25 +1406,25 @@
             
             @if(isset($scores['module7']))
             @php
-                $anchors = [
-                    'professional_competence' => 'Професійна компетентність',
-                    'management' => 'Менеджмент',
-                    'autonomy' => 'Автономія',
-                    'stability_place' => 'Стабільність місця роботи',
-                    'stability_residence' => 'Стабільність місця проживання',
-                    'service' => 'Служіння',
-                    'challenge' => 'Виклик',
-                    'entrepreneurship' => 'Підприємництво'
+                $hollandTypes = [
+                    'realistic' => 'Реалістичний (R)',
+                    'investigative' => 'Дослідницький (I)',
+                    'artistic' => 'Артистичний (A)',
+                    'social' => 'Соціальний (S)',
+                    'enterprising' => 'Підприємницький (E)',
+                    'conventional' => 'Конвенційний (C)'
                 ];
                 arsort($scores['module7']);
-                $topAnchors = array_slice($scores['module7'], 0, 3, true);
-                $anchorsList = implode(', ', array_map(function($key) use ($anchors) {
-                    return $anchors[$key] ?? $key;
-                }, array_keys($topAnchors)));
+                $topThreeHolland = array_slice($scores['module7'], 0, 3, true);
+                $hollandCode = '';
+                $hollandCodeLetters = ['realistic' => 'R', 'investigative' => 'I', 'artistic' => 'A', 'social' => 'S', 'enterprising' => 'E', 'conventional' => 'C'];
+                foreach(array_keys($topThreeHolland) as $type) {
+                    $hollandCode .= $hollandCodeLetters[$type] ?? '';
+                }
             @endphp
             <tr>
-                <th>Кар'єрні якоря (ТОП-3)</th>
-                <td>{{ $anchorsList }}</td>
+                <th>Код Holland (RIASEC)</th>
+                <td>{{ $hollandCode }}</td>
             </tr>
             @endif
         </table>

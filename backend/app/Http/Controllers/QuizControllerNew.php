@@ -82,11 +82,11 @@ class QuizControllerNew extends Controller
                     $moduleScores['module6'] = $this->calculateModule6($moduleAnswers, $interpretation);
                     break;
                 case 7:
-                    // Кар'єрні якоря (Шейн)
+                    // Типологія професійних інтересів за Голландом (RIASEC)
                     $moduleScores['module7'] = $this->calculateModule7($moduleAnswers, $interpretation);
                     break;
                 case 8:
-                    // Темперамент
+                    // Типологія сприйняття
                     $moduleScores['module8'] = $this->calculateModule8($moduleAnswers, $interpretation);
                     break;
             }
@@ -352,7 +352,7 @@ class QuizControllerNew extends Controller
     }
     
     /**
-     * Модуль 7: Кар'єрні якоря (Шейн)
+     * Модуль 7: Типологія професійних інтересів за Голландом (RIASEC)
      */
     private function calculateModule7($answers, $interpretation)
     {
@@ -387,7 +387,7 @@ class QuizControllerNew extends Controller
     }
     
     /**
-     * Модуль 8: Темперамент (ранжирование 4 вариантов в каждом вопросе)
+     * Модуль 8: Типологія сприйняття (ранжування 4 варіантів у кожному питанні)
      */
     private function calculateModule8($answers, $interpretation)
     {
