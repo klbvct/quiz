@@ -1370,66 +1370,248 @@
     {{-- Психологічна Карта --}}
     <section id="psychological-map">
         <h2>📋 Індивідуальна психологічна карта</h2>
-        
-        <table class="info-table">
-            @if(isset($scores['module8']))
-            @php
-                $perceptionTypes = [
-                    'visual' => 'Візуальний',
-                    'auditory' => 'Аудіальний',
-                    'kinesthetic' => 'Кінестетичний',
-                    'digital' => 'Дискретний/Дигітальний'
-                ];
-                arsort($scores['module8']);
-                $dominantPerception = array_key_first($scores['module8']);
-            @endphp
-            <tr>
-                <th>Тип сприйняття</th>
-                <td>{{ $perceptionTypes[$dominantPerception] ?? 'Не визначено' }}</td>
-            </tr>
-            @endif
+
+        @php
+            // Збираємо дані для психологічної карти
             
-            @if(isset($scores['module3']))
-            @php
+            // 1. Інтелектуальний потенціал (Модуль 3 - Типи мислення)
+            $dominantThinking = '';
+            $thinkingLabel = '';
+            if(isset($scores['module3'])) {
+                $thinkingTypes = [
+                    'artistic' => 'Художнє (наочно-образне)',
+                    'theoretical' => 'Теоретичне',
+                    'practical' => 'Практичне',
+                    'creative' => 'Творче (продуктивне)',
+                    'convergent' => 'Конвергентне',
+                    'intuitive' => 'Інтуїтивне',
+                    'analytical' => 'Аналітичне'
+                ];
                 arsort($scores['module3']);
-                $topKlimov = array_slice(array_keys($scores['module3']), 0, 3, true);
-                $klimovCode = '';
-                foreach($topKlimov as $type) {
-                    $klimovCode .= strtoupper(substr($type, 0, 1));
-                }
-            @endphp
-            <tr>
-                <th>Код професійних переваг (за Климовим)</th>
-                <td>{{ $klimovCode }}</td>
-            </tr>
-            @endif
+                $dominantThinking = array_key_first($scores['module3']);
+                $thinkingLabel = $thinkingTypes[$dominantThinking] ?? 'Не визначено';
+            }
             
-            @if(isset($scores['module7']))
-            @php
-                $hollandTypes = [
-                    'realistic' => 'Реалістичний (R)',
-                    'investigative' => 'Дослідницький (I)',
-                    'artistic' => 'Артистичний (A)',
-                    'social' => 'Соціальний (S)',
-                    'enterprising' => 'Підприємницький (E)',
-                    'conventional' => 'Конвенційний (C)'
-                ];
+            // 2. Домінантні риси характеру
+            $characterTraits = [];
+            
+            // На основі типу мислення
+            $thinkingTraits = [
+                'artistic' => ['Уява', 'Креативність', 'Емоційність'],
+                'theoretical' => ['Аналітичність', 'Логічність', 'Систематичність'],
+                'practical' => ['Виваженість', 'Прагматичність', 'Реалістичність'],
+                'creative' => ['Оригінальність', 'Інноваційність', 'Гнучкість'],
+                'convergent' => ['Точність', 'Концентрація', 'Цілеспрямованість'],
+                'intuitive' => ['Проникливість', 'Передбачення', 'Чутливість'],
+                'analytical' => ['Критичність', 'Детальність', 'Обґрунтованість']
+            ];
+            
+            if($dominantThinking && isset($thinkingTraits[$dominantThinking])) {
+                $characterTraits = array_merge($characterTraits, $thinkingTraits[$dominantThinking]);
+            }
+            
+            // Додаємо риси на основі Holland типу
+            if(isset($scores['module7'])) {
                 arsort($scores['module7']);
-                $topThreeHolland = array_slice($scores['module7'], 0, 3, true);
-                $hollandCode = '';
-                $hollandCodeLetters = ['realistic' => 'R', 'investigative' => 'I', 'artistic' => 'A', 'social' => 'S', 'enterprising' => 'E', 'conventional' => 'C'];
-                foreach(array_keys($topThreeHolland) as $type) {
-                    $hollandCode .= $hollandCodeLetters[$type] ?? '';
+                $topHolland = array_key_first($scores['module7']);
+                $hollandTraits = [
+                    'realistic' => 'Практичність',
+                    'investigative' => 'Допитливість',
+                    'artistic' => 'Творчість',
+                    'social' => 'Емпатія',
+                    'enterprising' => 'Лідерство',
+                    'conventional' => 'Організованість'
+                ];
+                if(isset($hollandTraits[$topHolland])) {
+                    $characterTraits[] = $hollandTraits[$topHolland];
                 }
-            @endphp
+            }
+            
+            $characterTraits = array_unique($characterTraits);
+            $characterTraits = array_slice($characterTraits, 0, 3);
+            
+            // 3. Самоконтроль (на основі модуля 6 - мотивації)
+            $selfControl = 'Середній';
+            if(isset($scores['module6'])) {
+                $motivationScores = $scores['module6'];
+                $avgMotivation = array_sum($motivationScores) / count($motivationScores);
+                if($avgMotivation >= 5) {
+                    $selfControl = 'Високий';
+                } elseif($avgMotivation >= 3) {
+                    $selfControl = 'Середній';
+                } else {
+                    $selfControl = 'Потребує розвитку';
+                }
+            }
+            
+            // 4. Схильності та уподобання
+            $inclinations = [];
+            
+            // На основі топ-3 типів мислення
+            if(isset($scores['module3'])) {
+                $topThinking = array_slice($scores['module3'], 0, 3, true);
+                $inclinationMap = [
+                    'artistic' => 'Творчість',
+                    'theoretical' => 'Наукова діяльність',
+                    'practical' => 'Практична діяльність',
+                    'creative' => 'Креативні проєкти',
+                    'convergent' => 'Стратегічне планування',
+                    'intuitive' => 'Інтуїтивне прийняття рішень',
+                    'analytical' => 'Аналітика'
+                ];
+                foreach(array_keys($topThinking) as $type) {
+                    if(isset($inclinationMap[$type])) {
+                        $inclinations[] = $inclinationMap[$type];
+                    }
+                }
+            }
+            
+            // На основі Holland
+            if(isset($scores['module7'])) {
+                arsort($scores['module7']);
+                $topHollandTypes = array_slice($scores['module7'], 0, 2, true);
+                $hollandInclinations = [
+                    'realistic' => 'Технічна робота',
+                    'investigative' => 'Дослідження',
+                    'artistic' => 'Мистецтво',
+                    'social' => 'Робота з людьми',
+                    'enterprising' => 'Підприємництво',
+                    'conventional' => 'Організаційна діяльність'
+                ];
+                foreach(array_keys($topHollandTypes) as $type) {
+                    if(isset($hollandInclinations[$type])) {
+                        $inclinations[] = $hollandInclinations[$type];
+                    }
+                }
+            }
+            
+            $inclinations = array_unique($inclinations);
+            $inclinations = array_slice($inclinations, 0, 4);
+            
+            // 5. Ціннісні орієнтири (Модуль 4)
+            $valueOrientations = [];
+            if(isset($scores['module4'])) {
+                asort($scores['module4']); // Сортуємо за зростанням рангу (1 = найважливіше)
+                $topValues = array_slice($scores['module4'], 0, 3, true);
+                $valueNames = [
+                    'Активне, діяльне життя' => 'Активність',
+                    'Життєва мудрість' => 'Мудрість',
+                    'Здоров\'я' => 'Здоров\'я',
+                    'Цікава робота' => 'Цікава робота',
+                    'Краса природи та мистецтва' => 'Естетика',
+                    'Любов' => 'Любов',
+                    'Матеріальна забезпеченість' => 'Матеріальна стабільність',
+                    'Наявність добрих друзів' => 'Дружба',
+                    'Впевненість у собі' => 'Впевненість',
+                    'Пізнання' => 'Пізнання',
+                    'Свобода' => 'Свобода',
+                    'Щасливе сімейне життя' => 'Сім\'я',
+                    'Творчість' => 'Творчість',
+                    'Суспільне визнання' => 'Визнання',
+                    'Розваги' => 'Розваги',
+                    'Продуктивне життя' => 'Продуктивність',
+                    'Розвиток' => 'Розвиток',
+                    'Задоволеність собою' => 'Задоволеність'
+                ];
+                foreach(array_keys($topValues) as $value) {
+                    $valueOrientations[] = $valueNames[$value] ?? $value;
+                }
+            }
+            
+            // 6. RIASEC код (Модуль 7)
+            $riasecCode = '';
+            $riasecTypes = [];
+            if(isset($scores['module7'])) {
+                arsort($scores['module7']);
+                $topThreeRiasec = array_slice($scores['module7'], 0, 3, true);
+                $letterMap = [
+                    'realistic' => 'R',
+                    'investigative' => 'I',
+                    'artistic' => 'A',
+                    'social' => 'S',
+                    'enterprising' => 'E',
+                    'conventional' => 'C'
+                ];
+                $typeNames = [
+                    'realistic' => 'Realistic (Практик)',
+                    'investigative' => 'Investigative (Мислитель. Дослідник)',
+                    'artistic' => 'Artistic (Творець)',
+                    'social' => 'Social (Помічник)',
+                    'enterprising' => 'Enterprising (Лідер)',
+                    'conventional' => 'Conventional (Організатор)'
+                ];
+                foreach(array_keys($topThreeRiasec) as $type) {
+                    $riasecCode .= $letterMap[$type] ?? '';
+                    $riasecTypes[$type] = $typeNames[$type] ?? '';
+                }
+            }
+        @endphp
+
+        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
             <tr>
-                <th>Код Holland (RIASEC)</th>
-                <td>{{ $hollandCode }}</td>
+                <td style="width: 35%; padding: 12px; border: 1px solid #E5E7EB; background: #F9FAFB; font-weight: 600;">Інтелектуальний потенціал</td>
+                <td style="padding: 12px; border: 1px solid #E5E7EB;">домінує {{ strtolower($thinkingLabel) }}</td>
             </tr>
-            @endif
+            <tr>
+                <td style="padding: 12px; border: 1px solid #E5E7EB; background: #F9FAFB; font-weight: 600;">Домінантні риси характеру</td>
+                <td style="padding: 12px; border: 1px solid #E5E7EB;">{{ implode(', ', $characterTraits) }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 12px; border: 1px solid #E5E7EB; background: #F9FAFB; font-weight: 600;">Самоконтроль</td>
+                <td style="padding: 12px; border: 1px solid #E5E7EB;">Показник {{ strtolower($selfControl) }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 12px; border: 1px solid #E5E7EB; background: #F9FAFB; font-weight: 600;">Схильності, уподобання</td>
+                <td style="padding: 12px; border: 1px solid #E5E7EB;">{{ implode(', ', $inclinations) }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 12px; border: 1px solid #E5E7EB; background: #F9FAFB; font-weight: 600;">Ціннісні орієнтири</td>
+                <td style="padding: 12px; border: 1px solid #E5E7EB;">{{ implode(', ', $valueOrientations) }}</td>
+            </tr>
         </table>
 
-        <div class="note-block">
+        @if($riasecCode)
+        <h3 style="margin-top: 30px;">Типи професійних схильностей за Голландом (RIASEC):</h3>
+        
+        <div style="margin: 20px 0; padding: 15px 20px; background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%); border-radius: 12px; color: white; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);">
+            <div style="flex: 1;">
+                <div style="font-size: 13px; opacity: 0.9; margin-bottom: 5px;">Ваш індивідуальний код</div>
+                <div style="font-size: 32px; font-weight: bold; letter-spacing: 6px;">{{ $riasecCode }}</div>
+            </div>
+            <div style="flex: 1; font-size: 12px; opacity: 0.85; line-height: 1.5; padding-left: 20px; border-left: 1px solid rgba(255,255,255,0.3);">
+                <strong>RIASEC</strong> — шість літер, які описують твій тип особистості та професійні інтереси за теорією Джона Голланда.
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+            <thead>
+                <tr style="background: #F3F4F6;">
+                    <th style="padding: 10px; border: 1px solid #E5E7EB; text-align: left; width: 35%;">Тип</th>
+                    <th style="padding: 10px; border: 1px solid #E5E7EB; text-align: left;">Опис</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($riasecTypes as $type => $typeName)
+                @php
+                    $descriptions = [
+                        'realistic' => 'Орієнтація на роботу з інструментами, машинами, природою',
+                        'investigative' => 'Аналіз, наукове мислення, вирішення складних завдань',
+                        'artistic' => 'Самовираження, творчість, нестандартні рішення',
+                        'social' => 'Робота з людьми, допомога, навчання, турбота',
+                        'enterprising' => 'Управління, організація, досягнення цілей',
+                        'conventional' => 'Порядок, структура, робота з даними'
+                    ];
+                @endphp
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #E5E7EB;"><strong>{{ $typeName }}</strong></td>
+                    <td style="padding: 10px; border: 1px solid #E5E7EB;">{{ $descriptions[$type] ?? '' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endif
+
+        <div class="note-block" style="margin-top: 30px;">
             <strong>Зверніть увагу!</strong> Кожна людина – гнучка особистість і протягом професійного життя здатна розвивати будь-які навички.
         </div>
     </section>
