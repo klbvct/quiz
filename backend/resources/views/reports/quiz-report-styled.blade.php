@@ -19,7 +19,7 @@
     {{-- Інформація про Абітурієнта --}}
     <section class="section-applicant-info">
         <table class="info-table">
-            <tr><th>Ім'я абітурієнта</th><td>{{ $user->name }}</td></tr>
+            <tr><th>Ім'я та прізвище</th><td>{{ $user->name }}</td></tr>
             <tr><th>Дата народження</th><td>{{ $user->birthdate ? \Carbon\Carbon::parse($user->birthdate)->format('d.m.Y') : 'Не вказано' }}</td></tr>
             <tr><th>Дата тестування</th><td>{{ $session->completed_at ? $session->completed_at->format('d.m.Y') : $session->updated_at->format('d.m.Y') }}</td></tr>
         </table>
@@ -36,16 +36,18 @@
         <h2>📜 Зміст</h2>
         <div class="toc-grid">
             <div>
+                <div class="toc-item">Професійна спрямованість <span>01</span></div>
+                <div class="toc-item">Індивідуальні інтереси і здібності в навчанні <span>02</span></div>
                 <div class="toc-item">Домінуючі типи мислення <span>03</span></div>
-                <div class="toc-item">Інтереси і здібності в навчанні <span>04</span></div>
-                <div class="toc-item">Типи професійної взаємодії <span>05</span></div>
-                <div class="toc-item">Типологія сприйняття <span>06</span></div>
+                <div class="toc-item">Мотивація та цінності <span>04</span></div>
+                <div class="toc-item">Співвідношення типів інтелекту <span>05</span></div>
             </div>
             <div>
-                <div class="toc-item">Типи Інтелекту <span>07</span></div>
-                <div class="toc-item">Освітньо-кваліфікаційні напрямки <span>08</span></div>
-                <div class="toc-item">Психологічна карта <span>09</span></div>
-                <div class="toc-item">Примітки <span>11</span></div>
+                <div class="toc-item">Типологія професійних інтересів за Голландом (RIASEC) <span>06</span></div>
+                <div class="toc-item">Типологія сприйняття <span>07</span></div>
+                <div class="toc-item">Рекомендації до вибору професійних напрямків <span>08</span></div>
+                <div class="toc-item">Індивідуальна психологічна карта <span>09</span></div>
+                <div class="toc-item">Підготовка до вступу <span>10</span></div>
             </div>
         </div>
     </section>
