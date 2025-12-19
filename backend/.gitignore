@@ -13,3 +13,14 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+# Database backups
+backup_*.sql
+
+# Temporary analysis scripts
+analyze_project.php
+check_*.php
+count_*.php
+find-*.php
+get-*.php
+reset-*.php
