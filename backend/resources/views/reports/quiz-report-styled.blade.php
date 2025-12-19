@@ -5,8 +5,69 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Звіт профорієнтаційного тестування - {{ $user->name }}</title>
     <link rel="stylesheet" href="{{ asset('css/report-styled.css') }}">
+    <style>
+        .print-button-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        
+        .print-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-blue));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .print-hint {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #666;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: right;
+            max-width: 250px;
+        }
+        
+        @media print {
+            .print-button-container {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
+
+<!-- Кнопка друку (видима тільки на екрані) -->
+<div class="print-button-container">
+    <div class="print-hint">
+        💡 Натисніть кнопку, щоб роздрукувати або зберегти звіт як PDF файл
+    </div>
+    <button onclick="window.print()" class="print-button">
+        <span>🖨️</span>
+        <span>Друк / Зберегти PDF</span>
+    </button>
+</div>
 
 <div class="container">
     <div class="report-banner"> 
@@ -43,7 +104,7 @@
                 <div class="toc-item">Співвідношення типів інтелекту <span>05</span></div>
             </div>
             <div>
-                <div class="toc-item">Типологія професійних інтересів за Голландом (RIASEC) <span>06</span></div>
+                <div class="toc-item">Типологія професійних інтересів за Голландом <span>06</span></div>
                 <div class="toc-item">Типологія сприйняття <span>07</span></div>
                 <div class="toc-item">Рекомендації до вибору професійних напрямків <span>08</span></div>
                 <div class="toc-item">Індивідуальна психологічна карта <span>09</span></div>
@@ -978,7 +1039,7 @@
     {{-- Система Голланда RIASEC (Модуль 7) --}}
     @if(isset($scores['module7']))
     <section id="holland-riasec">
-        <h2>🎯 Типологія професійних інтересів за Голландом (RIASEC)</h2>
+        <h2>🎯 Типологія професійних інтересів за Голландом</h2>
         <p>Визначення домінуючого типу особистості за системою професійних інтересів Джона Голланда.</p>
         
         @php

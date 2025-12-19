@@ -73,8 +73,7 @@
 
         <div class="results-actions">
             <a href="{{ route('home') }}" class="btn btn-primary">Повернутися до кабінету</a>
-            <a href="{{ route('quiz.report.view', ['sessionId' => $session->id]) }}" class="btn btn-info" target="_blank">Переглянути повний звіт</a>
-            <a href="{{ route('quiz.report.download', ['sessionId' => $session->id]) }}" class="btn btn-success">Завантажити PDF</a>
+            <a href="{{ route('quiz.report.view', ['sessionId' => $session->id]) }}" class="btn btn-success" target="_blank">📄 Переглянути та роздрукувати звіт</a>
         </div>
         @endif
     </div>

@@ -652,48 +652,13 @@ class QuizController extends Controller
     }
 
     /**
-     * Генерация PDF-отчёта для пользователя
+     * Генерация PDF-отчёта для пользователя (теперь редирект на HTML)
      */
     public function generateReport($sessionId)
     {
-        $session = QuizSession::with('user')->findOrFail($sessionId);
-        
-        // Проверяем, что пользователь имеет доступ к этому отчёту
-        $user = Auth::user();
-        if (!$user->is_admin && $session->user_id !== $user->id) {
-            abort(403, 'Доступ запрещён');
-        }
-        
-        // Получаем результаты
-        $result = QuizResult::where('session_id', $sessionId)->first();
-        
-        if (!$result) {
-            // Если результатов нет, пересчитываем
-            $result = $this->calculateResults($session);
-        }
-        
-        // Получаем все ответы
-        $answers = QuizAnswer::where('session_id', $sessionId)->get();
-        $totalAnswers = $answers->count();
-        
-        // Получаем баллы по модулям
-        $scores = $result->module_scores;
-        
-        // Генерируем PDF
-        $pdf = Pdf::loadView('reports.quiz-report-pdf', [
-            'user' => $session->user,
-            'session' => $session,
-            'result' => $result,
-            'scores' => $scores,
-            'totalAnswers' => $totalAnswers
-        ]);
-        
-        $pdf->setPaper('a4', 'portrait');
-        
-        // Формируем имя файла
-        $fileName = 'quiz_report_' . $session->user->id . '_' . $session->id . '.pdf';
-        
-        return $pdf->download($fileName);
+        // Перенаправляем на HTML версию с кнопкой печати
+        // Пользователь сможет сам сохранить PDF через браузер (Ctrl+P)
+        return redirect()->route('quiz.report.view', ['sessionId' => $sessionId]);
     }
     
     /**

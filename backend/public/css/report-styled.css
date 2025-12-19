@@ -314,19 +314,96 @@ p {
 }
 
 @media print {
-    .report-banner {
-        padding: 40px 20px;
+    /* Скрываем кнопку печати */
+    .print-button-container {
+        display: none !important;
     }
     
+    /* Оптимизация размеров */
     body {
         font-size: 10px;
+        margin: 0;
+        padding: 0;
     }
-
+    
+    .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
+    
+    /* Баннер */
+    .report-banner {
+        padding: 30px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .banner-image {
+        max-height: 120px;
+    }
+    
+    /* Заголовки */
+    h1 {
+        font-size: 20px;
+    }
+    
+    h2 {
+        font-size: 16px;
+        margin-top: 15px;
+    }
+    
+    h3 {
+        font-size: 14px;
+    }
+    
+    /* Разрывы страниц */
     .page-break {
         page-break-after: always;
     }
-
+    
     section {
         page-break-inside: avoid;
+    }
+    
+    .chart-container,
+    .highlight-box,
+    .note-block {
+        page-break-inside: avoid;
+    }
+    
+    /* Графики и диаграммы */
+    .chart-bar {
+        height: 20px;
+    }
+    
+    svg {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Таблицы */
+    table {
+        page-break-inside: auto;
+    }
+    
+    tr {
+        page-break-inside: avoid;
+    }
+    
+    /* Цвета для печати (сохраняем) */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    /* Отступы между секциями */
+    section {
+        margin-bottom: 15px;
+    }
+    
+    /* Оптимизация контента */
+    .content-list li {
+        margin-bottom: 3px;
     }
 }
