@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Звіт профорієнтаційного тестування - {{ $user->name }}</title>
+    <title>{{ $user->name }}</title>
     <style>
         :root {
             --primary-color: #0c68f5;
@@ -336,6 +336,16 @@
             font-size: 9px;
             margin-top: 6px;
             opacity: 0.85;
+        }
+        
+        @page {
+            margin: 20mm;
+            @top-left { content: none; }
+            @top-center { content: none; }
+            @top-right { content: none; }
+            @bottom-left { content: none; }
+            @bottom-center { content: counter(page); }
+            @bottom-right { content: none; }
         }
     </style>
 </head>
