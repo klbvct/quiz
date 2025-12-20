@@ -49,6 +49,7 @@ Route::get('/payment', function () {
 })->middleware('auth')->name('payment.page');
 
 // Маршруты для платежей
+Route::post('/api/check-access', [\App\Http\Controllers\PaymentController::class, 'checkAccess'])->name('payment.check');
 Route::post('/payment/create', [\App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');
 Route::post('/payment/callback', [\App\Http\Controllers\PaymentController::class, 'callback'])->name('payment.callback');
 Route::get('/payment/success', function () {

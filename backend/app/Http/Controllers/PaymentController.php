@@ -13,6 +13,57 @@ use Illuminate\Support\Str;
 class PaymentController extends Controller
 {
     /**
+     * Проверка доступа пользователя перед оплатой
+     */
+    public function checkAccess(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+
+        // Если пользователя нет - разрешаем оплату
+        if (!$user) {
+            return response()->json([
+                'can_pay' => true,
+                'message' => 'Вы можете оплатить доступ к тесту'
+            ]);
+        }
+
+        // Проверяем, есть ли у пользователя доступ
+        if (!$user->has_access) {
+            // Нет доступа - разрешаем оплату
+            return response()->json([
+                'can_pay' => true,
+                'message' => 'Вы можете оплатить доступ к тесту'
+            ]);
+        }
+
+        // Есть доступ - проверяем, пройден ли тест
+        $completedSession = $user->quizSessions()
+            ->whereNotNull('completed_at')
+            ->exists();
+
+        if ($completedSession) {
+            // Тест пройден - разрешаем повторную оплату
+            return response()->json([
+                'can_pay' => true,
+                'message' => 'Вы можете пройти тест повторно'
+            ]);
+        } else {
+            // Тест не пройден - блокируем оплату, предлагаем войти
+            return response()->json([
+                'can_pay' => false,
+                'has_access' => true,
+                'message' => 'У вас уже есть доступ к тесту. Войдите в систему для прохождения.',
+                'login_url' => route('login.form')
+            ]);
+        }
+    }
+
+    /**
      * Создание платежа и генерация данных для LiqPay
      */
     public function create(Request $request)
@@ -23,6 +74,24 @@ class PaymentController extends Controller
 
         $email = $request->email;
         $amount = 1; // Тестовая стоимость (было 999)
+
+        // Проверяем доступ перед созданием платежа
+        $user = User::where('email', $email)->first();
+        
+        if ($user && $user->has_access) {
+            $completedSession = $user->quizSessions()
+                ->whereNotNull('completed_at')
+                ->exists();
+            
+            if (!$completedSession) {
+                // Есть доступ, тест не пройден - не даём создать платёж
+                return response()->json([
+                    'error' => 'У вас уже есть доступ к тесту',
+                    'login_url' => route('login.form')
+                ], 400);
+            }
+            // Если тест пройден - разрешаем создать новый платёж (повторное прохождение)
+        }
 
         // Создаем запись о платеже
         $payment = Payment::create([
@@ -120,8 +189,18 @@ class PaymentController extends Controller
                 // Даем доступ существующему пользователю
                 $user->update(['has_access' => true]);
 
-                // Отправить письмо об активации доступа
-                Mail::to($email)->send(new \App\Mail\AccessActivatedMail($user));
+                // Проверяем, это повторное прохождение или первое
+                $completedSession = $user->quizSessions()
+                    ->whereNotNull('completed_at')
+                    ->exists();
+
+                if ($completedSession) {
+                    // Повторное прохождение - отправляем соответствующее письмо
+                    Mail::to($email)->send(new \App\Mail\RetakeAccessMail($user));
+                } else {
+                    // Первое прохождение - отправляем письмо об активации
+                    Mail::to($email)->send(new \App\Mail\AccessActivatedMail($user));
+                }
             }
         } elseif ($status === 'failure' || $status === 'error') {
             $payment->update(['status' => 'failed']);

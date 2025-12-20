@@ -46,9 +46,39 @@ document.addEventListener('DOMContentLoaded', function() {
         paymentForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('paymentEmail').value;
+            const submitButton = paymentForm.querySelector('button[type="submit"]');
+            
+            // Блокируем кнопку
+            submitButton.disabled = true;
+            submitButton.textContent = 'Перевірка...';
             
             try {
-                // Отправляем данные на сервер
+                // Сначала проверяем, можно ли оплатить
+                const checkResponse = await fetch('/api/check-access', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': window.csrfToken
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const checkData = await checkResponse.json();
+
+                if (!checkData.can_pay) {
+                    // Показываем сообщение и перенаправляем на вход
+                    alert(checkData.message);
+                    if (checkData.login_url) {
+                        window.location.href = checkData.login_url;
+                    }
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Оплатити';
+                    return;
+                }
+
+                // Если можно оплатить - создаём платёж
+                submitButton.textContent = 'Створення платежу...';
+                
                 const response = await fetch('/payment/create', {
                     method: 'POST',
                     headers: {
@@ -59,6 +89,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (!response.ok) {
+                    const errorData = await response.json();
+                    if (errorData.error) {
+                        alert(errorData.error);
+                        if (errorData.login_url) {
+                            window.location.href = errorData.login_url;
+                        }
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Оплатити';
+                        return;
+                    }
                     throw new Error('Ошибка создания платежа');
                 }
 
@@ -77,6 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 alert('Произошла ошибка. Попробуйте еще раз.');
                 console.error(error);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Оплатити';
             }
         });
     }
