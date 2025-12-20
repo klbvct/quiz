@@ -21,42 +21,6 @@ body {
     font-size: 12px;
 }
 
-.report-banner {
-    position: relative;
-    overflow: hidden;
-    color: white;
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 90px 20px;
-}
-
-.banner-content {
-    position: relative;
-    z-index: 2;
-}
-
-.banner-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-}
-
-.report-banner h1 {
-    position: relative;
-    z-index: 2;
-    font-size: 32px;
-    font-weight: 300;
-    line-height: 1.4;
-}
-
-.report-banner strong {
-    font-weight: 700;
-}
-
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -64,16 +28,29 @@ body {
 }
 
 .report-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-blue) 100%);
     text-align: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 3px solid var(--dark-blue);
+    margin: -20px -20px 40px -20px;
+    padding: 60px 20px 50px 20px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
 }
 
 .report-header h1 {
-    font-size: 36px;
-    color: var(--dark-blue);
+    font-size: 42px;
+    color: white;
     font-weight: 700;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.report-header p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-weight: 300;
 }
 
 section {
@@ -333,14 +310,20 @@ p {
         padding: 10px;
     }
     
-    /* Баннер */
-    .report-banner {
-        padding: 30px 20px;
-        margin-bottom: 20px;
+    /* Заголовок */
+    .report-header {
+        margin: -10px -10px 20px -10px !important;
+        padding: 30px 20px !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
     }
     
-    .banner-image {
-        max-height: 120px;
+    .report-header h1 {
+        font-size: 24px;
+    }
+    
+    .report-header p {
+        font-size: 12px;
     }
     
     /* Заголовки */

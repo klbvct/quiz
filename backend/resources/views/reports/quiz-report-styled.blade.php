@@ -70,11 +70,9 @@
 </div>
 
 <div class="container">
-    <div class="report-banner"> 
-        <img src="{{ asset('images/1.jpg') }}" alt="Banner" class="banner-image">
-    </div>
     <header class="report-header">
         <h1>ДИЗАЙН ОСВІТИ</h1>
+        <p>Звіт профорієнтаційного тестування</p>
     </header>
 
     {{-- Інформація про Абітурієнта --}}
