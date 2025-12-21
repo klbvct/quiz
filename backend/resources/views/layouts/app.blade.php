@@ -6,6 +6,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', app()->getLocale() == 'uk' ? 'Дизайн Освіти' : 'Дизайн Образования')</title>
     
+    <!-- Meta tags -->
+    <meta name="description" content="@yield('description', app()->getLocale() == 'uk' ? 'Сучасні методики профорієнтації для успішного майбутнього' : 'Современные методики профориентации для успешного будущего')">
+    <meta name="theme-color" content="#0c68f5">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo_education_design.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon.ico') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    
     @yield('styles')
     
     <style>

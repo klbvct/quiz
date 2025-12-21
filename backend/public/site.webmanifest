@@ -1,0 +1,22 @@
+{
+    "name": "Дизайн Освіти - Профорієнтаційне тестування",
+    "short_name": "Дизайн Освіти",
+    "description": "Сучасні методики профорієнтації для успішного майбутнього",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0c68f5",
+    "theme_color": "#0c68f5",
+    "icons": [
+        {
+            "src": "/images/favicon.ico",
+            "sizes": "32x32",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "/images/logo_education_design.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}
