@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>{{ $user->name }}</title>
+    
+    <!-- Meta tags -->
+    <meta name="theme-color" content="#0c68f5">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo_education_design.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon.ico') }}">
+    
     <style>
         :root {
             --primary-color: #0c68f5;
