@@ -13,7 +13,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo_education_design.svg') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.ico') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
