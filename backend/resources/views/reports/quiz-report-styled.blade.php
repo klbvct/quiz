@@ -1501,26 +1501,7 @@
         @endphp
         
         @if($result && isset($result->recommendations['career_paths']) && count($result->recommendations['career_paths']) > 0)
-        <div style="margin: 25px 0; padding: 20px; background: #F0F9FF; border-left: 4px solid #3B82F6; border-radius: 8px;">
-            <h4 style="color: #1E40AF; margin-top: 0;">📊 Базові дані для рекомендацій:</h4>
-            <div style="color: #1E3A8A; font-size: 14px; line-height: 1.8;">
-                @if($aiContext['holland_code'])
-                <p style="margin: 5px 0;"><strong>Код Голланда:</strong> {{ $aiContext['holland_code'] }} ({{ implode(', ', $aiContext['holland_types']) }})</p>
-                @endif
-                @if($aiContext['dominant_thinking'])
-                <p style="margin: 5px 0;"><strong>Домінуючий тип мислення:</strong> {{ $aiContext['dominant_thinking'] }}</p>
-                @endif
-                @if(count($aiContext['intelligence_types']) > 0)
-                <p style="margin: 5px 0;"><strong>Провідні типи інтелекту:</strong> {{ implode(', ', $aiContext['intelligence_types']) }}</p>
-                @endif
-                @if(count($aiContext['values']) > 0)
-                <p style="margin: 5px 0;"><strong>Ключові цінності:</strong> {{ implode(', ', $aiContext['values']) }}</p>
-                @endif
-                @if($aiContext['perception_type'])
-                <p style="margin: 5px 0;"><strong>Тип сприйняття:</strong> {{ $aiContext['perception_type'] }}</p>
-                @endif
-            </div>
-        </div>
+       
         
         <table class="recommendation-table" style="margin-top: 25px;">
             <thead>

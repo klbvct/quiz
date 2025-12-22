@@ -262,22 +262,31 @@ class CareerRecommendationService
         
         $prompt .= "---\n\n";
         $prompt .= "**ЗАВДАННЯ:**\n\n";
-        $prompt .= "Згенеруй 3-4 професійні напрямки, які найбільше підходять цьому профілю. Для кожного напрямку визнач:\n";
-        $prompt .= "- **Major** (основний бакалавріат) - 3-5 конкретних спеціальностей\n";
-        $prompt .= "- **Minor** (додаткове навчання) - 2-4 суміжні дисципліни для розширення кар'єрних можливостей\n\n";
+        $prompt .= "Згенеруй **ОБОВ'ЯЗКОВО 3-4 різноманітні професійні напрямки**, які найбільше підходять цьому профілю.\n\n";
+        $prompt .= "Для КОЖНОГО напрямку обов'язково вкажи:\n";
+        $prompt .= "- **direction** - назва професійного напрямку українською\n";
+        $prompt .= "- **type** - тип напрямку (creative/technical/social/business/research/analytical тощо)\n";
+        $prompt .= "- **majors** - 3-5 конкретних спеціальностей для основного бакалавріату\n";
+        $prompt .= "- **minors** - 2-4 суміжні дисципліни для додаткового навчання з поміткою (minor)\n\n";
+        $prompt .= "**ВИМОГИ ДО НАПРЯМКІВ:**\n";
+        $prompt .= "- Напрямки повинні бути різноманітними та доповнювати один одного\n";
+        $prompt .= "- Враховуй ВСІ аспекти профілю користувача (Holland код, мислення, інтелект, цінності)\n";
+        $prompt .= "- Надавай пріоритет найбільш підходящим напрямкам на основі домінуючих характеристик\n";
+        $prompt .= "- Включай як основні, так і альтернативні варіанти кар'єрного розвитку\n\n";
         
         $prompt .= "**ПРИКЛАД ФОРМАТУ ВІДПОВІДІ:**\n\n";
         $prompt .= "```json\n";
         $prompt .= "{\n";
         $prompt .= "  \"career_paths\": [\n";
         $prompt .= "    {\n";
-        $prompt .= "      \"direction\": \"Креативні індустрії (major)\",\n";
+        $prompt .= "      \"direction\": \"Креативні індустрії\",\n";
         $prompt .= "      \"type\": \"creative\",\n";
         $prompt .= "      \"majors\": [\n";
         $prompt .= "        \"Аудіовізуальне мистецтво і виробництво (режисура)\",\n";
         $prompt .= "        \"Організація кінотелевиробництва\",\n";
         $prompt .= "        \"Multimedia Art\",\n";
-        $prompt .= "        \"Art curation and Management\"\n";
+        $prompt .= "        \"Art curation and Management\",\n";
+        $prompt .= "        \"Графічний дизайн\"\n";
         $prompt .= "      ],\n";
         $prompt .= "      \"minors\": [\n";
         $prompt .= "        \"Film production (minor)\",\n";
@@ -286,28 +295,43 @@ class CareerRecommendationService
         $prompt .= "      ]\n";
         $prompt .= "    },\n";
         $prompt .= "    {\n";
-        $prompt .= "      \"direction\": \"Технології (major)\",\n";
-        $prompt .= "      \"type\": \"technology\",\n";
+        $prompt .= "      \"direction\": \"Інформаційні технології\",\n";
+        $prompt .= "      \"type\": \"technical\",\n";
         $prompt .= "      \"majors\": [\n";
-        $prompt .= "        \"Транспортні технології\",\n";
-        $prompt .= "        \"Логістика\",\n";
-        $prompt .= "        \"Інженерія програмного забезпечення\"\n";
+        $prompt .= "        \"Інженерія програмного забезпечення\",\n";
+        $prompt .= "        \"Комп'ютерні науки\",\n";
+        $prompt .= "        \"Веб-розробка та дизайн\"\n";
         $prompt .= "      ],\n";
         $prompt .= "      \"minors\": [\n";
-        $prompt .= "        \"Data Analytics (minor)\",\n";
-        $prompt .= "        \"Project Management (minor)\"\n";
+        $prompt .= "        \"UI/UX Design (minor)\",\n";
+        $prompt .= "        \"Data Science (minor)\",\n";
+        $prompt .= "        \"Cybersecurity (minor)\"\n";
+        $prompt .= "      ]\n";
+        $prompt .= "    },\n";
+        $prompt .= "    {\n";
+        $prompt .= "      \"direction\": \"Соціальні комунікації\",\n";
+        $prompt .= "      \"type\": \"social\",\n";
+        $prompt .= "      \"majors\": [\n";
+        $prompt .= "        \"Журналістика\",\n";
+        $prompt .= "        \"Реклама та зв'язки з громадськістю\",\n";
+        $prompt .= "        \"Медіакомунікації\"\n";
+        $prompt .= "      ],\n";
+        $prompt .= "      \"minors\": [\n";
+        $prompt .= "        \"Social Media Management (minor)\",\n";
+        $prompt .= "        \"Content Marketing (minor)\"\n";
         $prompt .= "      ]\n";
         $prompt .= "    }\n";
         $prompt .= "  ]\n";
         $prompt .= "}\n";
         $prompt .= "```\n\n";
         
-        $prompt .= "**ВАЖЛИВО:**\n";
-        $prompt .= "- Використовуй українські назви для major (основних напрямків)\n";
-        $prompt .= "- Для minor можна використовувати англійські назви з поміткою (minor)\n";
-        $prompt .= "- Назви мають бути конкретними та актуальними\n";
-        $prompt .= "- Враховуй всі аспекти профілю користувача\n";
-        $prompt .= "- Поверни тільки JSON без додаткового тексту\n";
+        $prompt .= "**КРИТИЧНО ВАЖЛИВО:**\n";
+        $prompt .= "- Повинно бути МІНіМУМ 3, ОПТИМАЛЬНО 4 напрямки\n";
+        $prompt .= "- Кожен напрямок має всі обов'язкові поля: direction, type, majors, minors\n";
+        $prompt .= "- Використовуй українські назви для major (основних спеціальностей)\n";
+        $prompt .= "- Для minor додавай позначку (minor) і можна використовувати англійські назви\n";
+        $prompt .= "- Назви мають бути конкретними, актуальними та реалістичними\n";
+        $prompt .= "- Поверни ТІЛЬКИ валідний JSON без додаткового тексту до або після\n";
         
         return $prompt;
     }
@@ -323,11 +347,13 @@ class CareerRecommendationService
         if (isset($moduleScores['module7'])) {
             $hollandScores = $moduleScores['module7'];
             arsort($hollandScores);
-            $topType = array_key_first($hollandScores);
+            
+            // Беремо топ-3 типи Holland для різноманітності
+            $topTypes = array_slice(array_keys($hollandScores), 0, 3, true);
             
             $fallbackMap = [
                 'realistic' => [
-                    'direction' => 'Інженерія та технології (major)',
+                    'direction' => 'Інженерія та технології',
                     'type' => 'technical',
                     'majors' => [
                         'Інженерія програмного забезпечення',
@@ -342,7 +368,7 @@ class CareerRecommendationService
                     ]
                 ],
                 'investigative' => [
-                    'direction' => 'Наукові дослідження (major)',
+                    'direction' => 'Наукові дослідження',
                     'type' => 'research',
                     'majors' => [
                         'Прикладна математика',
@@ -357,7 +383,7 @@ class CareerRecommendationService
                     ]
                 ],
                 'artistic' => [
-                    'direction' => 'Креативні індустрії (major)',
+                    'direction' => 'Креативні індустрії',
                     'type' => 'creative',
                     'majors' => [
                         'Аудіовізуальне мистецтво і виробництво',
@@ -372,7 +398,7 @@ class CareerRecommendationService
                     ]
                 ],
                 'social' => [
-                    'direction' => 'Соціальні науки та освіта (major)',
+                    'direction' => 'Соціальні науки та освіта',
                     'type' => 'social',
                     'majors' => [
                         'Психологія',
@@ -387,7 +413,7 @@ class CareerRecommendationService
                     ]
                 ],
                 'enterprising' => [
-                    'direction' => 'Бізнес та менеджмент (major)',
+                    'direction' => 'Бізнес та менеджмент',
                     'type' => 'business',
                     'majors' => [
                         'Менеджмент',
@@ -402,7 +428,7 @@ class CareerRecommendationService
                     ]
                 ],
                 'conventional' => [
-                    'direction' => 'Економіка та фінанси (major)',
+                    'direction' => 'Економіка та фінанси',
                     'type' => 'analytical',
                     'majors' => [
                         'Фінанси та банківська справа',
@@ -418,8 +444,11 @@ class CareerRecommendationService
                 ]
             ];
             
-            if (isset($fallbackMap[$topType])) {
-                $recommendations[] = $fallbackMap[$topType];
+            // Додаємо рекомендації для кожного з топ-3 типів
+            foreach ($topTypes as $type) {
+                if (isset($fallbackMap[$type])) {
+                    $recommendations[] = $fallbackMap[$type];
+                }
             }
         }
 
