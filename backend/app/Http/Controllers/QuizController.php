@@ -9,9 +9,16 @@ use App\Models\QuizSession;
 use App\Models\QuizAnswer;
 use App\Models\QuizResult;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\CareerRecommendationService;
 
 class QuizController extends Controller
 {
+    protected $careerService;
+
+    public function __construct(CareerRecommendationService $careerService)
+    {
+        $this->careerService = $careerService;
+    }
     /**
      * Начать новый тест или продолжить существующий
      */
@@ -246,8 +253,13 @@ class QuizController extends Controller
             }
         }
         
-        // Формируем рекомендации
-        $recommendations = $this->generateRecommendations($moduleScores, $interpretation);
+        // Генеруємо рекомендації за допомогою AI
+        $careerPaths = $this->careerService->generateCareerPaths($moduleScores, $interpretation);
+        
+        $recommendations = [
+            'career_paths' => $careerPaths,
+            'professional_types' => $this->generateLegacyRecommendations($moduleScores, $interpretation)
+        ];
         
         // Сохраняем результаты
         $result = QuizResult::updateOrCreate(
@@ -562,7 +574,10 @@ class QuizController extends Controller
     /**
      * Генерация рекомендаций
      */
-    private function generateRecommendations($moduleScores, $interpretation)
+    /**
+     * Генерація legacy рекомендацій (для сумісності)
+     */
+    private function generateLegacyRecommendations($moduleScores, $interpretation)
     {
         $recommendations = [];
         
@@ -604,7 +619,19 @@ class QuizController extends Controller
         
         return $recommendations;
     }
-    
+
+    /**
+     * Генерація рекомендацій (deprecated - використовуйте CareerRecommendationService)
+     * @deprecated
+     */
+    private function generateRecommendations($moduleScores, $interpretation)
+    {
+        return [
+            'career_paths' => $this->careerService->generateCareerPaths($moduleScores, $interpretation),
+            'professional_types' => $this->generateLegacyRecommendations($moduleScores, $interpretation)
+        ];
+    }
+
     /**
      * Генерация краткого описания результатов
      */
