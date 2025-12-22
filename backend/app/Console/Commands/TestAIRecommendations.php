@@ -109,7 +109,8 @@ class TestAIRecommendations extends Command
             return 1;
         }
 
-        $this->info("✅ Successfully generated {count($careerPaths)} career path(s) in {$duration}ms");
+        $pathCount = count($careerPaths);
+        $this->info("✅ Successfully generated {$pathCount} career path(s) in {$duration}ms");
         $this->newLine();
 
         // Відображення результатів
