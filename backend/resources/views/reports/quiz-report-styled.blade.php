@@ -1386,51 +1386,204 @@
     {{-- Рекомендації до вибору професійних напрямків --}}
     <section id="recommendations">
         <h2>🎯 Рекомендації до вибору професійних напрямків</h2>
-        <p>Рекомендовані напрямки (major) та додаткове навчання (minor):</p>
+        <p>На основі комплексного аналізу ваших результатів тестування рекомендуємо наступні професійні напрямки та фахи для навчання:</p>
         
-        @if($result && isset($result->recommendations['professional_types']) && count($result->recommendations['professional_types']) > 0)
-        <table class="recommendation-table">
+        @php
+            // Збираємо всю інформацію для AI-генерації рекомендацій
+            $aiContext = [
+                'holland_code' => '',
+                'holland_types' => [],
+                'dominant_thinking' => '',
+                'intelligence_types' => [],
+                'values' => [],
+                'motivators' => [],
+                'perception_type' => ''
+            ];
+            
+            // Holland код (Модуль 7)
+            if(isset($scores['module7'])) {
+                $hollandScores = $scores['module7'];
+                arsort($hollandScores);
+                $topThreeHolland = array_slice($hollandScores, 0, 3, true);
+                
+                $hollandTypeNames = [
+                    'realistic' => 'Практик',
+                    'investigative' => 'Дослідник',
+                    'artistic' => 'Творець',
+                    'social' => 'Помічник',
+                    'enterprising' => 'Лідер',
+                    'conventional' => 'Організатор'
+                ];
+                
+                $hollandCode = '';
+                foreach($topThreeHolland as $type => $score) {
+                    $hollandCode .= strtoupper(substr($type, 0, 1));
+                    $aiContext['holland_types'][] = $hollandTypeNames[$type] ?? $type;
+                }
+                $aiContext['holland_code'] = $hollandCode;
+            }
+            
+            // Домінуючий тип мислення (Модуль 3)
+            if(isset($scores['module3'])) {
+                $thinkingTypes = [
+                    'artistic' => 'Художнє',
+                    'theoretical' => 'Теоретичне',
+                    'practical' => 'Практичне',
+                    'creative' => 'Творче',
+                    'convergent' => 'Конвергентне',
+                    'intuitive' => 'Інтуїтивне',
+                    'analytical' => 'Аналітичне'
+                ];
+                arsort($scores['module3']);
+                $dominantThinkingKey = array_key_first($scores['module3']);
+                $aiContext['dominant_thinking'] = $thinkingTypes[$dominantThinkingKey] ?? '';
+            }
+            
+            // Топ-3 типи інтелекту (Модуль 5)
+            if(isset($scores['module5'])) {
+                $intelligenceTypes = [
+                    'linguistic' => 'Лінгвістичний',
+                    'logical' => 'Логіко-математичний',
+                    'spatial' => 'Просторовий',
+                    'bodily' => 'Тілесно-кінестетичний',
+                    'musical' => 'Музичний',
+                    'interpersonal' => 'Міжособистісний',
+                    'intrapersonal' => 'Внутрішньоособистісний',
+                    'naturalistic' => 'Натуралістичний'
+                ];
+                
+                $intelligenceScores = $scores['module5'];
+                arsort($intelligenceScores);
+                $topThreeIntelligence = array_slice($intelligenceScores, 0, 3, true);
+                
+                foreach(array_keys($topThreeIntelligence) as $type) {
+                    $aiContext['intelligence_types'][] = $intelligenceTypes[$type] ?? $type;
+                }
+            }
+            
+            // Ціннісні орієнтири (Модуль 4)
+            if(isset($scores['module4'])) {
+                $valueNames = [
+                    'creativity' => 'Креативність',
+                    'independence' => 'Незалежність',
+                    'achievement' => 'Досягнення',
+                    'prestige' => 'Престиж',
+                    'altruism' => 'Альтруїзм',
+                    'security' => 'Безпека',
+                    'power' => 'Влада',
+                    'variety' => 'Різноманітність',
+                    'balance' => 'Баланс',
+                    'intellect' => 'Інтелект'
+                ];
+                
+                asort($scores['module4']);
+                $topThreeValues = array_slice($scores['module4'], 0, 3, true);
+                
+                foreach(array_keys($topThreeValues) as $value) {
+                    $aiContext['values'][] = $valueNames[$value] ?? $value;
+                }
+            }
+            
+            // Тип сприйняття (Модуль 8)
+            if(isset($scores['module8'])) {
+                $perceptionTypes = [
+                    'visual' => 'Візуальний',
+                    'auditory' => 'Аудіальний',
+                    'kinesthetic' => 'Кінестетичний',
+                    'digital' => 'Дискретний'
+                ];
+                
+                $perceptionScores = $scores['module8'];
+                arsort($perceptionScores);
+                $dominantPerception = array_key_first($perceptionScores);
+                $aiContext['perception_type'] = $perceptionTypes[$dominantPerception] ?? '';
+            }
+        @endphp
+        
+        @if($result && isset($result->recommendations['career_paths']) && count($result->recommendations['career_paths']) > 0)
+        <div style="margin: 25px 0; padding: 20px; background: #F0F9FF; border-left: 4px solid #3B82F6; border-radius: 8px;">
+            <h4 style="color: #1E40AF; margin-top: 0;">📊 Базові дані для рекомендацій:</h4>
+            <div style="color: #1E3A8A; font-size: 14px; line-height: 1.8;">
+                @if($aiContext['holland_code'])
+                <p style="margin: 5px 0;"><strong>Код Голланда:</strong> {{ $aiContext['holland_code'] }} ({{ implode(', ', $aiContext['holland_types']) }})</p>
+                @endif
+                @if($aiContext['dominant_thinking'])
+                <p style="margin: 5px 0;"><strong>Домінуючий тип мислення:</strong> {{ $aiContext['dominant_thinking'] }}</p>
+                @endif
+                @if(count($aiContext['intelligence_types']) > 0)
+                <p style="margin: 5px 0;"><strong>Провідні типи інтелекту:</strong> {{ implode(', ', $aiContext['intelligence_types']) }}</p>
+                @endif
+                @if(count($aiContext['values']) > 0)
+                <p style="margin: 5px 0;"><strong>Ключові цінності:</strong> {{ implode(', ', $aiContext['values']) }}</p>
+                @endif
+                @if($aiContext['perception_type'])
+                <p style="margin: 5px 0;"><strong>Тип сприйняття:</strong> {{ $aiContext['perception_type'] }}</p>
+                @endif
+            </div>
+        </div>
+        
+        <table class="recommendation-table" style="margin-top: 25px;">
             <thead>
                 <tr>
-                    <th>Тип професії</th>
-                    <th>Major (Основний напрям)</th>
-                    <th>Minor (Додаткове навчання)</th>
+                    <th style="width: 30%; background: #3B82F6; color: white;">Професійний напрямок</th>
+                    <th style="width: 70%; background: #3B82F6; color: white;">Фах</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($result->recommendations['professional_types'] as $recommendation)
+                @foreach($result->recommendations['career_paths'] as $path)
                 <tr>
-                    <td><strong>{{ $recommendation['type'] ?? 'Не вказано' }}</strong><br>
-                        <small>{{ $recommendation['description'] ?? '' }}</small>
-                    </td>
-                    <td>
-                        @if(isset($recommendation['majors']) && count($recommendation['majors']) > 0)
-                        <ul style="margin: 0; padding-left: 15px;">
-                            @foreach($recommendation['majors'] as $major)
-                            <li>{{ $major }}</li>
-                            @endforeach
-                        </ul>
-                        @else
-                        -
+                    <td style="vertical-align: top; padding: 15px;">
+                        <strong style="color: #1E40AF; font-size: 16px;">{{ $path['direction'] ?? '' }}</strong>
+                        @if(isset($path['type']))
+                        <div style="margin-top: 5px; color: #6B7280; font-size: 13px;">({{ $path['type'] }})</div>
                         @endif
                     </td>
-                    <td>
-                        @if(isset($recommendation['minors']) && count($recommendation['minors']) > 0)
-                        <ul style="margin: 0; padding-left: 15px;">
-                            @foreach($recommendation['minors'] as $minor)
-                            <li>{{ $minor }}</li>
-                            @endforeach
-                        </ul>
-                        @else
-                        -
+                    <td style="padding: 15px;">
+                        @if(isset($path['majors']) && count($path['majors']) > 0)
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #059669; display: block; margin-bottom: 8px;">Major (Основний бакалавріат):</strong>
+                            <ul style="margin: 0; padding-left: 20px; line-height: 1.8;">
+                                @foreach($path['majors'] as $major)
+                                <li style="color: #374151;">{{ $major }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+                        
+                        @if(isset($path['minors']) && count($path['minors']) > 0)
+                        <div>
+                            <strong style="color: #7C3AED; display: block; margin-bottom: 8px;">Minor (Додаткове навчання):</strong>
+                            <ul style="margin: 0; padding-left: 20px; line-height: 1.8;">
+                                @foreach($path['minors'] as $minor)
+                                <li style="color: #4B5563;">{{ $minor }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                         @endif
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+        
+        <div style="margin-top: 25px; padding: 20px; background: #ECFDF5; border-left: 4px solid #10B981; border-radius: 8px;">
+            <h4 style="color: #065F46; margin-top: 0;">💡 Важлива інформація</h4>
+            <p style="color: #047857; margin-bottom: 10px; line-height: 1.6;">
+                <strong>Major</strong> – це ваш основний напрям навчання на бакалавраті, який стане фундаментом вашої професійної кар'єри.
+            </p>
+            <p style="color: #047857; margin-bottom: 0; line-height: 1.6;">
+                <strong>Minor</strong> – це додаткові дисципліни або програми, які доповнять ваші знання, 
+                розширять професійні можливості та допоможуть створити унікальний профіль фахівця.
+            </p>
+        </div>
         @else
-        <p>Рекомендації формуються на основі результатів тестування...</p>
+        <div style="margin: 25px 0; padding: 25px; background: #FEF3C7; border-left: 4px solid #F59E0B; border-radius: 8px;">
+            <h4 style="color: #92400E; margin-top: 0;">⚠️ Рекомендації формуються</h4>
+            <p style="color: #78350F; margin-bottom: 0; line-height: 1.6;">
+                Для отримання персоналізованих рекомендацій щодо професійних напрямків та фахів необхідно завершити всі модулі тестування. 
+                Рекомендації будуть згенеровані штучним інтелектом на основі комплексного аналізу всіх ваших результатів.
+            </p>
+        </div>
         @endif
     </section>
 
