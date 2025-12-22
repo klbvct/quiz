@@ -111,17 +111,27 @@ class QuizController extends Controller
         
         $answers = $request->input('answers', []);
         
-        // Сохраняем ответы
-        foreach ($answers as $questionNumber => $answer) {
-            QuizAnswer::updateOrCreate(
-                [
+        // Сохраняем ответы (оптимизированная массовая вставка)
+        if (!empty($answers)) {
+            $dataToUpsert = [];
+            $now = now();
+            
+            foreach ($answers as $questionNumber => $answer) {
+                $dataToUpsert[] = [
                     'session_id' => $session->id,
                     'module_number' => $module,
-                    'question_number' => $questionNumber
-                ],
-                [
-                    'answer' => is_array($answer) ? json_encode($answer) : $answer
-                ]
+                    'question_number' => $questionNumber,
+                    'answer' => is_array($answer) ? json_encode($answer) : $answer,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+            
+            // Массовая вставка/обновление (1 запрос вместо N)
+            QuizAnswer::upsert(
+                $dataToUpsert,
+                ['session_id', 'module_number', 'question_number'], // Уникальные ключи
+                ['answer', 'updated_at'] // Поля для обновления
             );
         }
         

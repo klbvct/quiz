@@ -147,9 +147,8 @@ class UserManagementController extends Controller
             return redirect()->back()->with('error', 'Вы не можете удалить свою учетную запись');
         }
 
-        // Удаление связанных данных
-        QuizSession::where('user_id', $user->id)->delete();
-        
+        // Удаляем пользователя (связанные данные удалятся каскадно благодаря onDelete('cascade'))
+        // quiz_sessions -> quiz_answers и quiz_results удалятся автоматически
         $user->delete();
 
         return redirect()->route('admin.users.index')
