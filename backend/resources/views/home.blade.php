@@ -44,6 +44,11 @@
                     $inProgressSession = \App\Models\QuizSession::where('user_id', Auth::id())
                         ->where('status', 'in_progress')
                         ->first();
+                    
+                    $allCompletedSessions = \App\Models\QuizSession::where('user_id', Auth::id())
+                        ->where('status', 'completed')
+                        ->orderBy('completed_at', 'desc')
+                        ->get();
                 @endphp
                 
                 <div class="card {{ $completedSession && !Auth::user()->can_retake ? 'card-completed' : 'card-active' }}">
@@ -80,6 +85,9 @@
                         <p>
                             @if($completedSession && !Auth::user()->can_retake)
                                 Переглянь результати вашого останнього завершеного тестування
+                                @if($allCompletedSessions->count() > 1)
+                                    <br><small style="color: #6b7280;">Усього пройдено тестувань: {{ $allCompletedSessions->count() }}</small>
+                                @endif
                             @else
                                 Результати будуть доступні після завершення тестування
                             @endif
@@ -87,7 +95,10 @@
                     </div>
                     <div class="card-actions">
                         @if($completedSession && !Auth::user()->can_retake)
-                            <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Переглянути результати</a>
+                            <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Останні результати</a>
+                            @if($allCompletedSessions->count() > 1)
+                                <a href="{{ route('quiz.test-history') }}" class="btn-start" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); margin-top: 10px;">📋 Історія всіх тестувань</a>
+                            @endif
                         @else
                             <span class="btn-start btn-disabled" style="background: #9ca3af; cursor: not-allowed;">Недоступно</span>
                         @endif

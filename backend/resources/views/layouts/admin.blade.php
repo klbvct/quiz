@@ -17,6 +17,7 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    @yield('styles')
 </head>
 <body>
     <div class="admin-container">

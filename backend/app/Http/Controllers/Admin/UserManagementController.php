@@ -206,7 +206,10 @@ class UserManagementController extends Controller
             $modulesData[$moduleNumber] = $this->loadModuleData($moduleNumber);
         }
         
-        return view('admin.users.quiz-results', compact('user', 'completedSession', 'quizResult', 'answers', 'modulesData'));
+        // Добавляем session как alias для completedSession для совместимости с представлением
+        $session = $completedSession;
+        
+        return view('admin.users.quiz-results', compact('user', 'completedSession', 'session', 'quizResult', 'answers', 'modulesData'));
     }
     
     /**
@@ -365,5 +368,65 @@ class UserManagementController extends Controller
         };
         
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Показать полную историю всех прохождений теста пользователем
+     */
+    public function testHistory($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Получаем все завершенные сессии с результатами
+        $completedSessions = QuizSession::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->with('result')
+            ->orderBy('completed_at', 'desc')
+            ->paginate(10);
+        
+        return view('admin.users.test-history', compact('user', 'completedSessions'));
+    }
+
+    /**
+     * Просмотреть результаты конкретной сессии
+     */
+    public function viewSessionResult($userId, $sessionId)
+    {
+        $user = User::findOrFail($userId);
+        $session = QuizSession::where('id', $sessionId)
+            ->where('user_id', $userId)
+            ->where('status', 'completed')
+            ->with('result')
+            ->firstOrFail();
+        
+        $quizResult = $session->result;
+        
+        if (!$quizResult) {
+            return redirect()->route('admin.users.test-history', $userId)
+                ->with('error', 'Результаты для этой сессии не найдены');
+        }
+        
+        // Получаем все ответы пользователя для этой сессии
+        $answers = \App\Models\QuizAnswer::where('session_id', $sessionId)
+            ->orderBy('module_number')
+            ->orderBy('question_number')
+            ->get()
+            ->groupBy('module_number');
+        
+        // Загружаем данные модулей
+        $modulesData = [];
+        foreach ($answers->keys() as $moduleNumber) {
+            $modulesData[$moduleNumber] = $this->loadModuleData($moduleNumber);
+        }
+        
+        return view('admin.users.quiz-results', [
+            'user' => $user,
+            'session' => $session,
+            'completedSession' => $session,
+            'quizResult' => $quizResult,
+            'answers' => $answers,
+            'modulesData' => $modulesData,
+            'isHistoryView' => true
+        ]);
     }
 }

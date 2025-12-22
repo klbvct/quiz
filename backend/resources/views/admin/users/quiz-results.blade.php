@@ -5,7 +5,11 @@
 @section('content')
 <div class="page-header">
     <div class="header-with-back">
-        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn-back">← Назад до користувача</a>
+        @if(isset($isHistoryView) && $isHistoryView)
+            <a href="{{ route('admin.users.test-history', $user->id) }}" class="btn-back">← Назад до історії</a>
+        @else
+            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn-back">← Назад до користувача</a>
+        @endif
         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
             <h1>Результати тестування: {{ $user->name }}</h1>
             <a href="{{ route('admin.users.quiz-results.export', $user->id) }}" class="btn-export">
@@ -16,25 +20,31 @@
 </div>
 
 <div class="results-container">
+    @if(isset($isHistoryView) && $isHistoryView)
+        <div class="alert alert-info">
+            ℹ️ Ви переглядаєте історичну версію тестування від {{ $session->completed_at->format('d.m.Y H:i') }}
+        </div>
+    @endif
+    
     <!-- Інформація про сесію -->
     <div class="section-card">
         <h2>Інформація про тестування</h2>
         <div class="info-grid">
             <div class="info-item">
                 <div class="info-label">Дата початку</div>
-                <div class="info-value">{{ $completedSession->created_at->format('d.m.Y H:i') }}</div>
+                <div class="info-value">{{ $session->created_at->format('d.m.Y H:i') }}</div>
             </div>
             <div class="info-item">
                 <div class="info-label">Дата завершення</div>
-                <div class="info-value">{{ $completedSession->completed_at->format('d.m.Y H:i') }}</div>
+                <div class="info-value">{{ $session->completed_at->format('d.m.Y H:i') }}</div>
             </div>
             <div class="info-item">
                 <div class="info-label">Тривалість</div>
-                <div class="info-value">{{ $completedSession->created_at->diffForHumans($completedSession->completed_at, true) }}</div>
+                <div class="info-value">{{ $session->created_at->diffForHumans($session->completed_at, true) }}</div>
             </div>
             <div class="info-item">
                 <div class="info-label">ID сесії</div>
-                <div class="info-value">{{ $completedSession->id }}</div>
+                <div class="info-value">{{ $session->id }}</div>
             </div>
         </div>
     </div>
@@ -277,6 +287,21 @@
 </div>
 
 <style>
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-info {
+    background-color: #e3f2fd;
+    border: 1px solid #2196f3;
+    color: #0d47a1;
+}
+
 .results-container {
     max-width: 1200px;
     margin: 0 auto;

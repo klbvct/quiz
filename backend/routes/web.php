@@ -62,6 +62,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz/module/{module}', [\App\Http\Controllers\QuizController::class, 'showModule'])->name('quiz.module');
     Route::post('/quiz/module/{module}', [\App\Http\Controllers\QuizController::class, 'saveAnswers'])->name('quiz.save');
     Route::get('/quiz/results', [\App\Http\Controllers\QuizController::class, 'results'])->name('quiz.results');
+    Route::get('/quiz/test-history', [\App\Http\Controllers\QuizController::class, 'testHistory'])->name('quiz.test-history');
+    Route::get('/quiz/results/{sessionId}', [\App\Http\Controllers\QuizController::class, 'viewSessionResult'])->name('quiz.session-result');
     
     // Маршруты для отчётов
     Route::get('/quiz/report/{sessionId}', [\App\Http\Controllers\QuizController::class, 'viewReport'])->name('quiz.report.view');
@@ -101,7 +103,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserManagementController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{id}/toggle-access', [\App\Http\Controllers\Admin\UserManagementController::class, 'toggleAccess'])->name('users.toggle-access');
     Route::post('/users/{id}/enable-retake', [\App\Http\Controllers\Admin\UserManagementController::class, 'enableRetake'])->name('users.enable-retake');
+    Route::get('/users/{id}/test-history', [\App\Http\Controllers\Admin\UserManagementController::class, 'testHistory'])->name('users.test-history');
     Route::get('/users/{id}/quiz-results', [\App\Http\Controllers\Admin\UserManagementController::class, 'quizResults'])->name('users.quiz-results');
+    Route::get('/users/{id}/quiz-results/{sessionId}', [\App\Http\Controllers\Admin\UserManagementController::class, 'viewSessionResult'])->name('users.session-result');
     Route::get('/users/{id}/quiz-results/export', [\App\Http\Controllers\Admin\UserManagementController::class, 'exportQuizResults'])->name('users.quiz-results.export');
     
     // Управление платежами

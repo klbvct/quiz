@@ -83,9 +83,14 @@
                 @endphp
 
                 @if($completedSession)
-                    <a href="{{ route('admin.users.quiz-results', $user->id) }}" class="btn btn-primary">
-                        📊 Переглянути результати тестування
-                    </a>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <a href="{{ route('admin.users.quiz-results', $user->id) }}" class="btn btn-primary">
+                            📊 Останні результати тестування
+                        </a>
+                        <a href="{{ route('admin.users.test-history', $user->id) }}" class="btn btn-secondary">
+                            📋 Повна історія всіх тестувань
+                        </a>
+                    </div>
                     <div class="divider"></div>
                 @endif
 

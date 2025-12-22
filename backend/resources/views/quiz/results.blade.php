@@ -13,11 +13,20 @@
             <img src="{{ asset('images/logo_education_design.svg') }}" alt="Education Design" class="logo-image">
         </div>
         <h1>Результати профорієнтаційного тестування</h1>
+        @if(isset($isHistoryView) && $isHistoryView)
+            <p style="color: #6b7280; font-size: 0.9rem; margin-top: 10px;">
+                📅 Результати від {{ $session->completed_at->format('d.m.Y H:i') }}
+            </p>
+        @endif
     </div>
 
     <div class="results-content">
         <div style="text-align: center; margin-bottom: 30px;">
-            <a href="{{ route('home') }}" style="color: #0c68f5; text-decoration: none; font-weight: 600; font-size: 16px;">← Повернутися до кабінету</a>
+            @if(isset($isHistoryView) && $isHistoryView)
+                <a href="{{ route('quiz.test-history') }}" style="color: #0c68f5; text-decoration: none; font-weight: 600; font-size: 16px;">← Повернутися до історії</a>
+            @else
+                <a href="{{ route('home') }}" style="color: #0c68f5; text-decoration: none; font-weight: 600; font-size: 16px;">← Повернутися до кабінету</a>
+            @endif
         </div>
         
         <div class="completion-badge">
@@ -40,9 +49,9 @@
             <div class="recommendation-list">
                 @foreach($result->recommendations['professional_types'] as $profType)
                 <div class="recommendation-item">
-                    <h4>{{ $profType['type'] }}</h4>
-                    <p class="type-description">{{ $profType['description'] }}</p>
-                    <div class="type-score">Балів: {{ $profType['score'] }}</div>
+                    <h4>{{ $profType['type'] ?? 'Професійний тип' }}</h4>
+                    <p class="type-description">{{ $profType['description'] ?? '' }}</p>
+                    <div class="type-score">Балів: {{ $profType['score'] ?? 0 }}</div>
                     
                     @if(!empty($profType['majors']))
                     <div class="majors">

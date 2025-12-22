@@ -589,7 +589,7 @@ class QuizController extends Controller
      */
     private function generateLegacyRecommendations($moduleScores, $interpretation)
     {
-        $recommendations = [];
+        $professionalTypes = [];
         
         // На основе модуля 3 (Типи професійної взаємодії - Климов)
         if (isset($moduleScores['module3'])) {
@@ -606,20 +606,18 @@ class QuizController extends Controller
                 'art' => 'Людина-Художній образ'
             ];
             
-            $recommendations['professional_types'] = [];
-            
             foreach ($topTypes as $type) {
                 $score = $klimov[$type];
-                $scale = $interpretation['modules']['module3']['scales'][$type];
+                $scale = $interpretation['modules']['module3']['scales'][$type] ?? [];
                 
                 // Берем рекомендации из professional_recommendations
                 if (isset($interpretation['professional_recommendations'][$type])) {
                     $profRec = $interpretation['professional_recommendations'][$type];
                     
-                    $recommendations['professional_types'][] = [
+                    $professionalTypes[] = [
                         'type' => $typeNames[$type],
                         'score' => $score,
-                        'description' => $scale['description'],
+                        'description' => $scale['description'] ?? '',
                         'majors' => $profRec['majors'] ?? [],
                         'minors' => $profRec['minors'] ?? []
                     ];
@@ -627,7 +625,7 @@ class QuizController extends Controller
             }
         }
         
-        return $recommendations;
+        return $professionalTypes;
     }
 
     /**
@@ -730,6 +728,49 @@ class QuizController extends Controller
             'result' => $result,
             'scores' => $scores,
             'totalAnswers' => $totalAnswers
+        ]);
+    }
+
+    /**
+     * Показать историю всех прохождений теста пользователем
+     */
+    public function testHistory()
+    {
+        $user = Auth::user();
+        
+        // Получаем все завершенные сессии пользователя
+        $completedSessions = QuizSession::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->with('result')
+            ->orderBy('completed_at', 'desc')
+            ->paginate(10);
+        
+        return view('quiz.test-history', compact('user', 'completedSessions'));
+    }
+
+    /**
+     * Просмотреть результаты конкретной сессии
+     */
+    public function viewSessionResult($sessionId)
+    {
+        $user = Auth::user();
+        
+        $session = QuizSession::where('id', $sessionId)
+            ->where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->firstOrFail();
+        
+        $result = QuizResult::where('session_id', $session->id)->first();
+        
+        if (!$result) {
+            // Если результаты еще не подсчитаны, подсчитываем их
+            $result = $this->calculateResults($session);
+        }
+        
+        return view('quiz.results', [
+            'session' => $session,
+            'result' => $result,
+            'isHistoryView' => true
         ]);
     }
 }
