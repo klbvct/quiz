@@ -105,8 +105,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{id}/enable-retake', [\App\Http\Controllers\Admin\UserManagementController::class, 'enableRetake'])->name('users.enable-retake');
     Route::get('/users/{id}/test-history', [\App\Http\Controllers\Admin\UserManagementController::class, 'testHistory'])->name('users.test-history');
     Route::get('/users/{id}/quiz-results', [\App\Http\Controllers\Admin\UserManagementController::class, 'quizResults'])->name('users.quiz-results');
-    Route::get('/users/{id}/quiz-results/{sessionId}', [\App\Http\Controllers\Admin\UserManagementController::class, 'viewSessionResult'])->name('users.session-result');
     Route::get('/users/{id}/quiz-results/export', [\App\Http\Controllers\Admin\UserManagementController::class, 'exportQuizResults'])->name('users.quiz-results.export');
+    Route::get('/users/{id}/quiz-results/{sessionId}', [\App\Http\Controllers\Admin\UserManagementController::class, 'viewSessionResult'])->name('users.session-result');
     
     // Управление платежами
     Route::get('/payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
