@@ -1,6 +1,7 @@
 .history-container {
-    max-width: 1200px;
+    max-width: 960px;
     padding: 0px 20px;
+    margin: 0 auto;
 }
 
 .page-header {
