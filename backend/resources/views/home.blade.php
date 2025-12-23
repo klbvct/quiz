@@ -14,7 +14,12 @@
             <span class="logo-text">Дизайн Освіти</span>
         </div>
         <div class="user-info">
-            <span>{{ Auth::user()->name }}</span>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="user-avatar" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; color: white; border: 2px solid rgba(255,255,255,0.3);">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </div>
+                <span>{{ Auth::user()->name }}</span>
+            </div>
             @if(Auth::user()->is_admin)
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-admin">Адмін-панель</a>
             @endif
