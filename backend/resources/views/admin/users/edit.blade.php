@@ -40,30 +40,42 @@
             @endphp
             
             @if($payments->count() > 0)
-                <div class="payments-list">
+                <div class="stats-list">
+                    <div class="stat-item">
+                        <div class="stat-label">Всього платежів</div>
+                        <div class="stat-value">{{ $payments->count() }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Успішних</div>
+                        <div class="stat-value">{{ $payments->where('status', 'completed')->count() }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Сума</div>
+                        <div class="stat-value">{{ number_format($payments->where('status', 'completed')->sum('amount'), 0, ',', ' ') }} ₴</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3>Історія платежів</h3>
+                <div class="sessions-list">
                     @foreach($payments as $payment)
-                        <div class="payment-item">
-                            <div class="payment-status">
+                        <div class="session-item">
+                            <div class="session-date">{{ $payment->created_at->format('d.m.Y H:i') }}</div>
+                            <div class="session-status">
                                 @if($payment->status === 'completed')
                                     <span class="badge badge-success">Завершено</span>
+                                    <small>{{ number_format($payment->amount, 0, ',', ' ') }} ₴</small>
                                 @elseif($payment->status === 'pending')
                                     <span class="badge badge-warning">В очікуванні</span>
+                                    <small>{{ number_format($payment->amount, 0, ',', ' ') }} ₴</small>
                                 @else
                                     <span class="badge badge-error">Відхилено</span>
+                                    <small>{{ number_format($payment->amount, 0, ',', ' ') }} ₴</small>
                                 @endif
                             </div>
-                            <div class="payment-info">
-                                <div class="payment-date">{{ $payment->created_at->format('d.m.Y H:i') }}</div>
-                            </div>
-
                         </div>
                     @endforeach
-                </div>
-                
-                <div class="payment-total">
-                    <strong>Всього платежів:</strong> {{ $payments->count() }}<br>
-                    <strong>Успішних:</strong> {{ $payments->where('status', 'completed')->count() }}<br>
-                    <strong>Сума:</strong> {{ number_format($payments->where('status', 'completed')->sum('amount'), 0, ',', ' ') }} ₴
                 </div>
             @else
                 <p class="text-muted">Немає платежів</p>
