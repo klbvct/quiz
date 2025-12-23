@@ -47,7 +47,7 @@
                 <div class="session-card">
                     <div class="session-header">
                         <div class="session-number">Тестування #{{ $completedSessions->total() - $completedSessions->firstItem() - $index + 1 }}</div>
-                        <div class="session-id">ID: {{ $session->id }}</div>
+                        <!-- <div class="session-id">ID: {{ $session->id }}</div> -->
                     </div>
                     
                     <div class="session-info">
