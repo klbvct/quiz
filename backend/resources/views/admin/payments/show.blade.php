@@ -105,39 +105,67 @@
         <div class="section-card">
             <h2>Користувач</h2>
             
-            <div class="user-card">
-                <div class="user-avatar">
-                    {{ strtoupper(substr($payment->user->name, 0, 1)) }}
-                </div>
-                <div class="user-info">
-                    <h3>{{ $payment->user->name }}</h3>
-                    <p>{{ $payment->user->email }}</p>
+            <div class="user-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="user-avatar" style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; color: white; border: 3px solid rgba(255,255,255,0.3);">
+                        {{ strtoupper(substr($payment->user->name, 0, 1)) }}
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="margin: 0 0 5px 0; font-size: 20px; color: white; font-weight: 600;">{{ $payment->user->name }}</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 14px;">{{ $payment->user->email }}</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="user-stats">
-                <div class="stat-item">
-                    <div class="stat-label">ID користувача</div>
-                    <div class="stat-value">{{ $payment->user->id }}</div>
+            <div style="display: grid; gap: 12px; margin-bottom: 20px;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 13px; font-weight: 500;">👤 ID користувача</span>
+                        <span style="font-weight: 600; color: #212529;">#{{ $payment->user->id }}</span>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-label">Доступ до тестування</div>
-                    <div class="stat-value">
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid {{ $payment->user->has_access ? '#28a745' : '#ffc107' }};">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 13px; font-weight: 500;">🎯 Доступ до тестування</span>
                         @if($payment->user->has_access)
-                            <span class="badge badge-success">Є</span>
+                            <span class="badge badge-success">✓ Є</span>
                         @else
-                            <span class="badge badge-warning">Немає</span>
+                            <span class="badge badge-warning">✗ Немає</span>
                         @endif
                     </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-label">Дата реєстрації</div>
-                    <div class="stat-value">{{ $payment->user->created_at->format('d.m.Y') }}</div>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #17a2b8;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 13px; font-weight: 500;">📅 Дата реєстрації</span>
+                        <span style="font-weight: 600; color: #212529;">{{ $payment->user->created_at->format('d.m.Y') }}</span>
+                    </div>
+                </div>
+
+                @php
+                    $totalPayments = \App\Models\Payment::where('user_id', $payment->user_id)->count();
+                    $completedPayments = \App\Models\Payment::where('user_id', $payment->user_id)->where('status', 'completed')->count();
+                    $totalAmount = \App\Models\Payment::where('user_id', $payment->user_id)->where('status', 'completed')->sum('amount');
+                @endphp
+
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 13px; font-weight: 500;">💳 Всього платежів</span>
+                        <span style="font-weight: 600; color: #212529;">{{ $completedPayments }}/{{ $totalPayments }}</span>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #fd7e14;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 13px; font-weight: 500;">💰 Сума платежів</span>
+                        <span style="font-weight: 600; color: #212529;">{{ number_format($totalAmount, 0, ',', ' ') }} ₴</span>
+                    </div>
                 </div>
             </div>
 
-            <a href="{{ route('admin.users.edit', $payment->user->id) }}" class="btn btn-secondary btn-block">
-                Перейти до профілю
+            <a href="{{ route('admin.users.edit', $payment->user->id) }}" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px; font-weight: 600;">
+                👤 Перейти до профілю
             </a>
         </div>
 
@@ -157,10 +185,16 @@
                         <div class="payment-item">
                             <div class="payment-info">
                                 <span class="payment-amount">{{ number_format($p->amount, 0, ',', ' ') }} ₴</span>
-                                <span class="payment-date">{{ $p->created_at->format('d.m.Y') }}</span>
+                                <span class="payment-date">{{ $p->created_at->format('d.m.Y H:i') }}</span>
                             </div>
                             <span class="badge badge-{{ $p->status === 'completed' ? 'success' : ($p->status === 'pending' ? 'warning' : 'error') }}">
-                                {{ $p->status }}
+                                @if($p->status === 'completed')
+                                    Завершено
+                                @elseif($p->status === 'pending')
+                                    В очікуванні
+                                @else
+                                    Відхилено
+                                @endif
                             </span>
                         </div>
                     @endforeach
