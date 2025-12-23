@@ -76,6 +76,13 @@
                                 @endif
                             </a>
                         </div>
+                    @elseif($completedSession && !Auth::user()->can_retake)
+                        <div class="card-actions">
+                            <a href="{{ route('payment.retake') }}" class="btn-start" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                                Пройти тест повторно
+                            </a>
+                            
+                        </div>
                     @endif
                 </div>
                 
@@ -97,7 +104,7 @@
                         @if($completedSession && !Auth::user()->can_retake)
                             <a href="{{ route('quiz.results') }}" class="btn-start" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Останні результати</a>
                             @if($allCompletedSessions->count() > 1)
-                                <a href="{{ route('quiz.test-history') }}" class="btn-start" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); margin-top: 10px;">📋 Історія всіх тестувань</a>
+                                <a href="{{ route('quiz.test-history') }}" class="btn-start" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); margin-top: 10px;">Історія всіх тестувань</a>
                             @endif
                         @else
                             <span class="btn-start btn-disabled" style="background: #9ca3af; cursor: not-allowed;">Недоступно</span>

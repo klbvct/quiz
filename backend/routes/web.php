@@ -48,6 +48,11 @@ Route::get('/payment', function () {
     return view('payment');
 })->middleware('auth')->name('payment.page');
 
+// Страница оплаты для повторного прохождения теста
+Route::get('/payment/retake', function () {
+    return view('payment-retake');
+})->middleware('auth')->name('payment.retake');
+
 // Маршруты для платежей
 Route::post('/api/check-access', [\App\Http\Controllers\PaymentController::class, 'checkAccess'])->name('payment.check');
 Route::post('/payment/create', [\App\Http\Controllers\PaymentController::class, 'create'])->name('payment.create');

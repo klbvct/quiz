@@ -187,18 +187,24 @@ class PaymentController extends Controller
                 
             } else {
                 // Даем доступ существующему пользователю
-                $user->update(['has_access' => true]);
-
-                // Проверяем, это повторное прохождение или первое
                 $completedSession = $user->quizSessions()
                     ->whereNotNull('completed_at')
                     ->exists();
 
                 if ($completedSession) {
-                    // Повторное прохождение - отправляем соответствующее письмо
+                    // Повторное прохождение - устанавливаем флаг can_retake
+                    $user->update([
+                        'has_access' => true,
+                        'can_retake' => true
+                    ]);
+                    
+                    // Отправляем письмо о возможности повторного прохождения
                     Mail::to($email)->send(new \App\Mail\RetakeAccessMail($user));
                 } else {
-                    // Первое прохождение - отправляем письмо об активации
+                    // Первое прохождение - просто даём доступ
+                    $user->update(['has_access' => true]);
+                    
+                    // Отправляем письмо об активации
                     Mail::to($email)->send(new \App\Mail\AccessActivatedMail($user));
                 }
             }
