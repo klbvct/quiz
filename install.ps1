@@ -20,8 +20,8 @@ try {
 # Проверка наличия PHP
 Write-Host "Проверка PHP..." -ForegroundColor Yellow
 try {
-    $phpVersion = php --version
-    Write-Host "✓ PHP установлен" -ForegroundColor Green
+    $phpVersion = php --version | Select-Object -First 1
+    Write-Host "✓ PHP установлен: $phpVersion" -ForegroundColor Green
 } catch {
     Write-Host "✗ PHP не найден! Установите XAMPP: https://www.apachefriends.org" -ForegroundColor Red
     exit
