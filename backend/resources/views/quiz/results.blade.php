@@ -33,6 +33,9 @@
             <div class="badge-icon">✓</div>
             <h2>Вітаємо! Ви завершили тестування</h2>
             <p>Дата завершення: {{ $session->completed_at->format('d.m.Y H:i') }}</p>
+            <div class="results-actions">
+                <a href="{{ route('quiz.report.view', ['sessionId' => $session->id]) }}" class="btn btn-success" target="_blank">📄 Переглянути та роздрукувати звіт</a>
+            </div>
         </div>
 
         @if($result)
