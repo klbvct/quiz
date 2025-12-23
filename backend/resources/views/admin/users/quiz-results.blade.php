@@ -49,61 +49,6 @@
         </div>
     </div>
 
-    @if($quizResult)
-        <!-- Загальні результати -->
-        <div class="section-card">
-            <h2>Загальні результати</h2>
-            
-            @if(isset($quizResult->module_scores) && is_array($quizResult->module_scores))
-                <div class="scores-grid">
-                    @foreach($quizResult->module_scores as $key => $score)
-                        @php
-                            $displayKey = is_array($key) ? json_encode($key, JSON_UNESCAPED_UNICODE) : $key;
-                            if (is_array($score)) {
-                                continue;
-                            }
-                            $displayScore = is_numeric($score) ? round($score, 2) : $score;
-                        @endphp
-                        <div class="score-card">
-                            <div class="score-label">{!! e($displayKey) !!}</div>
-                            <div class="score-value">{!! e($displayScore) !!}</div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
-            @if($quizResult->summary)
-                <div class="summary-section">
-                    <h3>Підсумок</h3>
-                    <div class="summary-text">
-                        @if(is_array($quizResult->summary))
-                            {!! e(json_encode($quizResult->summary, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)) !!}
-                        @else
-                            {{ $quizResult->summary }}
-                        @endif
-                    </div>
-                </div>
-            @endif
-
-            @if(isset($quizResult->recommendations) && is_array($quizResult->recommendations) && count($quizResult->recommendations) > 0)
-                <div class="recommendations-section">
-                    <h3>Рекомендації</h3>
-                    <ul class="recommendations-list">
-                        @foreach($quizResult->recommendations as $recommendation)
-                            <li>
-                                @if(is_array($recommendation))
-                                    {!! e(json_encode($recommendation, JSON_UNESCAPED_UNICODE)) !!}
-                                @else
-                                    {{ $recommendation }}
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-        </div>
-    @endif
-
     <!-- Відповіді по модулях -->
     <div class="section-card">
         <h2>Відповіді користувача по модулях</h2>
