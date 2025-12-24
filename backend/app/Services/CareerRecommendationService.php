@@ -289,9 +289,9 @@ class CareerRecommendationService
         $prompt .= "        \"Графічний дизайн\"\n";
         $prompt .= "      ],\n";
         $prompt .= "      \"minors\": [\n";
-        $prompt .= "        \"Film production (minor)\",\n";
-        $prompt .= "        \"Video Making (minor)\",\n";
-        $prompt .= "        \"Digital Marketing (minor)\"\n";
+        $prompt .= "        \"Film production\",\n";
+        $prompt .= "        \"Video Making\",\n";
+        $prompt .= "        \"Digital Marketing\"\n";
         $prompt .= "      ]\n";
         $prompt .= "    },\n";
         $prompt .= "    {\n";
@@ -303,9 +303,9 @@ class CareerRecommendationService
         $prompt .= "        \"Веб-розробка та дизайн\"\n";
         $prompt .= "      ],\n";
         $prompt .= "      \"minors\": [\n";
-        $prompt .= "        \"UI/UX Design (minor)\",\n";
-        $prompt .= "        \"Data Science (minor)\",\n";
-        $prompt .= "        \"Cybersecurity (minor)\"\n";
+        $prompt .= "        \"UI/UX Design\",\n";
+        $prompt .= "        \"Data Science\",\n";
+        $prompt .= "        \"Cybersecurity\"\n";
         $prompt .= "      ]\n";
         $prompt .= "    },\n";
         $prompt .= "    {\n";
@@ -317,8 +317,8 @@ class CareerRecommendationService
         $prompt .= "        \"Медіакомунікації\"\n";
         $prompt .= "      ],\n";
         $prompt .= "      \"minors\": [\n";
-        $prompt .= "        \"Social Media Management (minor)\",\n";
-        $prompt .= "        \"Content Marketing (minor)\"\n";
+        $prompt .= "        \"Social Media Management\",\n";
+        $prompt .= "        \"Content Marketing\"\n";
         $prompt .= "      ]\n";
         $prompt .= "    }\n";
         $prompt .= "  ]\n";
